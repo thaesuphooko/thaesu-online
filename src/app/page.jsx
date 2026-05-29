@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ShoppingCart, ShoppingBag } from 'lucide-react';
-import ProductCard from '@/components/ProductCard';
-
+import ProductCard from '../../../ProductCard';
 export default function Storefront() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
