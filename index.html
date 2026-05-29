@@ -3,27 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thae Su Chat Room</title>
+    <title>Thae Su Online Shop</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #eef2f3; margin: 0; }
-        .chat-box { width: 100%; max-width: 400px; height: 85vh; background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
-        .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 1.2rem; }
-        .messages { flex: 1; padding: 20px; overflow-y: auto; background: #f7f9fa; }
-        .msg-input { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; }
-        .msg-input input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; padding-left: 20px; }
-        .msg-input button { padding: 10px 20px; margin-left: 10px; background: #764ba2; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
+        .header { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .container { max-width: 600px; margin: 20px auto; padding: 10px; }
+        .product-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; }
+        .product-info { display: flex; flex-direction: column; }
+        .product-name { font-size: 1.2rem; font-weight: bold; color: #333; }
+        .product-price { color: #ff4b2b; font-size: 1.1rem; font-weight: bold; margin-top: 5px; }
+        .btn-add { background: #ff4b2b; color: white; border: none; padding: 10px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-add:active { transform: scale(0.95); }
+        .cart-status { background: #333; color: white; padding: 15px; text-align: center; font-weight: bold; position: fixed; bottom: 0; width: 100%; left: 0; font-size: 1.1rem; }
     </style>
 </head>
 <body>
-<div class="chat-box">
-    <div class="header">Thae Su Chat Room</div>
-    <div class="messages">
-        <p style="color: #888; text-align: center;">Welcome to the Chat App!</p>
+
+<div class="header">🍓 Thae Su - Vitamin Fruit 🍓</div>
+
+<div class="container">
+    <!-- Product 1 -->
+    <div class="product-card">
+        <div class="product-info">
+            <span class="product-name">လတ်ဆတ်သော ဒူးရင်းသီး</span>
+            <span class="product-price">၁ လုံး - ၁၅,၀၀၀ ကျပ်</span>
+        </div>
+        <button class="btn-add" onclick="addToCart('ဒူးရင်းသီး')">ဝယ်မည်</button>
     </div>
-    <div class="msg-input">
-        <input type="text" placeholder="စာရိုက်ပါ...">
-        <button onclick="alert('မကြာမီ အသုံးပြုနိုင်တော့မည်!')">ပို့မည်</button>
+
+    <!-- Product 2 -->
+    <div class="product-card">
+        <div class="product-info">
+            <span class="product-name">ရှမ်းသီးစုံ ဗီတာမင်အထုပ်</span>
+            <span class="product-price">၁ ထုပ် - ၅,၀၀၀ ကျပ်</span>
+        </div>
+        <button class="btn-add" onclick="addToCart('ရှမ်းသီးစုံ')">ဝယ်မည်</button>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card">
+        <div class="product-info">
+            <span class="product-name">ထိုင်းသီးမွှေး ပန်းသီး</span>
+            <span class="product-price">၁ သေတ္တာ - ၂၅,၀၀၀ ကျပ်</span>
+        </div>
+        <button class="btn-add" onclick="addToCart('ထိုင်းပန်းသီး')">ဝယ်မည်</button>
     </div>
 </div>
+
+<div class="cart-status" id="cart-text">🛒 ဈေးခြင်းတောင်းထဲမှာ ပစ္စည်းမရှိသေးပါ</div>
+
+<script>
+    let count = 0;
+    function addToCart(itemName) {
+        count++;
+        document.getElementById('cart-text').innerText = 🛒 ဈေးခြင်းတောင်းထဲမှာ ပစ္စည်း (${count}) ခုရှိနေပါပြီ။;
+        alert(${itemName} ကို ဈေးခြင်းတောင်းထဲ ထည့်လိုက်ပါပြီဗျာ!);
+    }
+</script>
+
 </body>
 </html>
