@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thae Su Chat Room</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #eef2f3; margin: 0; }
+        .chat-box { width: 100%; max-width: 400px; height: 85vh; background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 1.2rem; }
+        .messages { flex: 1; padding: 20px; overflow-y: auto; background: #f7f9fa; }
+        .msg-input { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; }
+        .msg-input input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; padding-left: 20px; }
+        .msg-input button { padding: 10px 20px; margin-left: 10px; background: #764ba2; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="chat-box">
+    <div class="header">Thae Su Chat Room</div>
+    <div class="messages">
+        <p style="color: #888; text-align: center;">Welcome to the Chat App!</p>
+    </div>
+    <div class="msg-input">
+        <input type="text" placeholder="စာရိုက်ပါ...">
+        <button onclick="alert('မကြာမီ အသုံးပြုနိုင်တော့မည်!')">ပို့မည်</button>
+    </div>
+</div>
+</body>
+</html>
