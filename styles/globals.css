@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --blur: 12px;
+}
+
+/* Dawn theme (5:00 - 9:59) */
+.dawn {
+  --glass-bg: rgba(255, 200, 150, 0.25);
+  --glass-border: rgba(255, 180, 120, 0.4);
+  --text-primary: #3b2f2f;
+  --text-secondary: #6b5b5b;
+}
+
+/* Noon theme (10:00 - 16:59) */
+.noon {
+  --glass-bg: rgba(255, 255, 255, 0.35);
+  --glass-border: rgba(200, 220, 255, 0.5);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+}
+
+/* Night theme (17:00 - 4:59) */
+.night {
+  --glass-bg: rgba(30, 10, 50, 0.4);
+  --glass-border: rgba(100, 50, 150, 0.5);
+  --text-primary: #e0d7ff;
+  --text-secondary: #b0a0d0;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow);
+  color: var(--text-primary);
+}
