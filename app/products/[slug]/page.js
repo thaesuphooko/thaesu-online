@@ -1,9 +1,19 @@
 import { query } from '@/lib/db';
 import AddToCartButton from '@/components/molecules/AddToCartButton';
 import ProductReviews from '@/components/organisms/ProductReviews';
+import Image from 'next/image';
+
+// ISR: revalidate every 60 seconds
+export const revalidate = 60;
+
+// Generate static params for top products (optional)
+export async function generateStaticParams() {
+  const res = await query('SELECT slug FROM products WHERE is_active = true LIMIT 100');
+  return res.rows.map(p => ({ slug: p.slug }));
+}
 
 export default async function ProductDetail({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const res = await query(
     `SELECT p.*, 
       COALESCE(json_agg(DISTINCT jsonb_build_object('id', m.id, 'url', m.cloudinary_url, 'type', m.media_type))
@@ -23,8 +33,15 @@ export default async function ProductDetail({ params }) {
   return (
     <div className="max-w-6xl mx-auto p-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <img src={product.media[0]?.url || '/placeholder.jpg'} alt={product.title} className="w-full rounded-xl" />
+        <div className="relative h-96 rounded-xl overflow-hidden">
+          <Image
+            src={product.media[0]?.url || '/placeholder.jpg'}
+            alt={product.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+          />
         </div>
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>

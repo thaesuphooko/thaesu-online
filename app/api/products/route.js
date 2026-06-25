@@ -1,6 +1,5 @@
 import { query } from '@/lib/db';
 
-// GET /api/products?page=1&limit=20&search=phone&category=electronics&minPrice=100&maxPrice=500&sort=price_asc
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -11,29 +10,22 @@ export async function GET(request) {
     const minPrice = parseFloat(searchParams.get('minPrice'));
     const maxPrice = parseFloat(searchParams.get('maxPrice'));
     const sort = searchParams.get('sort') || 'newest';
-
     const offset = (page - 1) * limit;
 
-    // Build dynamic WHERE conditions
     const conditions = [];
     const params = [];
     let paramIndex = 1;
 
-    // Full-text search using GIN index
     if (search.trim()) {
       conditions.push(`search_vector @@ plainto_tsquery('english', $${paramIndex})`);
       params.push(search.trim());
       paramIndex++;
     }
-
-    // Category filter
     if (category) {
       conditions.push(`category = $${paramIndex}`);
       params.push(category);
       paramIndex++;
     }
-
-    // Price range
     if (!isNaN(minPrice)) {
       conditions.push(`price >= $${paramIndex}`);
       params.push(minPrice);
@@ -44,30 +36,28 @@ export async function GET(request) {
       params.push(maxPrice);
       paramIndex++;
     }
-
-    // Only active products
     conditions.push('is_active = true');
 
     const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    // Sorting
     let orderClause;
     switch (sort) {
       case 'price_asc': orderClause = 'ORDER BY price ASC'; break;
       case 'price_desc': orderClause = 'ORDER BY price DESC'; break;
       case 'title_asc': orderClause = 'ORDER BY title ASC'; break;
       case 'title_desc': orderClause = 'ORDER BY title DESC'; break;
-      case 'newest':
       default: orderClause = 'ORDER BY created_at DESC'; break;
     }
 
-    // Count total matching products for pagination info
-    const countResult = await query(`SELECT COUNT(*) FROM products ${whereClause}`, params);
+    // Optimized: only fetch needed fields
+    const countResult = await query(
+      `SELECT COUNT(*) FROM products ${whereClause}`,
+      params
+    );
     const total = parseInt(countResult.rows[0].count);
 
-    // Fetch products with media (first image only for performance)
     const productsQuery = `
-      SELECT p.*, 
+      SELECT p.id, p.title, p.slug, p.price, p.compare_at_price, p.stock, p.category, p.tags, p.created_at,
         COALESCE(
           json_agg(DISTINCT jsonb_build_object('id', m.id, 'url', m.cloudinary_url, 'type', m.media_type))
           FILTER (WHERE m.id IS NOT NULL), '[]'
@@ -82,17 +72,19 @@ export async function GET(request) {
     params.push(limit, offset);
 
     const productsResult = await query(productsQuery, params);
-    const products = productsResult.rows;
 
-    return Response.json({
-      data: products,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-      },
-    });
+    return new Response(
+      JSON.stringify({
+        data: productsResult.rows,
+        pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+        },
+      }
+    );
   } catch (error) {
     console.error('Products API error:', error);
     return Response.json({ error: 'Internal server error' }, { status: 500 });

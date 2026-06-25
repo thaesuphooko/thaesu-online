@@ -1,8 +1,8 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function OrderTrackingPage() {
+function OrderTrackingContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('id');
   const [order, setOrder] = useState(null);
@@ -12,7 +12,6 @@ export default function OrderTrackingPage() {
     if (orderId) {
       fetch(`/api/orders/${orderId}`).then(res => res.json()).then(data => {
         setOrder(data);
-        // Simulate delivery progress (0 to 100)
         let p = data.status === 'delivering' ? 50 : data.status === 'delivered' ? 100 : 10;
         setProgress(p);
         if (data.status === 'delivering') {
@@ -41,17 +40,22 @@ export default function OrderTrackingPage() {
       <div className="relative w-full h-[400px] bg-cover bg-center rounded-xl overflow-hidden border"
         style={{ backgroundImage: 'url(https://staticmap.openstreetmap.de/staticmap.php?center=16.8409,96.1735&zoom=14&size=800x400&maptype=mapnik)' }}
       >
-        {/* Animated Heart along a path */}
         <div className="absolute" style={{ left: `${10 + progress * 0.6}%`, bottom: `${20 + Math.sin(progress * 0.1) * 10}%`, transition: 'left 1s, bottom 1s' }}>
           <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center text-white text-xl animate-bounce shadow-lg">
             ❤️
           </div>
         </div>
-        {/* Store Marker */}
         <div className="absolute bottom-10 left-5 text-sm bg-white px-2 py-1 rounded shadow">🏪 Store</div>
-        {/* Customer Marker */}
         <div className="absolute top-10 right-5 text-sm bg-white px-2 py-1 rounded shadow">🏠 You</div>
       </div>
     </div>
+  );
+}
+
+export default function OrderTrackingPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading tracking...</div>}>
+      <OrderTrackingContent />
+    </Suspense>
   );
 }

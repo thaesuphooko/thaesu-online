@@ -5,12 +5,13 @@ export default function ProductReviews({ productId }) {
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
-  const [token, setToken] = useState('');
 
-  useEffect(() => {
-    const savedToken = localStorage.getItem('adminToken') || '';
-    setToken(savedToken);
-  }, []);
+  const getToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('adminToken') || '';
+    }
+    return '';
+  };
 
   const fetchReviews = async () => {
     const res = await fetch(`/api/reviews?product_id=${productId}`);
@@ -20,6 +21,7 @@ export default function ProductReviews({ productId }) {
   useEffect(() => { fetchReviews(); }, [productId]);
 
   const submitReview = async () => {
+    const token = getToken();
     await fetch('/api/reviews', {
       method: 'POST',
       headers: {
@@ -48,8 +50,6 @@ export default function ProductReviews({ productId }) {
       </div>
       <div className="mt-6 glass-card p-4">
         <h3 className="font-semibold mb-2">Write a Review</h3>
-        <label className="block mb-1 text-sm">Your JWT Token</label>
-        <input type="text" value={token} onChange={e => setToken(e.target.value)} className="w-full p-2 rounded border mb-2" placeholder="Paste token" />
         <select value={rating} onChange={e => setRating(e.target.value)} className="w-full p-2 rounded border mb-2">
           {[1,2,3,4,5].map(n => <option key={n} value={n}>{n} Star{n>1?'s':''}</option>)}
         </select>

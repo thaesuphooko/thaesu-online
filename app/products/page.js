@@ -8,103 +8,82 @@ export default function ProductCatalog() {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const observerRef = useRef(null);
-
   const limit = 12;
 
-  // Fetch products from API
-  const fetchProducts = useCallback(async (pageNum, searchTerm = '') => {
+  const fetchProducts = useCallback(async (pageNum, filters) => {
     setLoading(true);
     try {
       const url = new URL('/api/products', window.location.origin);
       url.searchParams.set('page', pageNum);
       url.searchParams.set('limit', limit);
-      if (searchTerm) url.searchParams.set('search', searchTerm);
-
+      if (filters.search) url.searchParams.set('search', filters.search);
+      if (filters.category) url.searchParams.set('category', filters.category);
+      if (filters.minPrice) url.searchParams.set('minPrice', filters.minPrice);
+      if (filters.maxPrice) url.searchParams.set('maxPrice', filters.maxPrice);
       const res = await fetch(url);
       const json = await res.json();
-      if (pageNum === 1) {
-        setProducts(json.data);
-      } else {
-        setProducts(prev => [...prev, ...json.data]);
-      }
+      if (pageNum === 1) setProducts(json.data);
+      else setProducts(prev => [...prev, ...json.data]);
       setHasMore(json.pagination.page < json.pagination.totalPages);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   }, []);
 
-  // Initial load & search change
   useEffect(() => {
     setPage(1);
     setProducts([]);
-    fetchProducts(1, search);
-  }, [search, fetchProducts]);
+    fetchProducts(1, { search, category, minPrice, maxPrice });
+  }, [search, category, minPrice, maxPrice, fetchProducts]);
 
-  // Infinite scroll observer
   const lastProductRef = useCallback(node => {
     if (loading) return;
     if (observerRef.current) observerRef.current.disconnect();
     observerRef.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage(prev => prev + 1);
-      }
+      if (entries[0].isIntersecting && hasMore) setPage(prev => prev + 1);
     }, { threshold: 0.5 });
     if (node) observerRef.current.observe(node);
   }, [loading, hasMore]);
 
-  // Fetch when page changes (except page 1 already handled)
   useEffect(() => {
-    if (page > 1) {
-      fetchProducts(page, search);
-    }
-  }, [page, search, fetchProducts]);
+    if (page > 1) fetchProducts(page, { search, category, minPrice, maxPrice });
+  }, [page, search, category, minPrice, maxPrice, fetchProducts]);
+
+  const clearFilters = () => {
+    setCategory(''); setMinPrice(''); setMaxPrice(''); setSearch('');
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Product Catalog</h1>
       
-      {/* Search Bar */}
-      <div className="mb-8">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search products..."
-          className="w-full md:w-1/2 p-3 rounded-xl glass-card outline-none focus:ring-2 focus:ring-blue-400"
-        />
+      <div className="flex flex-wrap gap-4 mb-8">
+        <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="p-2 border rounded w-48" />
+        <select value={category} onChange={e => setCategory(e.target.value)} className="p-2 border rounded">
+          <option value="">All Categories</option>
+          {['Electronics','Fashion','Home & Living','Books','Sports'].map(c => <option key={c}>{c}</option>)}
+        </select>
+        <input type="number" value={minPrice} onChange={e => setMinPrice(e.target.value)} placeholder="Min price" className="p-2 border rounded w-32" />
+        <input type="number" value={maxPrice} onChange={e => setMaxPrice(e.target.value)} placeholder="Max price" className="p-2 border rounded w-32" />
+        <button onClick={clearFilters} className="px-3 py-1 bg-gray-200 rounded">Clear</button>
       </div>
 
-      {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product, index) => {
-          if (products.length === index + 1) {
-            return (
-              <div ref={lastProductRef} key={product.id}>
-                <ProductCard product={product} />
-              </div>
-            );
-          }
+          const isLast = index === products.length - 1;
           return (
-            <div key={product.id}>
+            <div ref={isLast ? lastProductRef : null} key={product.id}>
               <ProductCard product={product} />
             </div>
           );
         })}
       </div>
 
-      {/* Loading Indicator */}
-      {loading && (
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
-        </div>
-      )}
-
-      {!hasMore && products.length > 0 && (
-        <p className="text-center py-8 text-gray-500">All products loaded.</p>
-      )}
+      {loading && <div className="text-center py-8"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500 mx-auto"></div></div>}
+      {!hasMore && products.length > 0 && <p className="text-center py-8 text-gray-500">All products loaded.</p>}
     </div>
   );
 }

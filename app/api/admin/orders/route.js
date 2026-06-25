@@ -1,0 +1,9 @@
+import { query } from '@/lib/db';
+import { checkAdmin } from '@/lib/adminAuth';
+
+export async function GET(request) {
+  const auth = checkAdmin(request);
+  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
+  const res = await query('SELECT id, user_id, total_amount, status, created_at FROM orders ORDER BY created_at DESC LIMIT 50');
+  return Response.json(res.rows);
+}
