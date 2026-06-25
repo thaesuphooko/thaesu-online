@@ -3,7 +3,7 @@ import { hashPassword, generateToken } from '@/lib/auth';
 
 export async function POST(request) {
   try {
-    const { email, password, full_name, is_18_plus, role } = await request.json();
+    const { email, password, full_name, is_18_plus, role, referral_code } = await request.json();
     if (!email || !password || !full_name) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -23,6 +23,17 @@ export async function POST(request) {
       [email, password_hash, full_name, userRole, is_18_plus || false]
     );
     const user = result.rows[0];
+
+    if (referral_code) {
+      try {
+        await fetch(`${process.env.VERCEL_URL || 'http://localhost:3000'}/api/referrals`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: referral_code, userId: user.id }),
+        });
+      } catch (e) { console.error('Referral error:', e); }
+    }
+
     const token = generateToken(user);
     return Response.json(
       { message: 'Registration successful', user: { id: user.id, email: user.email, role: user.role }, token },

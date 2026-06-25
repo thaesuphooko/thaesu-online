@@ -1,12 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function ProfilePage() {
   const [token, setToken] = useState('');
   const [profile, setProfile] = useState(null);
   const [form, setForm] = useState({ full_name: '', current_password: '', new_password: '' });
-  const router = useRouter();
 
   useEffect(() => {
     const savedToken = localStorage.getItem('adminToken') || '';
@@ -33,6 +31,17 @@ export default function ProfilePage() {
     fetchProfile(token);
   };
 
+  const exportData = async () => {
+    window.open('/api/user/export');
+  };
+
+  const deleteAccount = async () => {
+    if (!confirm('Are you sure? This will permanently delete your account and all data.')) return;
+    await fetch('/api/user/account', { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+    localStorage.clear();
+    window.location.href = '/';
+  };
+
   if (!profile) return <div className="p-8 text-center">Loading...</div>;
 
   return (
@@ -57,6 +66,10 @@ export default function ProfilePage() {
           <input type="password" value={form.current_password} onChange={e => setForm({...form, current_password: e.target.value})} className="w-full p-2 border rounded" />
         </div>
         <button onClick={handleUpdate} className="w-full py-2 bg-blue-600 text-white rounded-xl">Update Profile</button>
+      </div>
+      <div className="mt-6 flex gap-4">
+        <button onClick={exportData} className="flex-1 py-2 bg-gray-600 text-white rounded-xl">Export My Data</button>
+        <button onClick={deleteAccount} className="flex-1 py-2 bg-red-600 text-white rounded-xl">Delete Account</button>
       </div>
     </div>
   );

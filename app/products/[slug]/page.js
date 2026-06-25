@@ -3,15 +3,6 @@ import AddToCartButton from '@/components/molecules/AddToCartButton';
 import ProductReviews from '@/components/organisms/ProductReviews';
 import Image from 'next/image';
 
-// ISR: revalidate every 60 seconds
-export const revalidate = 60;
-
-// Generate static params for top products (optional)
-export async function generateStaticParams() {
-  const res = await query('SELECT slug FROM products WHERE is_active = true LIMIT 100');
-  return res.rows.map(p => ({ slug: p.slug }));
-}
-
 export default async function ProductDetail({ params }) {
   const { slug } = await params;
   const res = await query(

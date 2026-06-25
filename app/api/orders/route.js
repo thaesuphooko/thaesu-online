@@ -1,7 +1,8 @@
 import { query } from '@/lib/db';
 import { verifyToken } from '@/lib/auth';
 import { sendOrderNotification } from '@/lib/telegram';
-// Add stock alert notification
+import { addPoints } from '@/lib/loyalty';
+
 async function checkLowStock(productId) {
   const res = await query('SELECT title, stock FROM products WHERE id = $1 AND stock <= 5', [productId]);
   if (res.rows.length > 0) {
@@ -33,9 +34,15 @@ export async function POST(request) {
       checkLowStock(item.product_id).catch(console.error);
     }
 
+    // Loyalty points (1 point per 100 Ks)
+    const pointsEarned = Math.floor(total_amount / 100);
+    if (pointsEarned > 0) {
+      addPoints(user.id, pointsEarned, `Order #${order.id.slice(0,8)}`).catch(console.error);
+    }
+
     sendOrderNotification(order.id, items, total_amount, user.email).catch(console.error);
 
-    return Response.json({ message: 'Order placed', order_id: order.id, ...order }, { status: 201 });
+    return Response.json({ message: 'Order placed', order_id: order.id, points_earned: pointsEarned, ...order }, { status: 201 });
   } catch (err) {
     console.error(err);
     return Response.json({ error: 'Order failed' }, { status: 500 });
