@@ -1,5 +1,7 @@
 import { checkAdmin } from '@/lib/adminAuth';
 import { uploadToCloudinary } from '@/lib/cloudinary';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(request) {
   const auth = checkAdmin(request);
@@ -10,14 +12,19 @@ export async function POST(request) {
     const file = formData.get('file');
     if (!file) return Response.json({ error: 'No file uploaded' }, { status: 400 });
 
-    // Save temporarily (Termux /tmp)
+    // Use Termux home tmp directory (writable)
+    const tmpDir = process.env.HOME + '/tmp';
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir, { recursive: true });
+    }
+
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const tempPath = `/tmp/upload_${Date.now()}.jpg`;
-    require('fs').writeFileSync(tempPath, buffer);
+    const tempPath = path.join(tmpDir, `upload_${Date.now()}.jpg`);
+    fs.writeFileSync(tempPath, buffer);
 
     const result = await uploadToCloudinary(tempPath);
-    require('fs').unlinkSync(tempPath);
+    fs.unlinkSync(tempPath); // clean up
 
     return Response.json({ message: 'Upload successful', ...result });
   } catch (err) {
