@@ -31,15 +31,34 @@ export default function ProfilePage() {
     fetchProfile(token);
   };
 
-  const exportData = async () => {
-    window.open('/api/user/export');
-  };
-
+  const exportData = () => window.open('/api/user/export');
   const deleteAccount = async () => {
-    if (!confirm('Are you sure? This will permanently delete your account and all data.')) return;
+    if (!confirm('Delete account permanently?')) return;
     await fetch('/api/user/account', { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
     localStorage.clear();
     window.location.href = '/';
+  };
+
+  // Push Notification subscription
+  const subscribeToPush = async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      alert('Push not supported');
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') { alert('Permission denied'); return; }
+
+    const registration = await navigator.serviceWorker.register('/sw.js');
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY || 'သင့်PublicKey',
+    });
+    await fetch('/api/push', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ subscription }),
+    });
+    alert('Subscribed to notifications!');
   };
 
   if (!profile) return <div className="p-8 text-center">Loading...</div>;
@@ -67,9 +86,10 @@ export default function ProfilePage() {
         </div>
         <button onClick={handleUpdate} className="w-full py-2 bg-blue-600 text-white rounded-xl">Update Profile</button>
       </div>
-      <div className="mt-6 flex gap-4">
-        <button onClick={exportData} className="flex-1 py-2 bg-gray-600 text-white rounded-xl">Export My Data</button>
-        <button onClick={deleteAccount} className="flex-1 py-2 bg-red-600 text-white rounded-xl">Delete Account</button>
+      <div className="mt-4 space-y-2">
+        <button onClick={subscribeToPush} className="w-full py-2 bg-indigo-600 text-white rounded-xl">Enable Push Notifications</button>
+        <button onClick={exportData} className="w-full py-2 bg-gray-600 text-white rounded-xl">Export My Data</button>
+        <button onClick={deleteAccount} className="w-full py-2 bg-red-600 text-white rounded-xl">Delete Account</button>
       </div>
     </div>
   );

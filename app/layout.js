@@ -4,6 +4,7 @@ import { AudioProvider } from '@/store/AudioContext';
 import MediaWidget from '@/components/atoms/MediaWidget';
 import { I18nProvider } from '@/lib/i18n';
 import Link from 'next/link';
+import ErudaLoader from '@/components/atoms/ErudaLoader';
 
 export const metadata = {
   title: 'Thaesu Online - Premium Marketplace',
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
             </AudioProvider>
           </ThemeProvider>
         </I18nProvider>
+        <ErudaLoader />
       </body>
     </html>
   );
