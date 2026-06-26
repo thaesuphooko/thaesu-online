@@ -13,30 +13,51 @@ export default function CheckoutPage() {
   const [discount, setDiscount] = useState(0);
   const [couponError, setCouponError] = useState('');
   const [shippingCost, setShippingCost] = useState(0);
+  const [giftCardCode, setGiftCardCode] = useState('');
+  const [giftCardBalance, setGiftCardBalance] = useState(0);
+  const [giftCardError, setGiftCardError] = useState('');
 
-  const finalTotal = Math.max(totalAmount() - discount + shippingCost, 0);
+  const finalTotal = Math.max(totalAmount() - discount + shippingCost - giftCardBalance, 0);
 
-  const applyCoupon = async () => { /* same as before, omitted for brevity */ };
+  const applyCoupon = async () => {
+    setCouponError('');
+    if (!couponCode.trim()) return;
+    const res = await fetch('/api/coupons/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: couponCode, order_amount: totalAmount() }),
+    });
+    const data = await res.json();
+    if (!res.ok) { setCouponError(data.error); setDiscount(0); }
+    else { setDiscount(data.discount); setCouponError(''); }
+  };
 
-  const calculateShipping = async () => {
-    if (!address) return 0;
-    // Simple matching: extract first word of region (e.g., Yangon)
-    const region = address.split(',')[0].trim();
-    const res = await fetch('/api/admin/shipping?search=' + region, { headers: { Authorization: `Bearer ${token}` } });
-    if (res.ok) {
-      const zones = await res.json();
-      if (zones.length > 0) setShippingCost(zones[0].price);
-      else setShippingCost(0);
-    }
+  const applyGiftCard = async () => {
+    setGiftCardError('');
+    if (!giftCardCode.trim()) return;
+    const res = await fetch('/api/giftcards/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: giftCardCode }),
+    });
+    const data = await res.json();
+    if (!res.ok) { setGiftCardError(data.error); setGiftCardBalance(0); }
+    else { setGiftCardBalance(data.balance); setGiftCardError(''); }
   };
 
   const handleOrder = async () => {
     setLoading(true);
-    await calculateShipping(); // ensure shipping is set
     const res = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ items, total_amount: finalTotal, shipping_address: { address }, wave_transaction_id: 'demo_wave_' + Date.now(), coupon_code: couponCode || undefined })
+      body: JSON.stringify({
+        items,
+        total_amount: finalTotal,
+        shipping_address: { address },
+        wave_transaction_id: 'demo_wave_' + Date.now(),
+        coupon_code: couponCode || undefined,
+        gift_card_code: giftCardCode || undefined,
+      }),
     });
     const data = await res.json();
     if (res.ok) { clearCart(); router.push(`/order-tracking?id=${data.order_id}`); }
@@ -53,18 +74,26 @@ export default function CheckoutPage() {
           <input type="text" value={token} onChange={e => setToken(e.target.value)} className="w-full p-2 border rounded" placeholder="Paste your token..." />
         </div>
         <div>
-          <label className="block mb-1 text-sm font-medium">Delivery Address (e.g., Yangon, Downtown)</label>
-          <input type="text" value={address} onChange={e => setAddress(e.target.value)} onBlur={calculateShipping} className="w-full p-2 border rounded" />
-          {shippingCost > 0 && <p className="text-sm text-green-600 mt-1">Shipping: {shippingCost} Ks</p>}
+          <label className="block mb-1 text-sm font-medium">Delivery Address</label>
+          <input type="text" value={address} onChange={e => setAddress(e.target.value)} className="w-full p-2 border rounded" />
         </div>
         <div>
           <label className="block mb-1 text-sm font-medium">Coupon Code (optional)</label>
           <div className="flex gap-2">
-            <input type="text" value={couponCode} onChange={e => setCouponCode(e.target.value)} className="flex-1 p-2 border rounded" />
+            <input type="text" value={couponCode} onChange={e => setCouponCode(e.target.value)} className="flex-1 p-2 border rounded" placeholder="Enter code" />
             <button onClick={applyCoupon} className="px-4 py-2 bg-purple-600 text-white rounded">Apply</button>
           </div>
           {couponError && <p className="text-red-500 text-sm mt-1">{couponError}</p>}
           {discount > 0 && <p className="text-green-600 text-sm mt-1">Discount: -{discount.toLocaleString()} Ks</p>}
+        </div>
+        <div>
+          <label className="block mb-1 text-sm font-medium">Gift Card Code</label>
+          <div className="flex gap-2">
+            <input type="text" value={giftCardCode} onChange={e => setGiftCardCode(e.target.value)} className="flex-1 p-2 border rounded" placeholder="Enter gift card code" />
+            <button onClick={applyGiftCard} className="px-4 py-2 bg-orange-600 text-white rounded">Apply</button>
+          </div>
+          {giftCardError && <p className="text-red-500 text-sm mt-1">{giftCardError}</p>}
+          {giftCardBalance > 0 && <p className="text-green-600 text-sm mt-1">Store Credit: -{giftCardBalance.toLocaleString()} Ks</p>}
         </div>
         <div className="text-2xl font-bold">Total: {finalTotal.toLocaleString()} Ks</div>
         <button onClick={handleOrder} disabled={loading} className="w-full px-8 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50">

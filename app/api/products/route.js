@@ -1,17 +1,34 @@
+export const dynamic = 'force-dynamic';
 import { query } from '@/lib/db';
+import { cacheGet, cacheSet } from '@/lib/cache';
 
 export async function GET(request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page')) || 1;
-    const limit = Math.min(parseInt(searchParams.get('limit')) || 20, 100);
-    const search = searchParams.get('search') || '';
-    const category = searchParams.get('category') || '';
-    const minPrice = parseFloat(searchParams.get('minPrice'));
-    const maxPrice = parseFloat(searchParams.get('maxPrice'));
-    const sort = searchParams.get('sort') || 'newest';
-    const offset = (page - 1) * limit;
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get('page')) || 1;
+  const limit = Math.min(parseInt(searchParams.get('limit')) || 20, 100);
+  const offset = (page - 1) * limit;
+  const search = searchParams.get('search') || '';
+  const category = searchParams.get('category') || '';
+  const minPrice = parseFloat(searchParams.get('minPrice'));
+  const maxPrice = parseFloat(searchParams.get('maxPrice'));
+  const sort = searchParams.get('sort') || 'newest';
 
+  // Generate cache key based on query params
+  const cacheKey = `products:${page}:${limit}:${search}:${category}:${minPrice}:${maxPrice}:${sort}`;
+
+  // Try cache
+  const cached = await cacheGet(cacheKey);
+  if (cached) {
+    return new Response(cached, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
+        'X-Cache': 'HIT',
+      },
+    });
+  }
+
+  try {
     const conditions = [];
     const params = [];
     let paramIndex = 1;
@@ -37,7 +54,6 @@ export async function GET(request) {
       paramIndex++;
     }
     conditions.push('is_active = true');
-
     const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
     let orderClause;
@@ -49,11 +65,7 @@ export async function GET(request) {
       default: orderClause = 'ORDER BY created_at DESC'; break;
     }
 
-    // Optimized: only fetch needed fields
-    const countResult = await query(
-      `SELECT COUNT(*) FROM products ${whereClause}`,
-      params
-    );
+    const countResult = await query(`SELECT COUNT(*) FROM products ${whereClause}`, params);
     const total = parseInt(countResult.rows[0].count);
 
     const productsQuery = `
@@ -73,18 +85,21 @@ export async function GET(request) {
 
     const productsResult = await query(productsQuery, params);
 
-    return new Response(
-      JSON.stringify({
-        data: productsResult.rows,
-        pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
-      }),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
-        },
-      }
-    );
+    const responsePayload = JSON.stringify({
+      data: productsResult.rows,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
+
+    // Store in cache for 30 seconds
+    await cacheSet(cacheKey, responsePayload, 30);
+
+    return new Response(responsePayload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
+        'X-Cache': 'MISS',
+      },
+    });
   } catch (error) {
     console.error('Products API error:', error);
     return Response.json({ error: 'Internal server error' }, { status: 500 });

@@ -1,6 +1,8 @@
 import { query } from '@/lib/db';
 import AddToCartButton from '@/components/molecules/AddToCartButton';
 import ProductReviews from '@/components/organisms/ProductReviews';
+import Recommendations from '@/components/organisms/Recommendations';
+import DynamicPrice from '@/components/atoms/DynamicPrice';
 import Image from 'next/image';
 
 export default async function ProductDetail({ params }) {
@@ -37,7 +39,7 @@ export default async function ProductDetail({ params }) {
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
           <p className="text-yellow-600 text-lg mb-2">★ {Number(product.avg_rating).toFixed(1)} ({product.review_count} reviews)</p>
-          <p className="text-3xl font-bold text-red-600 mb-4">{product.price.toLocaleString()} Ks</p>
+          <DynamicPrice slug={product.slug} originalPrice={product.price} />
           {product.compare_at_price && (
             <p className="text-gray-500 line-through">{product.compare_at_price.toLocaleString()} Ks</p>
           )}
@@ -46,6 +48,7 @@ export default async function ProductDetail({ params }) {
         </div>
       </div>
       <ProductReviews productId={product.id} />
+      <Recommendations productId={product.id} />
     </div>
   );
 }

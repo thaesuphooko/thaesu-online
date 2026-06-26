@@ -1,7 +1,7 @@
+export const dynamic = 'force-dynamic';
 import { query } from '@/lib/db';
 import { checkAdmin } from '@/lib/adminAuth';
 
-export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
   const auth = checkAdmin(request);

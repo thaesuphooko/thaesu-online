@@ -1,6 +1,6 @@
+export const dynamic = 'force-dynamic';
 import { query } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const { rows: products } = await query('SELECT slug, updated_at FROM products WHERE is_active = true');

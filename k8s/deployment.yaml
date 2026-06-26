@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thaesu-online
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: thaesu-online
+  template:
+    metadata:
+      labels:
+        app: thaesu-online
+    spec:
+      containers:
+      - name: thaesu-online
+        image: your-dockerhub/thaesu-online:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEON_DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: thaesu-secrets
+              key: NEON_DATABASE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thaesu-online
+spec:
+  selector:
+    app: thaesu-online
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: ClusterIP

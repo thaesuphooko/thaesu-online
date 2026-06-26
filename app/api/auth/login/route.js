@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { query } from '@/lib/db';
 import { comparePassword, generateToken } from '@/lib/auth';
 

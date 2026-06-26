@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { checkAdmin } from '@/lib/adminAuth';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 import fs from 'fs';

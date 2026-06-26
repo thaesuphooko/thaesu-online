@@ -1,16 +1,14 @@
-self.addEventListener('push', event => {
-  const data = event.data ? event.data.json() : {};
-  const options = {
-    body: data.body || 'Thaesu Online update',
-    icon: '/icon-192.png',
-    badge: '/icon-192.png',
-    data: { url: data.url || '/' },
-  };
-  event.waitUntil(self.registration.showNotification(data.title || 'Thaesu Online', options));
+const CACHE_NAME = 'thaesu-cache-v1';
+const urlsToCache = ['/', '/products', '/cart'];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+  );
 });
 
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  const url = event.notification.data.url;
-  event.waitUntil(clients.openWindow(url));
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => response || fetch(event.request))
+  );
 });

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { verifyToken } from '@/lib/auth';
 import { query } from '@/lib/db';
 

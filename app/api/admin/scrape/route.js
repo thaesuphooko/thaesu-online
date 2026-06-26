@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { checkAdmin } from '@/lib/adminAuth';
 import { scrapeURL } from '@/lib/scraper';
 
