@@ -1,89 +1,106 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import { Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function ChatPage() {
   const [token, setToken] = useState('');
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState('');
-  const [otherUser, setOtherUser] = useState('');
   const [profile, setProfile] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [activeContact, setActiveContact] = useState(null);
   const chatEndRef = useRef(null);
 
-  // Auto‑scroll to bottom
-  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
-
-  // Load token from localStorage
   useEffect(() => {
-    const savedToken = localStorage.getItem('adminToken') || '';
-    setToken(savedToken);
-    if (savedToken) {
-      fetch('/api/user/profile', { headers: { Authorization: `Bearer ${savedToken}` } })
-        .then(res => res.json())
-        .then(data => setProfile(data));
+    const tok = localStorage.getItem('adminToken') || '';
+    setToken(tok);
+    if (tok) {
+      fetch('/api/user/profile', { headers: { Authorization: `Bearer ${tok}` } }).then(r => r.json()).then(d => setProfile(d));
+      fetch('/api/chat/contacts', { headers: { Authorization: `Bearer ${tok}` } }).then(r => r.json()).then(d => setContacts(d));
     }
   }, []);
 
-  // Fetch messages periodically
+  // If not logged in, set activeContact to a special AI contact
   useEffect(() => {
-    if (!token || !otherUser) return;
+    if (!token) {
+      setActiveContact({ id: 'ai', name: 'Thaesu AI', email: 'ai@thaesu.com' });
+    }
+  }, [token]);
+
+  // Load messages when activeContact changes
+  useEffect(() => {
+    if (!activeContact) return;
+    if (activeContact.id === 'ai') {
+      // AI chat: show default greeting and handle via /api/chatbot
+      setMessages([{ id: 0, sender_id: 'ai', content: 'Hello! How can I help you?', created_at: new Date().toISOString() }]);
+      return;
+    }
+    if (!token) return;
+    const fetchMessages = async () => {
+      const res = await fetch(`/api/chat?with=${activeContact.id}`, { headers: { Authorization: `Bearer ${token}` } });
+      if (res.ok) setMessages((await res.json()).reverse());
+    };
     fetchMessages();
     const interval = setInterval(fetchMessages, 2000);
     return () => clearInterval(interval);
-  }, [token, otherUser]);
-
-  const fetchMessages = async () => {
-    const res = await fetch(`/api/chat?with=${otherUser}`, { headers: { Authorization: `Bearer ${token}` } });
-    if (res.ok) {
-      const data = await res.json();
-      // Reverse to show oldest first
-      setMessages(data.reverse());
-    }
-  };
+  }, [activeContact, token]);
 
   const sendMessage = async () => {
-    if (!newMsg.trim() || !otherUser.trim()) return;
-    // Optimistic UI
-    const tempMsg = {
-      id: Date.now().toString(),
-      sender_id: profile?.id,
-      receiver_id: otherUser,
-      content: newMsg,
-      sender_name: profile?.full_name || 'You',
-      created_at: new Date().toISOString(),
-    };
-    setMessages(prev => [...prev, tempMsg]);
+    if (!newMsg.trim() || !activeContact) return;
+    if (activeContact.id === 'ai') {
+      // Send to AI chatbot
+      const userMsg = { id: Date.now(), sender_id: 'user', content: newMsg, created_at: new Date().toISOString() };
+      setMessages(prev => [...prev, userMsg]);
+      setNewMsg('');
+      const res = await fetch('/api/chatbot', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: newMsg }) });
+      const data = await res.json();
+      setMessages(prev => [...prev, { id: Date.now() + 1, sender_id: 'ai', content: data.reply, created_at: new Date().toISOString() }]);
+      return;
+    }
+    // User to user chat
+    await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ receiver_id: activeContact.id, content: newMsg }) });
     setNewMsg('');
-    await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ receiver_id: otherUser, content: tempMsg.content }),
-    });
-    // Refresh to get the actual record
-    fetchMessages();
+    const res = await fetch(`/api/chat?with=${activeContact.id}`, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.ok) setMessages((await res.json()).reverse());
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Chat</h1>
-      <div className="mb-4 space-y-2">
-        <input value={token} onChange={e => setToken(e.target.value)} placeholder="Your JWT Token" className="w-full p-2 border rounded" />
-        <input value={otherUser} onChange={e => setOtherUser(e.target.value)} placeholder="User ID to chat with" className="w-full p-2 border rounded" />
-      </div>
-      <div className="h-80 overflow-y-auto glass-card p-4 mb-4 space-y-3">
-        {messages.map(msg => (
-          <div key={msg.id} className={`flex ${msg.sender_id === profile?.id ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] p-3 rounded-xl ${msg.sender_id === profile?.id ? 'bg-blue-100 text-right' : 'bg-gray-100'}`}>
-              <p className="text-xs font-semibold">{msg.sender_name}</p>
-              <p>{msg.content}</p>
-              <p className="text-[10px] text-gray-500 mt-1">{new Date(msg.created_at).toLocaleTimeString()}</p>
+    <div className="flex h-[calc(100vh-8rem)] pb-16">
+      {token && (
+        <div className="w-1/3 border-r border-border p-4 hidden md:block">
+          <h2 className="font-bold mb-4">Chats</h2>
+          {contacts.map(c => (
+            <div key={c.id} onClick={() => setActiveContact(c)} className={`p-3 rounded-xl cursor-pointer transition ${activeContact?.id === c.id ? 'bg-primary/10' : 'hover:bg-secondary'}`}>
+              <div className="font-semibold">{c.full_name}</div>
+              <div className="text-sm text-muted-foreground">{c.email}</div>
             </div>
-          </div>
-        ))}
-        <div ref={chatEndRef} />
-      </div>
-      <div className="flex gap-2">
-        <input value={newMsg} onChange={e => setNewMsg(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} placeholder="Type a message..." className="flex-1 p-2 border rounded" />
-        <button onClick={sendMessage} className="px-4 py-2 bg-blue-600 text-white rounded">Send</button>
+          ))}
+        </div>
+      )}
+      <div className="flex-1 flex flex-col">
+        {activeContact ? (
+          <>
+            <div className="p-4 border-b border-border font-semibold">{activeContact.id === 'ai' ? 'Thaesu AI Assistant' : activeContact.full_name || activeContact.name}</div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {messages.map(msg => (
+                <div key={msg.id} className={`flex ${(msg.sender_id === profile?.id || msg.sender_id === 'user') ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[80%] p-3 rounded-2xl ${(msg.sender_id === profile?.id || msg.sender_id === 'user') ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}>
+                    <p>{msg.content}</p>
+                    <p className="text-[10px] mt-1 opacity-70">{new Date(msg.created_at).toLocaleTimeString()}</p>
+                  </div>
+                </div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+            <div className="p-4 border-t border-border flex gap-2">
+              <input value={newMsg} onChange={e => setNewMsg(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} placeholder={activeContact.id === 'ai' ? 'Ask me anything...' : 'Type a message...'} className="flex-1 bg-transparent border rounded-xl px-4 py-2 outline-none" />
+              <Button onClick={sendMessage} size="icon"><Send className="w-5 h-5" /></Button>
+            </div>
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center text-muted-foreground">Select a contact or log in to chat</div>
+        )}
       </div>
     </div>
   );

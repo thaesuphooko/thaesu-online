@@ -4,37 +4,44 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('noon'); // default
+  const [theme, setTheme] = useState('light'); // light, dark, or time-based
+  const [manualTheme, setManualTheme] = useState(null); // if set, override time-based
 
-  // Determine theme based on hour of day
   const getThemeByHour = (hour) => {
     if (hour >= 5 && hour < 10) return 'dawn';
     if (hour >= 10 && hour < 17) return 'noon';
     return 'night';
   };
 
-  // Update theme on mount and every minute
   useEffect(() => {
+    const stored = localStorage.getItem('themePreference');
+    if (stored === 'light' || stored === 'dark') {
+      setManualTheme(stored);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (manualTheme) {
+      setTheme(manualTheme);
+      return;
+    }
     const updateTheme = () => {
       const hour = new Date().getHours();
-      const newTheme = getThemeByHour(hour);
-      setTheme(newTheme);
-      // Save to localStorage for persistence
-      localStorage.setItem('trueToneTheme', newTheme);
+      setTheme(getThemeByHour(hour));
     };
     updateTheme();
     const interval = setInterval(updateTheme, 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [manualTheme]);
 
-  // Persist user override if needed (future)
-  const setManualTheme = (custom) => {
-    setTheme(custom);
-    localStorage.setItem('trueToneTheme', custom);
+  const toggleDarkLight = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setManualTheme(next);
+    localStorage.setItem('themePreference', next);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setManualTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleDarkLight, manualTheme }}>
       <div className={theme}>{children}</div>
     </ThemeContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 const useCartStore = create(
   persist(
@@ -48,7 +48,10 @@ const useCartStore = create(
         return get().items.reduce((sum, i) => sum + i.price * i.quantity, 0);
       },
     }),
-    { name: 'thaesu-cart' }
+    {
+      name: 'thaesu-cart',
+      storage: createJSONStorage(() => localStorage),
+    }
   )
 );
 

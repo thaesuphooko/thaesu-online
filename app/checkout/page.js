@@ -1,105 +1,110 @@
 'use client';
 import { useState } from 'react';
 import useCartStore from '@/store/cartStore';
-import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default function CheckoutPage() {
   const { items, totalAmount, clearCart } = useCartStore();
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState('');
-  const [token, setToken] = useState('');
-  const [couponCode, setCouponCode] = useState('');
-  const [discount, setDiscount] = useState(0);
-  const [couponError, setCouponError] = useState('');
-  const [shippingCost, setShippingCost] = useState(0);
-  const [giftCardCode, setGiftCardCode] = useState('');
-  const [giftCardBalance, setGiftCardBalance] = useState(0);
-  const [giftCardError, setGiftCardError] = useState('');
+  const [step, setStep] = useState('summary'); // summary, timer, upload, done
+  const [phone, setPhone] = useState('');
+  const [orderId, setOrderId] = useState(null);
+  const [timerExpiry, setTimerExpiry] = useState(null);
+  const [timerLeft, setTimerLeft] = useState('');
+  const [screenshot, setScreenshot] = useState(null);
 
-  const finalTotal = Math.max(totalAmount() - discount + shippingCost - giftCardBalance, 0);
+  const finalTotal = totalAmount();
 
-  const applyCoupon = async () => {
-    setCouponError('');
-    if (!couponCode.trim()) return;
-    const res = await fetch('/api/coupons/validate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: couponCode, order_amount: totalAmount() }),
-    });
-    const data = await res.json();
-    if (!res.ok) { setCouponError(data.error); setDiscount(0); }
-    else { setDiscount(data.discount); setCouponError(''); }
-  };
-
-  const applyGiftCard = async () => {
-    setGiftCardError('');
-    if (!giftCardCode.trim()) return;
-    const res = await fetch('/api/giftcards/validate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: giftCardCode }),
-    });
-    const data = await res.json();
-    if (!res.ok) { setGiftCardError(data.error); setGiftCardBalance(0); }
-    else { setGiftCardBalance(data.balance); setGiftCardError(''); }
-  };
-
-  const handleOrder = async () => {
-    setLoading(true);
+  const placeOrder = async () => {
+    if (!phone.trim()) return alert('Please enter your phone number');
+    setStep('timer');
     const res = await fetch('/api/orders', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({
-        items,
-        total_amount: finalTotal,
-        shipping_address: { address },
-        wave_transaction_id: 'demo_wave_' + Date.now(),
-        coupon_code: couponCode || undefined,
-        gift_card_code: giftCardCode || undefined,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items, total_amount: finalTotal, shipping_address: {}, phone, wave_transaction_id: 'manual' }),
     });
     const data = await res.json();
-    if (res.ok) { clearCart(); router.push(`/order-tracking?id=${data.order_id}`); }
-    else alert('Order failed: ' + data.error);
-    setLoading(false);
+    if (data.order_id) {
+      setOrderId(data.order_id);
+      setTimerExpiry(new Date(data.timer_expiry));
+      startTimer(new Date(data.timer_expiry));
+    } else {
+      alert('Order failed');
+      setStep('summary');
+    }
   };
 
+  const startTimer = (expiry) => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = expiry - now;
+      if (diff <= 0) {
+        clearInterval(interval);
+        setTimerLeft('00:00');
+        setStep('expired');
+      } else {
+        const min = Math.floor(diff / 60000);
+        const sec = Math.floor((diff % 60000) / 1000);
+        setTimerLeft(`${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`);
+      }
+    }, 1000);
+  };
+
+  const uploadScreenshot = async () => {
+    if (!screenshot || !orderId) return;
+    const formData = new FormData();
+    formData.append('file', screenshot);
+    const res = await fetch(`/api/orders/${orderId}/upload`, { method: 'POST', body: formData });
+    if (res.ok) {
+      setStep('done');
+      clearCart();
+    } else {
+      alert('Upload failed');
+    }
+  };
+
+  if (items.length === 0 && step === 'summary') return <div className="p-8 text-center">Your cart is empty.</div>;
+
   return (
-    <div className="max-w-2xl mx-auto p-4 py-8">
+    <div className="max-w-md mx-auto p-4 py-8 animate-fadeIn">
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
-      <div className="glass-card p-6 space-y-4">
-        <div>
-          <label className="block mb-1 text-sm font-medium">Your JWT Token</label>
-          <input type="text" value={token} onChange={e => setToken(e.target.value)} className="w-full p-2 border rounded" placeholder="Paste your token..." />
+
+      {/* Step 1: Order Summary & Phone */}
+      {step === 'summary' && (
+        <div className="glass-card p-6 space-y-4">
+          <h2 className="font-semibold">Order Summary</h2>
+          <div className="text-2xl font-bold">{finalTotal.toLocaleString()} Ks</div>
+          <p className="text-sm text-muted-foreground">Refund & Exchange Policy: 7-day return policy.</p>
+          <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Your phone number" className="w-full p-2 border rounded" />
+          <Button onClick={placeOrder} className="w-full">ဝယ်ယူမည်</Button>
         </div>
-        <div>
-          <label className="block mb-1 text-sm font-medium">Delivery Address</label>
-          <input type="text" value={address} onChange={e => setAddress(e.target.value)} className="w-full p-2 border rounded" />
+      )}
+
+      {/* Step 2: Timer & WavePay Info */}
+      {step === 'timer' && (
+        <div className="glass-card p-6 space-y-4 text-center">
+          <div className="text-4xl font-mono font-bold">{timerLeft}</div>
+          <p>Please transfer <b>{finalTotal.toLocaleString()} Ks</b> to WavePay: <b>097xxxxxxxx</b></p>
+          <p className="text-xs text-muted-foreground">After payment, upload screenshot below.</p>
+          <input type="file" accept="image/*" onChange={e => setScreenshot(e.target.files[0])} />
+          {screenshot && <img src={URL.createObjectURL(screenshot)} alt="preview" className="max-h-40 mx-auto rounded" />}
+          <Button onClick={uploadScreenshot} disabled={!screenshot}>Confirm Payment</Button>
         </div>
-        <div>
-          <label className="block mb-1 text-sm font-medium">Coupon Code (optional)</label>
-          <div className="flex gap-2">
-            <input type="text" value={couponCode} onChange={e => setCouponCode(e.target.value)} className="flex-1 p-2 border rounded" placeholder="Enter code" />
-            <button onClick={applyCoupon} className="px-4 py-2 bg-purple-600 text-white rounded">Apply</button>
-          </div>
-          {couponError && <p className="text-red-500 text-sm mt-1">{couponError}</p>}
-          {discount > 0 && <p className="text-green-600 text-sm mt-1">Discount: -{discount.toLocaleString()} Ks</p>}
+      )}
+
+      {/* Step 3: Done */}
+      {step === 'done' && (
+        <div className="glass-card p-6 text-center">
+          <p className="text-green-600 font-semibold">ကျေးဇူးတင်ပါသည်၊ Admin မှ စစ်ဆေးနေပါသည်။</p>
         </div>
-        <div>
-          <label className="block mb-1 text-sm font-medium">Gift Card Code</label>
-          <div className="flex gap-2">
-            <input type="text" value={giftCardCode} onChange={e => setGiftCardCode(e.target.value)} className="flex-1 p-2 border rounded" placeholder="Enter gift card code" />
-            <button onClick={applyGiftCard} className="px-4 py-2 bg-orange-600 text-white rounded">Apply</button>
-          </div>
-          {giftCardError && <p className="text-red-500 text-sm mt-1">{giftCardError}</p>}
-          {giftCardBalance > 0 && <p className="text-green-600 text-sm mt-1">Store Credit: -{giftCardBalance.toLocaleString()} Ks</p>}
+      )}
+
+      {/* Expired */}
+      {step === 'expired' && (
+        <div className="glass-card p-6 text-center text-red-500">
+          <p>Order expired. Please try again.</p>
+          <Button onClick={() => { setStep('summary'); clearCart(); }} className="mt-4">Go Back</Button>
         </div>
-        <div className="text-2xl font-bold">Total: {finalTotal.toLocaleString()} Ks</div>
-        <button onClick={handleOrder} disabled={loading} className="w-full px-8 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50">
-          {loading ? 'Placing Order...' : 'Place Order (Mock Wave Pay)'}
-        </button>
-      </div>
+      )}
     </div>
   );
 }

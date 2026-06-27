@@ -7,55 +7,59 @@ export function AudioProvider({ children }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.3);
-  const [currentTrack, setCurrentTrack] = useState(0);
-  const tracks = ['/audio/ambient1.mp3', '/audio/ambient2.mp3']; // ကိုယ်ထည့်ထားတဲ့ ဖိုင်တွေ
+  const [musicUrl, setMusicUrl] = useState('');
+  const [musicEnabled, setMusicEnabled] = useState(true);
 
-  // Initialize audio element only once (client side)
+  // Fetch public music settings from admin
   useEffect(() => {
-    audioRef.current = new Audio();
-    audioRef.current.volume = volume;
-    audioRef.current.loop = true;
-    audioRef.current.src = tracks[currentTrack];
-
-    return () => {
-      audioRef.current.pause();
-      audioRef.current = null;
-    };
+    fetch('/api/settings/public')
+      .then(res => res.json())
+      .then(settings => {
+        if (settings.music_url) setMusicUrl(settings.music_url);
+        if (settings.music_volume) setVolume(parseFloat(settings.music_volume));
+        if (settings.music_enabled) setMusicEnabled(settings.music_enabled === 'true');
+      })
+      .catch(() => {});
   }, []);
 
-  // Update volume when changed
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    if (!musicUrl || !musicEnabled) return;
+    const audio = new Audio(musicUrl);
+    audio.volume = volume;
+    audio.loop = true;
+    audioRef.current = audio;
+    // Auto-play may be blocked; will start on user gesture
+    return () => {
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, [musicUrl, musicEnabled]);
+
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume;
   }, [volume]);
 
-  // Play function – must be called after user gesture
   const play = () => {
     if (audioRef.current) {
-      audioRef.current.play().catch(() => {}); // ignore autoplay blocks
+      audioRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
   };
-
   const pause = () => {
     audioRef.current?.pause();
     setIsPlaying(false);
   };
-
   const togglePlay = () => {
     if (isPlaying) pause();
     else play();
   };
 
-  const switchTrack = (index) => {
-    setCurrentTrack(index);
-    if (audioRef.current) {
-      audioRef.current.src = tracks[index];
-      if (isPlaying) audioRef.current.play().catch(() => {});
-    }
-  };
-
   return (
-    <AudioContext.Provider value={{ isPlaying, volume, setVolume, togglePlay, switchTrack, tracks, currentTrack }}>
+    <AudioContext.Provider value={{ isPlaying, volume, setVolume, togglePlay, musicEnabled }}>
       {children}
     </AudioContext.Provider>
   );

@@ -1,30 +1,64 @@
-'use client';
-import { useI18n } from '@/lib/i18n';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function Home() {
-  const { t, switchLocale, locale } = useI18n();
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-      <div className="mb-4">
-        <button onClick={() => switchLocale('en')} className={`mr-2 px-3 py-1 rounded ${locale==='en' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>EN</button>
-        <button onClick={() => switchLocale('my')} className={`px-3 py-1 rounded ${locale==='my' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>MY</button>
+    <main className="min-h-screen flex flex-col items-center justify-center p-6 animate-fadeIn">
+      <Card className="max-w-4xl w-full text-center !bg-transparent !border-none !shadow-none">
+        <CardHeader className="items-center">
+          <CardTitle className="text-6xl font-extrabold tracking-tight bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">
+            Thaesu Online
+          </CardTitle>
+          <CardDescription className="text-xl max-w-xl">
+            ကမ္ဘာ့အဆင့်မီ Marketplace • ထုတ်ကုန်ပေါင်း ၁၀၀,၀၀၀+ • အလွန်မြန်ဆန်သော ရှာဖွေမှု
+          </CardDescription>
+        </CardHeader>
+      </Card>
+
+      <div className="flex flex-wrap gap-4 justify-center mb-12">
+        <Link href="/products">
+          <Button variant="glass" size="lg" className="text-lg gap-2">
+            🛍️ ဈေးဝယ်မယ်
+          </Button>
+        </Link>
+        <Link href="/vendor/register">
+          <Button variant="glass" size="lg" className="text-lg gap-2">
+            🏪 ဆိုင်ဖွင့်မယ်
+          </Button>
+        </Link>
       </div>
 
-      <h1 className="text-5xl font-extrabold bg-gradient-to-r from-orange-400 to-purple-600 bg-clip-text text-transparent mb-4">
-        {t('home.title')}
-      </h1>
-      <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-xl">
-        {t('home.subtitle')} • ထုတ်ကုန်ပေါင်း ၁၀၀,၀၀၀+
-      </p>
-      <div className="flex flex-wrap gap-4 justify-center mb-12">
-        <a href="/products" className="px-8 py-3 bg-blue-600 text-white rounded-xl shadow-lg hover:bg-blue-700 transition font-bold text-lg">
-          🛍️ {t('home.shop_now')}
-        </a>
-        <a href="/vendor/register" className="px-8 py-3 bg-purple-600 text-white rounded-xl shadow-lg hover:bg-purple-700 transition font-bold text-lg">
-          🏪 {t('home.open_shop')}
-        </a>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full">
+        {[
+          { icon: '⚡', title: 'မြန်ဆန်မှု', desc: 'GIN Index ဖြင့် ထုတ်ကုန်ပေါင်း ၁သိန်းကို စက္ကန့်ပိုင်းအတွင်း ရှာဖွေနိုင်သည်။' },
+          { icon: '🛡️', title: 'လုံခြုံရေး', desc: 'Enterprise-grade Security၊ Time-Gate 18+ ကာကွယ်မှု။' },
+          { icon: '🎨', title: 'TrueTone UI', desc: 'အချိန်နှင့်လိုက်၍ အရောင်ပြောင်းသော Glassmorphism ဒီဇိုင်း။' },
+        ].map((f, i) => (
+          <Card key={i} className="text-center hover:shadow-glass-hover">
+            <CardHeader>
+              <span className="text-4xl">{f.icon}</span>
+              <CardTitle className="text-xl">{f.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>{f.desc}</CardDescription>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-    </div>
+
+      <CardFooter className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl justify-center">
+        {[
+          { href: '/cart', label: '🛒 စျေးခြင်း' },
+          { href: '/checkout', label: '💳 ငွေရှင်းမယ်' },
+          { href: '/dashboard/sales', label: '📊 Sales Dashboard' },
+          { href: '/dashboard/products', label: '📦 ပစ္စည်းများ' },
+        ].map((l, i) => (
+          <Link key={i} href={l.href}>
+            <Button variant="glass" className="w-full">{l.label}</Button>
+          </Link>
+        ))}
+      </CardFooter>
+    </main>
   );
 }
