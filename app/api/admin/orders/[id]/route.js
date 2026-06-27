@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { query } from '@/lib/db';
 import { checkAdmin } from '@/lib/adminAuth';
+import { logAdminAction } from '@/lib/audit';
 
 export async function PATCH(request, { params }) {
   const auth = checkAdmin(request);
@@ -10,5 +11,6 @@ export async function PATCH(request, { params }) {
   const validStatuses = ['pending','confirmed','preparing','delivering','delivered','cancelled'];
   if (!validStatuses.includes(status)) return Response.json({ error: 'Invalid status' }, { status: 400 });
   await query('UPDATE orders SET status = $1, updated_at = NOW() WHERE id = $2', [status, id]);
+  await logAdminAction(`Order ${id} → ${status}`);
   return Response.json({ message: 'Order updated' });
 }
