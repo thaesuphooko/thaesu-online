@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import ReviewsCarousel from '@/components/organisms/ReviewsCarousel';
 
 export default function Home() {
   return (
@@ -47,12 +48,22 @@ export default function Home() {
         ))}
       </div>
 
+      {/* Customer Reviews Section */}
+      <div className="w-full max-w-7xl mt-16">
+        <h2 className="text-3xl font-bold text-center mb-8">What Our Customers Say</h2>
+        <ReviewsCarousel />
+      </div>
+
+      {/* Quick Links (only consumer‑facing) */}
       <CardFooter className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl justify-center">
         {[
           { href: '/cart', label: '🛒 စျေးခြင်း' },
           { href: '/checkout', label: '💳 ငွေရှင်းမယ်' },
-          { href: '/dashboard/sales', label: '📊 Sales Dashboard' },
-          { href: '/dashboard/products', label: '📦 ပစ္စည်းများ' },
+          { href: '/wishlist', label: '❤️ ကြိုက်တယ်' },
+          { href: '/news', label: '📰 News Feed' },
+          { href: '/chat', label: '💬 Chat' },
+          { href: '/profile', label: '👤 Profile' },
+          { href: '/vendor/register', label: '🏪 ဆိုင်ဖွင့်မယ်' },
         ].map((l, i) => (
           <Link key={i} href={l.href}>
             <Button variant="glass" className="w-full">{l.label}</Button>

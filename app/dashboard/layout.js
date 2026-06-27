@@ -1,8 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const menuItems = [
@@ -17,11 +16,28 @@ const menuItems = [
   { name: 'Shipping', href: '/dashboard/shipping', icon: '🚚' },
   { name: 'Pricing', href: '/dashboard/pricing', icon: '💰' },
   { name: 'Settings', href: '/dashboard/settings', icon: '⚙️' },
+  { name: 'Telegram Test', href: '/dashboard/telegram-test', icon: '📡' },
 ];
 
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check hash
+    const hash = window.location.hash.substring(1);
+    if (hash === process.env.NEXT_PUBLIC_ADMIN_HASH) {
+      setAuthenticated(true);
+      // Store for API calls
+      localStorage.setItem('adminSecret', process.env.NEXT_PUBLIC_ADMIN_HASH);
+    } else {
+      router.replace('/');
+    }
+  }, []);
+
+  if (!authenticated) return null;
 
   return (
     <div className="min-h-screen bg-secondary/30">
@@ -58,25 +74,20 @@ export default function AdminLayout({ children }) {
 
       <div className="lg:pl-64">
         <header className="sticky top-0 z-30 glass-card !rounded-t-none border-b border-border p-4 flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
+          <button
+            className="lg:hidden p-2 rounded-md hover:bg-secondary"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-          </Button>
+          </button>
           <div className="flex items-center gap-4">
             <Link href="/" className="text-sm text-primary hover:underline">View Site</Link>
             <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold">A</div>
           </div>
         </header>
-
-        <main className="p-4 md:p-6 animate-fadeIn">
-          {children}
-        </main>
+        <main className="p-4 md:p-6 animate-fadeIn">{children}</main>
       </div>
     </div>
   );

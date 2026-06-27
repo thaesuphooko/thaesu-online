@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 
 export default async function proxy(request) {
-  // Rate limiting (optional, require Upstash env variables)
-  // if (request.nextUrl.pathname.startsWith('/api/')) {
-  //   const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
-  //   const { success } = await apiLimiter.limit(ip);
-  //   if (!success) {
-  //     return new NextResponse('Too Many Requests', { status: 429 });
-  //   }
-  // }
+  const pathname = request.nextUrl.pathname;
+
+  // Allow public order API without rate limiting (optional)
+  if (pathname.startsWith('/api/orders')) {
+    return NextResponse.next();
+  }
+
+  // Rate limiting for other API routes (if you have rateLimiter)
+  // if (pathname.startsWith('/api/')) { ... }
 
   // Security headers
   const response = NextResponse.next();
