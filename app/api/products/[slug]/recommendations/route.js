@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { query } from '@/lib/db';
 
 export async function GET(request, { params }) {
@@ -13,7 +14,7 @@ export async function GET(request, { params }) {
   );
 
   if (relatedOrders.rows.length === 0) {
-    // Fallback: recommend random active products
+    // Fallback: random active products
     const random = await query(
       `SELECT id, title, slug, price, 
         (SELECT cloudinary_url FROM media WHERE product_id = products.id ORDER BY sort_order LIMIT 1) as image_url
@@ -40,7 +41,6 @@ export async function GET(request, { params }) {
   );
 
   if (recommendations.rows.length === 0) {
-    // Fallback: random active products
     const random = await query(
       `SELECT id, title, slug, price,
         (SELECT cloudinary_url FROM media WHERE product_id = products.id ORDER BY sort_order LIMIT 1) as image_url
