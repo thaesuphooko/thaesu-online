@@ -1,5 +1,4 @@
 export const dynamic = 'force-dynamic';
-
 import { useSearchParams } from 'next/navigation';
 import FakeDeliveryMap from '@/components/organisms/FakeDeliveryMap';
 import Link from 'next/link';
