@@ -1,9 +1,11 @@
+"use client";
 export const dynamic = 'force-dynamic';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import FakeDeliveryMap from '@/components/organisms/FakeDeliveryMap';
 import Link from 'next/link';
 
-export default function OrderTrackingPage() {
+function OrderTrackingContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('id');
 
@@ -40,5 +42,13 @@ export default function OrderTrackingPage() {
       </div>
       <FakeDeliveryMap />
     </div>
+  );
+}
+
+export default function OrderTrackingPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
+      <OrderTrackingContent />
+    </Suspense>
   );
 }
