@@ -1,21 +1,8 @@
 {
   "name": "Thaesu Online",
   "short_name": "Thaesu",
-  "description": "Premium Marketplace in Myanmar",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4F46E5",
-  "icons": [
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "background_color": "#FDFBF7",
+  "theme_color": "#C8A27A"
 }

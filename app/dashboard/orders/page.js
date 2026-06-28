@@ -1,49 +1,76 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { adminFetch } from '@/lib/adminFetch';
+import { toast } from 'sonner';
 
 export default function AdminOrders() {
-  const [token, setToken] = useState('');
   const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    const savedToken = localStorage.getItem('adminToken') || '';
-    setToken(savedToken);
-    if (savedToken) fetchOrders(savedToken);
-  }, []);
-
-  const fetchOrders = async (authToken) => {
-    const res = await fetch('/api/admin/orders', { headers: { Authorization: `Bearer ${authToken}` } });
-    if (res.ok) setOrders(await res.json());
+  const fetchOrders = async () => {
+    try {
+      const res = await adminFetch('/api/admin/orders');
+      if (res.ok) setOrders(await res.json());
+    } catch (e) { console.error(e); }
   };
+  useEffect(() => { fetchOrders(); }, []);
 
-  const changeStatus = async (orderId, newStatus) => {
-    await fetch(`/api/admin/orders/${orderId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ status: newStatus })
-    });
-    fetchOrders(token);
+  const updateStatus = async (orderId, status) => {
+    try {
+      const res = await adminFetch(`/api/admin/orders/${orderId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (res.ok) {
+        toast.success('Status updated');
+        fetchOrders();
+      } else {
+        const err = await res.json();
+        toast.error(err.error || 'Failed');
+      }
+    } catch (e) {
+      toast.error('Network error');
+    }
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Order Management</h1>
-      <input type="text" value={token} onChange={e => setToken(e.target.value)} placeholder="Admin JWT Token" className="w-full p-2 border rounded mb-4" />
-      <div className="space-y-4">
-        {orders.map(order => (
-          <div key={order.id} className="glass-card p-4 flex items-center justify-between">
-            <div>
-              <p className="font-mono">{order.id.slice(0,8)}</p>
-              <p>{order.total_amount} Ks</p>
-              <p className="text-sm text-gray-500">{new Date(order.created_at).toLocaleString()}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <select value={order.status} onChange={e => changeStatus(order.id, e.target.value)} className="p-1 border rounded">
-                {['pending','confirmed','preparing','delivering','delivered','cancelled'].map(s => <option key={s}>{s}</option>)}
-              </select>
-            </div>
-          </div>
-        ))}
+    <div>
+      <h1 className="text-3xl font-bold mb-6">Orders</h1>
+      <div className="glass-card overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr>
+              <th className="p-2">ID</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map(o => (
+              <tr key={o.id} className="border-t">
+                <td className="p-2 font-mono text-sm">{o.id.slice(0,8)}</td>
+                <td>{parseFloat(o.total_amount).toLocaleString()} Ks</td>
+                <td className={`px-2 py-1 rounded-full text-xs ${o.status==='confirmed'?'bg-green-100 text-green-800':o.status==='cancelled'?'bg-red-100 text-red-800':'bg-gray-100'}`}>{o.status}</td>
+                <td className="text-sm">{new Date(o.created_at).toLocaleString()}</td>
+                <td>
+                  <select
+                    value={o.status}
+                    onChange={e => updateStatus(o.id, e.target.value)}
+                    className="border rounded p-1 text-sm"
+                  >
+                    <option value="pending">pending</option>
+                    <option value="confirmed">confirmed</option>
+                    <option value="preparing">preparing</option>
+                    <option value="delivering">delivering</option>
+                    <option value="delivered">delivered</option>
+                    <option value="cancelled">cancelled</option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

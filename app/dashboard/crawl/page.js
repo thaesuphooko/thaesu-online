@@ -1,7 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { adminFetch } from '@/lib/adminFetch';
+import { toast } from 'sonner';
 
 export default function CrawlPage() {
   const [jobs, setJobs] = useState([]);
@@ -9,19 +11,20 @@ export default function CrawlPage() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [logs, setLogs] = useState([]);
 
-  useEffect(() => { fetchJobs(); }, []);
-
   const fetchJobs = async () => {
     const res = await adminFetch('/api/admin/crawler');
     if (res.ok) setJobs(await res.json());
   };
 
+  useEffect(() => { fetchJobs(); }, []);
+
   const createJob = async () => {
     await adminFetch('/api/admin/crawler', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form, config: JSON.parse(form.config || '{}') }),
+      headers: { 'Content-Type': 'application/json' },
     });
+    toast.success('Job created');
     setForm({ name: '', start_url: '', config: '{}' });
     fetchJobs();
   };
@@ -29,9 +32,10 @@ export default function CrawlPage() {
   const toggleJob = async (jobId, action) => {
     await adminFetch(`/api/admin/crawler/${jobId}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action }),
+      headers: { 'Content-Type': 'application/json' },
     });
+    toast.success(`Crawl ${action}ed`);
     fetchJobs();
   };
 
@@ -42,34 +46,13 @@ export default function CrawlPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 py-8 animate-fadeIn">
+    <div className="max-w-6xl mx-auto p-4 py-8">
       <h1 className="text-3xl font-bold mb-6">24/7 Web Crawler</h1>
 
       <div className="glass-card p-6 mb-8 space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Job Name (optional)</label>
-          <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="e.g., Shop.com.mm" className="w-full p-2 border rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Start URL *</label>
-          <input value={form.start_url} onChange={e => setForm({...form, start_url: e.target.value})} placeholder="https://shop.com.mm" className="w-full p-2 border rounded" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Config JSON <span className="text-muted-foreground">(optional, default works for most sites)</span>
-          </label>
-          <textarea
-            value={form.config}
-            onChange={e => setForm({...form, config: e.target.value})}
-            placeholder='{"delay":{"min":3000,"max":8000},"maxDepth":3,"maxPages":500}'
-            className="w-full p-2 border rounded h-24 font-mono text-xs"
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            <b>productUrlPatterns</b>: ["/product/", "/item/"] &nbsp;|&nbsp;
-            <b>categoryUrlPatterns</b>: ["/category/", "/collections/"] &nbsp;|&nbsp;
-            <b>maxPages</b>: 500
-          </p>
-        </div>
+        <Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Job Name (optional)" />
+        <Input value={form.start_url} onChange={e => setForm({...form, start_url: e.target.value})} placeholder="Start URL (e.g., https://shop.com.mm)" required />
+        <textarea value={form.config} onChange={e => setForm({...form, config: e.target.value})} placeholder='Config JSON (e.g. {"useSitemap":true})' rows={3} className="w-full p-2 border rounded" />
         <Button onClick={createJob} className="w-full">Create Crawl Job</Button>
       </div>
 

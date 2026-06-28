@@ -76,3 +76,16 @@
 .animate-fadeIn {
   animation: fadeIn 0.4s ease-out;
 }
+
+/* Prevent pull-to-refresh on mobile */
+html {
+  overscroll-behavior: none;
+}
+body {
+  overscroll-behavior: contain;
+}
+
+/* Ensure overscroll behavior is contained to prevent pull-to-refresh */
+html, body {
+  overscroll-behavior: none;
+}

@@ -12,19 +12,23 @@ export async function POST(request) {
   // Mark as used
   await query('UPDATE admin_magic_links SET used = true WHERE id = $1', [res.rows[0].id]);
 
-  // Send welcome message to admin via Telegram
-  const tokenBot = process.env.TELEGRAM_BOT_TOKEN_1 || process.env.TELEGRAM_BOT_TOKENS?.split(',')[0];
-  const chatId = process.env.TELEGRAM_USER_ID;
-  if (tokenBot && chatId) {
-    await fetch(`https://api.telegram.org/bot${tokenBot}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: '✅ *Admin logged in successfully.*',
-        parse_mode: 'Markdown',
-      }),
-    });
+  // Send welcome message (with error handling)
+  try {
+    const tokenBot = process.env.TELEGRAM_BOT_TOKEN_1 || process.env.TELEGRAM_BOT_TOKENS?.split(',')[0];
+    const chatId = process.env.TELEGRAM_USER_ID;
+    if (tokenBot && chatId) {
+      await fetch(`https://api.telegram.org/bot${tokenBot}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: '✅ *Admin logged in successfully.*',
+          parse_mode: 'Markdown',
+        }),
+      });
+    }
+  } catch (err) {
+    console.error('Failed to send welcome message:', err.message);
   }
 
   return Response.json({ valid: true });

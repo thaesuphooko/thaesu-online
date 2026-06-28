@@ -1,87 +1,51 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { adminFetch } from '@/lib/adminFetch';
+import { toast } from 'sonner';
 
-export default function CouponManagement() {
-  const [token, setToken] = useState('');
+export default function CouponsPage() {
   const [coupons, setCoupons] = useState([]);
   const [form, setForm] = useState({ code: '', discount_type: 'percent', discount_value: '', min_order_amount: '', max_uses: '', expires_at: '' });
-
-  useEffect(() => {
-    const savedToken = localStorage.getItem('adminToken') || '';
-    setToken(savedToken);
-  }, []);
+  const [editingId, setEditingId] = useState(null);
 
   const fetchCoupons = async () => {
-    if (!token) return;
-    const res = await fetch('/api/admin/coupons', { headers: { Authorization: `Bearer ${token}` } });
+    const res = await adminFetch('/api/admin/coupons');
     if (res.ok) setCoupons(await res.json());
   };
+  useEffect(() => { fetchCoupons(); }, []);
 
-  useEffect(() => { fetchCoupons(); }, [token]);
-
-  const createCoupon = async () => {
-    await fetch('/api/admin/coupons', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({
-        code: form.code,
-        discount_type: form.discount_type,
-        discount_value: parseFloat(form.discount_value),
-        min_order_amount: form.min_order_amount ? parseFloat(form.min_order_amount) : 0,
-        max_uses: form.max_uses ? parseInt(form.max_uses) : 0,
-        expires_at: form.expires_at || null,
-      }),
+  const handleSave = async () => {
+    const method = editingId ? 'PATCH' : 'POST';
+    const url = editingId ? `/api/admin/coupons/${editingId}` : '/api/admin/coupons';
+    const res = await adminFetch(url, {
+      method,
+      body: JSON.stringify({ ...form, discount_value: parseFloat(form.discount_value)||0, min_order_amount: parseFloat(form.min_order_amount)||0, max_uses: parseInt(form.max_uses)||0 }),
+      headers: { 'Content-Type': 'application/json' },
     });
-    setForm({ code: '', discount_type: 'percent', discount_value: '', min_order_amount: '', max_uses: '', expires_at: '' });
-    fetchCoupons();
+    if (res.ok) { toast.success(editingId?'Updated':'Created'); setForm({ code:'', discount_type:'percent', discount_value:'', min_order_amount:'', max_uses:'', expires_at:'' }); setEditingId(null); fetchCoupons(); }
+    else toast.error('Failed');
   };
 
-  const deleteCoupon = async (id) => {
-    await fetch(`/api/admin/coupons/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
-    fetchCoupons();
-  };
+  const handleEdit = (c) => { setEditingId(c.id); setForm({ code:c.code, discount_type:c.discount_type, discount_value:c.discount_value, min_order_amount:c.min_order_amount, max_uses:c.max_uses, expires_at:c.expires_at?.slice(0,10)||'' }); };
+  const handleDelete = async (id) => { if(confirm('Delete?')){ await adminFetch(`/api/admin/coupons/${id}`,{method:'DELETE'}); toast.success('Deleted'); fetchCoupons(); } };
 
   return (
-    <div className="max-w-5xl mx-auto p-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Coupon Management</h1>
-      <div className="mb-4">
-        <input type="text" value={token} onChange={e => setToken(e.target.value)} placeholder="Admin JWT Token" className="p-2 border rounded w-full max-w-xs" />
-        <button onClick={fetchCoupons} className="ml-2 px-4 py-2 bg-blue-600 text-white rounded">Refresh</button>
-      </div>
-
-      <div className="glass-card p-4 mb-6">
-        <h2 className="text-xl font-bold mb-2">Create Coupon</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <input value={form.code} onChange={e => setForm({...form, code: e.target.value})} placeholder="Code" className="p-2 border rounded" />
-          <select value={form.discount_type} onChange={e => setForm({...form, discount_type: e.target.value})} className="p-2 border rounded">
-            <option value="percent">Percentage</option>
-            <option value="fixed">Fixed Amount</option>
-          </select>
-          <input value={form.discount_value} onChange={e => setForm({...form, discount_value: e.target.value})} placeholder="Value" type="number" className="p-2 border rounded" />
-          <input value={form.min_order_amount} onChange={e => setForm({...form, min_order_amount: e.target.value})} placeholder="Min Order" type="number" className="p-2 border rounded" />
-          <input value={form.max_uses} onChange={e => setForm({...form, max_uses: e.target.value})} placeholder="Max Uses" type="number" className="p-2 border rounded" />
-          <input value={form.expires_at} onChange={e => setForm({...form, expires_at: e.target.value})} placeholder="Expiry (YYYY-MM-DD)" type="date" className="p-2 border rounded" />
+    <div>
+      <h1 className="text-3xl font-bold mb-6">Coupons</h1>
+      <div className="glass-card p-4 mb-8 space-y-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <Input value={form.code} onChange={e=>setForm({...form,code:e.target.value})} placeholder="Code" />
+          <select value={form.discount_type} onChange={e=>setForm({...form,discount_type:e.target.value})} className="p-2 border rounded"><option value="percent">Percentage</option><option value="fixed">Fixed</option></select>
+          <Input type="number" value={form.discount_value} onChange={e=>setForm({...form,discount_value:e.target.value})} placeholder="Value" />
+          <Input type="number" value={form.min_order_amount} onChange={e=>setForm({...form,min_order_amount:e.target.value})} placeholder="Min Order" />
+          <Input type="number" value={form.max_uses} onChange={e=>setForm({...form,max_uses:e.target.value})} placeholder="Max Uses" />
+          <Input type="date" value={form.expires_at} onChange={e=>setForm({...form,expires_at:e.target.value})} />
         </div>
-        <button onClick={createCoupon} className="mt-3 px-6 py-2 bg-green-600 text-white rounded">Create</button>
+        <Button onClick={handleSave} className="w-full">{editingId?'Update':'Create'}</Button>
       </div>
-
-      <div className="overflow-x-auto glass-card">
-        <table className="w-full">
-          <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Uses</th><th>Expires</th><th>Action</th></tr></thead>
-          <tbody>
-            {coupons.map(c => (
-              <tr key={c.id}>
-                <td>{c.code}</td>
-                <td>{c.discount_type}</td>
-                <td>{c.discount_value}</td>
-                <td>{c.current_uses}/{c.max_uses || '∞'}</td>
-                <td>{c.expires_at ? new Date(c.expires_at).toLocaleDateString() : 'Never'}</td>
-                <td><button onClick={() => deleteCoupon(c.id)} className="px-2 py-1 bg-red-500 text-white rounded text-sm">Delete</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <div className="glass-card overflow-x-auto"><table className="w-full"><thead><tr><th className="p-2">Code</th><th>Type</th><th>Value</th><th>Min</th><th>Uses</th><th>Expires</th><th></th></tr></thead><tbody>{coupons.map(c=>(<tr key={c.id} className="border-t"><td className="p-2">{c.code}</td><td>{c.discount_type}</td><td>{c.discount_value}</td><td>{c.min_order_amount}</td><td>{c.current_uses}/{c.max_uses||'∞'}</td><td>{c.expires_at?new Date(c.expires_at).toLocaleDateString():'Never'}</td><td className="flex gap-2"><Button size="sm" variant="outline" onClick={()=>handleEdit(c)}>Edit</Button><Button size="sm" variant="destructive" onClick={()=>handleDelete(c.id)}>Delete</Button></td></tr>))}</tbody></table></div>
     </div>
   );
 }

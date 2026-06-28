@@ -8,14 +8,18 @@ export default function ProductReviews({ productId }) {
 
   const getToken = () => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('adminToken') || '';
+      return localStorage.getItem('adminSecret') || '';
     }
     return '';
   };
 
   const fetchReviews = async () => {
     const res = await fetch(`/api/reviews?product_id=${productId}`);
-    if (res.ok) setReviews(await res.json());
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) setReviews(data);
+      else setReviews([]);
+    }
   };
 
   useEffect(() => { fetchReviews(); }, [productId]);
@@ -38,7 +42,7 @@ export default function ProductReviews({ productId }) {
     <div className="mt-8">
       <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
       <div className="space-y-3">
-        {reviews.map((r) => (
+        {Array.isArray(reviews) && reviews.map((r) => (
           <div key={r.id} className="glass-card p-3">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-yellow-500">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>

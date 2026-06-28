@@ -1,18 +1,3 @@
-export const dynamic = 'force-dynamic';
-import { query } from '@/lib/db';
-import { checkAdmin } from '@/lib/adminAuth';
-
-export async function GET(request) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
-  // Return current test status
-  return Response.json({ test: 'product_page_button_color', variants: ['blue', 'green'], active: false });
-}
-
-export async function POST(request) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
-  const { name, variants } = await request.json();
-  // Store test config
-  return Response.json({ message: 'AB test created', name, variants });
-}
+export const dynamic = 'force-dynamic'; import { checkAdmin } from '@/lib/adminAuth'; import { query } from '@/lib/db';
+export async function GET(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const res = await query('SELECT * FROM ab_tests'); return Response.json(res.rows); }
+export async function POST(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { name, variant_a, variant_b } = await request.json(); const res = await query('INSERT INTO ab_tests (name, variant_a, variant_b) VALUES ($1,$2,$3) RETURNING *', [name, variant_a, variant_b]); return Response.json(res.rows[0], { status: 201 }); }

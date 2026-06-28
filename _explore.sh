@@ -1,0 +1,1 @@
+find . -maxdepth 3 -name "*.tsx" -o -name "*.jsx" -o -name "*.ts" -o -name "*.js" | grep -i product | head -20

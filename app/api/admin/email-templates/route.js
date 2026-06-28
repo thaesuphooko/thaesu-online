@@ -1,0 +1,3 @@
+export const dynamic = 'force-dynamic'; import { checkAdmin } from '@/lib/adminAuth'; import { query } from '@/lib/db';
+export async function GET(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const res = await query('SELECT * FROM email_templates'); return Response.json(res.rows); }
+export async function PATCH(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { name, subject, body } = await request.json(); await query('UPDATE email_templates SET subject=$1, body=$2 WHERE name=$3', [subject, body, name]); return Response.json({ message: 'Updated' }); }

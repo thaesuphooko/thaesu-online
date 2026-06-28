@@ -9,6 +9,8 @@ const PLACEHOLDER_IMAGE = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/
 const ProductCard = memo(({ product }) => {
   const imageUrl = product.media?.[0]?.url || PLACEHOLDER_IMAGE;
   const addItem = useCartStore((s) => s.addItem);
+  const price = Number(product.price) || 0;
+  const comparePrice = product.compare_at_price ? Number(product.compare_at_price) : null;
 
   return (
     <div className="glass-card p-3 flex flex-col transition-transform hover:scale-[1.02] hover:shadow-2xl duration-300 relative">
@@ -16,7 +18,7 @@ const ProductCard = memo(({ product }) => {
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative w-full h-48 rounded-lg overflow-hidden mb-3">
           <img src={imageUrl} alt={product.title} className="w-full h-full object-cover" loading="lazy" />
-          {product.compare_at_price && (
+          {comparePrice && (
             <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">Sale</span>
           )}
         </div>
@@ -24,12 +26,12 @@ const ProductCard = memo(({ product }) => {
       </Link>
       <div className="mt-auto flex items-center justify-between pt-2">
         <div>
-          <span className="text-lg font-bold">{product.price.toLocaleString()} Ks</span>
-          {product.compare_at_price && (
-            <span className="text-xs text-gray-400 line-through ml-2">{product.compare_at_price.toLocaleString()} Ks</span>
+          <span className="text-lg font-bold">{price.toLocaleString()} Ks</span>
+          {comparePrice && (
+            <span className="text-xs text-gray-400 line-through ml-2">{comparePrice.toLocaleString()} Ks</span>
           )}
         </div>
-        <span className="text-xs text-gray-500">{product.category}</span>
+        <span className="text-xs text-gray-500">{product.category || ''}</span>
       </div>
       <button
         onClick={() => addItem(product)}

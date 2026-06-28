@@ -9,11 +9,19 @@ export default function Recommendations({ productId }) {
     if (productId) {
       fetch(`/api/products/${productId}/recommendations`)
         .then(res => res.json())
-        .then(data => setItems(data));
+        .then(data => {
+          // Ensure data is an array
+          if (Array.isArray(data)) {
+            setItems(data);
+          } else {
+            setItems([]);
+          }
+        })
+        .catch(() => setItems([]));
     }
   }, [productId]);
 
-  if (items.length === 0) return null;
+  if (!Array.isArray(items) || items.length === 0) return null;
 
   return (
     <div className="mt-12">

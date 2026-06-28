@@ -1,0 +1,16 @@
+export const dynamic = 'force-dynamic';
+import { checkAdmin } from '@/lib/adminAuth';
+import { query } from '@/lib/db';
+export async function GET(request) {
+  const auth = checkAdmin(request);
+  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
+  const res = await query("SELECT r.*, rm.status FROM reviews r LEFT JOIN review_moderation rm ON rm.review_id = r.id WHERE rm.status IS NULL OR rm.status = 'pending'");
+  return Response.json(res.rows);
+}
+export async function PATCH(request) {
+  const auth = checkAdmin(request);
+  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
+  const { reviewId, status } = await request.json();
+  await query("INSERT INTO review_moderation (review_id, status) VALUES ($1, $2) ON CONFLICT (review_id) DO UPDATE SET status = $2", [reviewId, status]);
+  return Response.json({ message: 'Moderated' });
+}
