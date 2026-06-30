@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function PricingPage() {
   const [rules, setRules] = useState([]); const [form, setForm] = useState({ name:'', description:'', rule_type:'time_based', adjustment_type:'percent', adjustment_value:'', priority:'0', is_active:true });
   const fetchRules = async () => { const res = await adminFetch('/api/admin/pricing'); if (res.ok) setRules(await res.json()); };

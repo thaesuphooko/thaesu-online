@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/button';
 import { adminFetch } from '@/lib/adminFetch';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

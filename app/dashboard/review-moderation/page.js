@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function ReviewModerationPage() {
   const [reviews, setReviews] = useState([]);
   const fetchReviews = async () => { const res = await adminFetch('/api/admin/reviews-moderate'); if (res.ok) setReviews(await res.json()); };

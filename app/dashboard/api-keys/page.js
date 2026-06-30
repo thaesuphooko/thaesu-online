@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function ApiKeysPage() {
   const [keys, setKeys] = useState([]); const [name, setName] = useState('');
   const fetchKeys = async () => { const res = await adminFetch('/api/admin/api-keys'); if (res.ok) setKeys(await res.json()); };

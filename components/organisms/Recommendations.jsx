@@ -1,37 +1,31 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Recommendations({ productId }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (productId) {
-      fetch(`/api/products/${productId}/recommendations`)
-        .then(res => res.json())
-        .then(data => {
-          // Ensure data is an array
-          if (Array.isArray(data)) {
-            setItems(data);
-          } else {
-            setItems([]);
-          }
-        })
-        .catch(() => setItems([]));
-    }
+    fetch(`/api/products/${productId}/recommendations`)
+      .then(r => r.json())
+      .then(d => setItems(d))
+      .catch(() => {});
   }, [productId]);
 
-  if (!Array.isArray(items) || items.length === 0) return null;
+  if (!items.length) return null;
 
   return (
-    <div className="mt-12">
-      <h2 className="text-2xl font-bold mb-4">You might also like</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="px-4">
+      <h2 className="text-lg font-bold mb-3">You might also like</h2>
+      <div className="grid grid-cols-2 gap-3">
         {items.map(item => (
-          <Link key={item.id} href={`/products/${item.slug}`} className="glass-card p-3 hover:scale-[1.02] transition">
-            <img src={item.image_url || '/placeholder.jpg'} alt={item.title} className="w-full h-32 object-cover rounded-lg mb-2" />
-            <h3 className="text-sm font-semibold line-clamp-2">{item.title}</h3>
-            <p className="text-sm font-bold mt-1">{item.price.toLocaleString()} Ks</p>
+          <Link key={item.id} href={`/products/${item.slug}`} className="glass-card p-2 space-y-1">
+            <div className="aspect-square relative rounded-lg overflow-hidden bg-gray-100">
+              <Image src={item.image_url || '/placeholder.jpg'} alt={item.title} fill className="object-cover" />
+            </div>
+            <p className="text-xs font-medium line-clamp-2">{item.title}</p>
+            <p className="text-sm font-bold text-rose-500">{parseFloat(item.price).toLocaleString()} Ks</p>
           </Link>
         ))}
       </div>

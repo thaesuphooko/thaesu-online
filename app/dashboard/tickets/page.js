@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function TicketsPage() {
   const [tickets, setTickets] = useState([]);
   const fetchTickets = async () => { const res = await adminFetch('/api/admin/tickets'); if (res.ok) setTickets(await res.json()); };

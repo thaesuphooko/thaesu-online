@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function SegmentsPage() {
   const [segments, setSegments] = useState([]); const [name, setName] = useState(''); const [criteria, setCriteria] = useState('{}');
   const fetchSegments = async () => { const res = await adminFetch('/api/admin/segments'); if (res.ok) setSegments(await res.json()); };

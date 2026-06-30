@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function ShippingPage() {
   const [zones, setZones] = useState([]); const [region, setRegion] = useState(''); const [price, setPrice] = useState('');
   const fetchZones = async () => { const res = await adminFetch('/api/admin/shipping'); if (res.ok) setZones(await res.json()); };

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Heart, MessageCircle, Share2, Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function NewsFeedPage() {

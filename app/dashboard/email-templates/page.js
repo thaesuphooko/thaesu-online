@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function EmailTemplatesPage() {
   const [templates, setTemplates] = useState([]); const [editName, setEditName] = useState(null); const [subject, setSubject] = useState(''); const [body, setBody] = useState('');
   const fetchTemplates = async () => { const res = await adminFetch('/api/admin/email-templates'); if (res.ok) setTemplates(await res.json()); };

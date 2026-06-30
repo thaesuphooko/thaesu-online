@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function SEOGeneratorPage() {
   const [productId, setProductId] = useState(''); const [meta, setMeta] = useState(null);
   const generate = async () => { const res = await adminFetch('/api/admin/seo', { method:'POST', body:JSON.stringify({ productId }), headers:{'Content-Type':'application/json'} }); if (res.ok) { const data = await res.json(); setMeta(data); toast.success('Generated'); } };

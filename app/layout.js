@@ -1,13 +1,12 @@
 import './globals.css';
-import { ThemeProvider, useTrueTone } from '@/hooks/useTheme';
+import { ThemeProvider } from '@/hooks/useTheme';
 import { AudioProvider } from '@/store/AudioContext';
-import MediaWidget from '@/components/atoms/MediaWidget';
 import { I18nProvider } from '@/lib/i18n';
-import StatusBar from '@/components/atoms/StatusBar';
 import BottomNav from '@/components/organisms/BottomNav';
 import ErudaLoader from '@/components/atoms/ErudaLoader';
 import ErrorBoundary from '@/components/atoms/ErrorBoundary';
 import Toast from '@/components/atoms/Toast';
+import WaveformNavbar from '@/components/organisms/WaveformNavbar';
 
 export const metadata = {
   title: 'Thaesu Online - Premium Marketplace',
@@ -22,9 +21,8 @@ export default function RootLayout({ children }) {
           <I18nProvider initialLocale="en">
             <ThemeProvider>
               <AudioProvider>
-                <StatusBar />
+                <WaveformNavbar />
                 <main className="animate-fadeIn">{children}</main>
-                <MediaWidget />
                 <BottomNav />
                 <Toast />
               </AudioProvider>

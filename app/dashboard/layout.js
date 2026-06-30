@@ -1,13 +1,14 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { Search, Moon, Sun } from 'lucide-react';
+import { Search, Moon, Sun, RefreshCw, Play, Pause } from 'lucide-react';
+import { useAudio } from '@/store/AudioContext';
 
 const queryClient = new QueryClient();
 
@@ -20,10 +21,13 @@ const menuItems = [
   { name: 'Telegram Config', href: '/dashboard/telegram-config', icon: '📡' },
   { name: 'Scrape', href: '/dashboard/scrape', icon: '🕷️' },
   { name: 'Crawl', href: '/dashboard/crawl', icon: '🕸️' },
+  { name: 'Browser', href: '/dashboard/browser', icon: '🌐' },
   { name: 'System Health', href: '/dashboard/health', icon: '🫀' },
-    { name: 'Refunds', href: '/dashboard/refunds', icon: '💸' },
-    { name: 'System Logs', href: '/dashboard/system-logs', icon: '📋' },
+  { name: 'Catalog Sanitizer', href: '/dashboard/catalog-sanitizer', icon: '🧹' },
+    { name: 'Background Music', href: '/dashboard/music', icon: '🎵' },
+  { name: 'Health Monitor', href: '/dashboard/health-monitor', icon: '💓' },
   { name: 'Users', href: '/dashboard/users', icon: '👥' },
+  { name: 'Error Bot', href: '/dashboard/error-bot', icon: '🤖' },
   { name: 'AI Chat', href: '/dashboard/ai-chat', icon: '🤖' },
   { name: 'Key Tester', href: '/dashboard/key-tester', icon: '🔬' },
 ];
@@ -47,6 +51,25 @@ function ThemeToggle() {
   );
 }
 
+function RefreshButton() {
+  const queryClient = useQueryClient();
+  return (
+    <Button variant="ghost" size="icon" onClick={() => queryClient.invalidateQueries()}>
+      <RefreshCw className="w-5 h-5" />
+    </Button>
+  );
+}
+
+function MusicToggle() {
+  const { isPlaying, togglePlay, musicEnabled } = useAudio();
+  if (!musicEnabled) return null;
+  return (
+    <Button variant="ghost" size="icon" onClick={togglePlay} title={isPlaying ? 'Pause Music' : 'Play Music'}>
+      {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+    </Button>
+  );
+}
+
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
@@ -56,8 +79,7 @@ export default function AdminLayout({ children }) {
 
   useEffect(() => {
     const hash = window.location.hash.substring(1);
-    // Check both hash and localStorage
-    if (hash === process.env.NEXT_PUBLIC_ADMIN_HASH || localStorage.getItem('adminSecret') === process.env.NEXT_PUBLIC_ADMIN_HASH) {
+    if (hash === process.env.NEXT_PUBLIC_ADMIN_HASH) {
       setAuthenticated(true);
       localStorage.setItem('adminSecret', process.env.NEXT_PUBLIC_ADMIN_HASH);
     } else {
@@ -87,7 +109,9 @@ export default function AdminLayout({ children }) {
           "lg:translate-x-0 lg:static lg:z-auto"
         )}>
           <div className="p-4 border-b border-border flex items-center justify-between">
-            <h1 className="text-lg font-bold bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">King Panel</h1>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">
+              King Panel <span className="text-xs text-muted-foreground">v3.0</span>
+            </h1>
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(false)}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </Button>
@@ -114,6 +138,8 @@ export default function AdminLayout({ children }) {
                 <Input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search..." className="pl-10" />
               </div>
             </form>
+            <MusicToggle />
+            <RefreshButton />
             <ThemeToggle />
             <Link href="/" className="text-sm text-primary hover:underline">View Site</Link>
           </header>

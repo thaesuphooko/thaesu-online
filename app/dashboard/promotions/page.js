@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function PromotionsPage() {
   const [promos, setPromos] = useState([]); const [form, setForm] = useState({ name:'', discount_percent:'', start_date:'', end_date:'' });
   const fetchPromos = async () => { const res = await adminFetch('/api/admin/promotions'); if (res.ok) setPromos(await res.json()); };

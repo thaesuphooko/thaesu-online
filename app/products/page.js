@@ -1,123 +1,70 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ProductCard from '@/components/organisms/ProductCard';
+import { useCartStore } from '@/store/cartStore';
+
+const Skeleton = () => (
+  <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden animate-pulse">
+    <div className="aspect-[3/4] bg-gray-200 dark:bg-gray-700" />
+    <div className="p-2.5 space-y-2">
+      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
+    </div>
+  </div>
+);
 
 export default function ProductCatalog() {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
   const observerRef = useRef(null);
-  const limit = 12;
+  const limit = 20;
 
-  const fetchProducts = useCallback(async (pageNum, filters) => {
+  const fetchProducts = useCallback(async (pageNum, searchTerm = '') => {
     setLoading(true);
-    setError(null);
     try {
       const url = new URL('/api/products', window.location.origin);
       url.searchParams.set('page', pageNum);
       url.searchParams.set('limit', limit);
-      if (filters.search) url.searchParams.set('search', filters.search);
-      if (filters.category) url.searchParams.set('category', filters.category);
-      if (filters.minPrice) url.searchParams.set('minPrice', filters.minPrice);
-      if (filters.maxPrice) url.searchParams.set('maxPrice', filters.maxPrice);
+      if (searchTerm) url.searchParams.set('search', searchTerm);
       const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (pageNum === 1) setProducts(json.data);
       else setProducts(prev => [...prev, ...json.data]);
       setHasMore(json.pagination.page < json.pagination.totalPages);
-    } catch (err) {
-      console.error(err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   }, []);
 
-  useEffect(() => {
-    setPage(1);
-    setProducts([]);
-    fetchProducts(1, { search, category, minPrice, maxPrice });
-  }, [search, category, minPrice, maxPrice, fetchProducts]);
+  useEffect(() => { setPage(1); setProducts([]); fetchProducts(1, search); }, [search, fetchProducts]);
 
   const lastProductRef = useCallback(node => {
     if (loading) return;
     if (observerRef.current) observerRef.current.disconnect();
     observerRef.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage(prev => prev + 1);
-      }
-    }, { threshold: 0.5 });
+      if (entries[0].isIntersecting && hasMore) setPage(prev => prev + 1);
+    }, { threshold: 0.1 });
     if (node) observerRef.current.observe(node);
   }, [loading, hasMore]);
 
-  useEffect(() => {
-    if (page > 1) fetchProducts(page, { search, category, minPrice, maxPrice });
-  }, [page, search, category, minPrice, maxPrice, fetchProducts]);
-
-  const clearFilters = () => {
-    setCategory('');
-    setMinPrice('');
-    setMaxPrice('');
-    setSearch('');
-  };
+  useEffect(() => { if (page > 1) fetchProducts(page, search); }, [page, search, fetchProducts]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Product Catalog</h1>
-
-      <div className="flex flex-wrap gap-4 mb-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-3 py-3">
+      {/* Search Bar */}
+      <div className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md pb-3 mb-3">
         <input
-          type="text"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search..."
-          className="p-2 border rounded w-48"
+          type="text" value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Search products..."
+          className="w-full p-3 rounded-xl bg-gray-100 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-rose-400 text-sm"
         />
-        <select value={category} onChange={e => setCategory(e.target.value)} className="p-2 border rounded">
-          <option value="">All Categories</option>
-          {['Electronics', 'Fashion', 'Home & Living', 'Books', 'Sports'].map(c => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
-        <input
-          type="number"
-          value={minPrice}
-          onChange={e => setMinPrice(e.target.value)}
-          placeholder="Min price"
-          className="p-2 border rounded w-32"
-        />
-        <input
-          type="number"
-          value={maxPrice}
-          onChange={e => setMaxPrice(e.target.value)}
-          placeholder="Max price"
-          className="p-2 border rounded w-32"
-        />
-        <button onClick={clearFilters} className="px-3 py-1 bg-gray-200 rounded">
-          Clear
-        </button>
       </div>
 
-      {error && (
-        <div className="text-center py-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600">Error loading products: {error}</p>
-          <button
-            onClick={() => fetchProducts(1, { search, category, minPrice, maxPrice })}
-            className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Retry
-          </button>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* Product Grid – 2 cols mobile, 3 tablet, 4 small desktop, 5 large desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+        {loading && products.length === 0 && Array.from({ length: 10 }).map((_, i) => <Skeleton key={i} />)}
         {products.map((product, index) => {
           const isLast = index === products.length - 1;
           return (
@@ -128,16 +75,13 @@ export default function ProductCatalog() {
         })}
       </div>
 
-      {loading && (
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500 mx-auto" />
+      {loading && products.length > 0 && (
+        <div className="flex justify-center py-6">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-rose-400" />
         </div>
       )}
       {!hasMore && products.length > 0 && (
-        <p className="text-center py-8 text-gray-500">All products loaded.</p>
-      )}
-      {!loading && products.length === 0 && !error && (
-        <p className="text-center py-8 text-gray-500">No products found.</p>
+        <p className="text-center py-8 text-xs text-gray-400">— All products loaded —</p>
       )}
     </div>
   );

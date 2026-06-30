@@ -1,24 +1,32 @@
-import bundleAnalyzer from '@next/bundle-analyzer';
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    loader: 'cloudinary',
-    path: 'https://res.cloudinary.com/thaesu',
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: '**.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.shopify.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
+        pathname: '/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default nextConfig;

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function CartRulesPage() {
   const [rules, setRules] = useState([]); const [form, setForm] = useState({ name:'', min_amount:'', discount_percent:'' });
   const fetchRules = async () => { const res = await adminFetch('/api/admin/cart-rules'); if (res.ok) setRules(await res.json()); };

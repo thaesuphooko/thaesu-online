@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
+import { useState, useEffect } from 'react'; import Button from '@/components/ui/button'; import Input from '@/components/ui/input'; import { adminFetch } from '@/lib/adminFetch'; import { toast } from 'sonner';
 export default function BundlesPage() {
   const [bundles, setBundles] = useState([]); const [name, setName] = useState(''); const [discount, setDiscount] = useState('');
   const fetchBundles = async () => { /* placeholder until full bundle API */ };

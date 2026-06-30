@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import Button from '@/components/ui/button';
+import Input from '@/components/ui/input';
 import { adminFetch } from '@/lib/adminFetch';
 import { Send, Bot, User, Trash2 } from 'lucide-react';
 
@@ -11,16 +11,11 @@ export default function AIChatPage() {
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
 
-  // Load history on mount
   useEffect(() => {
     (async () => {
       const res = await adminFetch('/api/admin/ai-chat');
-      if (res.ok) {
-        const data = await res.json();
-        setMessages(data.map(m => ({ role: m.role, content: m.content })));
-      } else {
-        setMessages([{ role: 'assistant', content: 'Hello! I am your Ultimate AI Admin. How can I help?' }]);
-      }
+      if (res.ok) setMessages((await res.json()).map(m => ({ role: m.role, content: m.content })));
+      else setMessages([{ role: 'assistant', content: 'Hello! I am your Ultimate AI Admin. How can I help?' }]);
     })();
   }, []);
 
@@ -30,9 +25,7 @@ export default function AIChatPage() {
     if (!input.trim()) return;
     setInput('');
     setLoading(true);
-    // Optimistic UI: add user message immediately
-    const userMsg = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages(prev => [...prev, { role: 'user', content: input }]);
 
     try {
       const res = await adminFetch('/api/admin/ai-chat', {

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { adminFetch } from '@/lib/adminFetch';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/button';
 export default function RefundsPage() {
   const [refunds, setRefunds] = useState([]);
   const fetchRefunds = async () => {
