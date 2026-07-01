@@ -10,8 +10,8 @@ module.exports = {
         ADMIN_HASH: 'super-secret-admin-step',
         NEXT_PUBLIC_ADMIN_HASH: 'super-secret-admin-step',
         UPSTASH_REDIS_URL: 'https://intense-clam-153623.upstash.io',
-        UPSTASH_REDIS_TOKEN: 'YOUR_REST_TOKEN_HERE',
-        DEEPSEEK_API_KEY: 'sk-00706afa69ad47119063a30123902630',
+        UPSTASH_REDIS_TOKEN: process.env.UPSTASH_REDIS_TOKEN || 'YOUR_REST_TOKEN_HERE',
+        DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY, // 👈 Key ကို တိုက်ရိုက်မရေးဘဲ Environment variable ပြောင်းလိုက်ပါပြီ
         NEON_DATABASE_URL: process.env.NEON_DATABASE_URL,
       },
       restart_delay: 5000,
