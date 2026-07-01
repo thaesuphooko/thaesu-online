@@ -220,11 +220,11 @@ export default function AdminProducts() {
                   <div className="flex items-center justify-end gap-2">
                     <input
                       type="number"
-                      defaultValue={p.stock}
+                      defaultValue={p.stock === -1 ? '∞' : p.stock}
                       onBlur={e => inlineEdit(p.id, 'stock', e.target.value)}
                       className="w-16 text-right bg-transparent border-b border-primary outline-none"
                     />
-                    <StockBadge stock={p.stock} />
+                    <StockBadge stock={p.stock === -1 ? '∞' : p.stock} />
                   </div>
                 </td>
                 <td className="p-2 text-center">

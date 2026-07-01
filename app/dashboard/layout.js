@@ -24,7 +24,6 @@ const menuItems = [
   { name: 'Browser', href: '/dashboard/browser', icon: '🌐' },
   { name: 'System Health', href: '/dashboard/health', icon: '🫀' },
   { name: 'Catalog Sanitizer', href: '/dashboard/catalog-sanitizer', icon: '🧹' },
-    { name: 'Background Music', href: '/dashboard/music', icon: '🎵' },
   { name: 'Health Monitor', href: '/dashboard/health-monitor', icon: '💓' },
   { name: 'Users', href: '/dashboard/users', icon: '👥' },
   { name: 'Error Bot', href: '/dashboard/error-bot', icon: '🤖' },

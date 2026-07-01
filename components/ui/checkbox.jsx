@@ -1,6 +1,6 @@
-'use client';
-import * as React from 'react';
-import { cn } from '@/lib/utils';
+"use client"
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
 const Checkbox = React.forwardRef(({ className, checked, onCheckedChange, ...props }, ref) => {
   return (
@@ -10,13 +10,14 @@ const Checkbox = React.forwardRef(({ className, checked, onCheckedChange, ...pro
       checked={checked}
       onChange={onCheckedChange}
       className={cn(
-        'h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer',
+        "h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
     />
-  );
-});
-Checkbox.displayName = 'Checkbox';
+  )
+})
+Checkbox.displayName = "Checkbox"
 
-export { Checkbox };
+export default Checkbox
+export { Checkbox }
