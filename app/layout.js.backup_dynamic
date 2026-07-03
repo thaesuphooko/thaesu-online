@@ -1,7 +1,7 @@
-import FloatingVisualizer from "@/components/atoms/FloatingVisualizer";
+import { AudioProvider } from "@/store/AudioContext";
+import AudioSpectrumVisualizer from "@/components/atoms/AudioSpectrumVisualizer";
 import './globals.css';
 import { ThemeProvider } from '@/hooks/useTheme';
-import { AudioProvider } from '@/store/AudioContext';
 import { I18nProvider } from '@/lib/i18n';
 import StatusBar from '@/components/atoms/StatusBar';
 import BottomNav from '@/components/organisms/BottomNav';
@@ -24,23 +24,16 @@ export default function RootLayout({ children }) {
           <I18nProvider initialLocale="en">
             <ThemeProvider>
               <AudioProvider>
-                <FloatingVisualizer />
                 <StatusBar />
-                <nav className="glass-card sticky top-0 z-50 p-3 flex gap-4 justify-between items-center flex-wrap text-sm">
-                  <div className="flex gap-4 items-center flex-wrap">
-                    <Link href="/" className="font-bold text-lg bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">
-                      Thaesu Online
+                <nav className="fixed top-10 left-0 right-0 z-40 w-full backdrop-blur-xl bg-white/10 dark:bg-black/20 border-b border-white/10 shadow-lg">
+                  <div className="max-w-7xl mx-auto px-4 py-2 flex items-center gap-4">
+                    <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent shrink-0">
+                      Thaesu
                     </Link>
-                    <Link href="/products">🛍️ Products</Link>
-                    <Link href="/cart">🛒 Cart</Link>
-                    <Link href="/wishlist">❤️ Wishlist</Link>
-                    <Link href="/profile">👤 Profile</Link>
-                    <Link href="/chat">💬 Chat</Link>
-                    <Link href="/vendor/dashboard">🏪 Vendor</Link>
+                    <AudioSpectrumVisualizer />
                   </div>
-                  <AudioWaveformTrigger />
                 </nav>
-                <main className="animate-fadeIn">{children}</main>
+                <main className="animate-fadeIn pt-24">{children}</main>
                 <BottomNav />
                 <Toast />
               </AudioProvider>

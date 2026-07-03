@@ -29,6 +29,7 @@ const menuItems = [
   { name: 'Error Bot', href: '/dashboard/error-bot', icon: '🤖' },
   { name: 'AI Chat', href: '/dashboard/ai-chat', icon: '🤖' },
   { name: 'Key Tester', href: '/dashboard/key-tester', icon: '🔬' },
+  { name: 'Music', href: '/dashboard/music', icon: '🎵' },
 ];
 
 function ThemeToggle() {

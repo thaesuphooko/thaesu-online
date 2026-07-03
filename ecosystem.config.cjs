@@ -5,14 +5,12 @@ module.exports = {
       script: 'npm',
       args: 'start',
       cwd: '/data/data/com.termux/files/home/thaesu-online',
+      env_file: '.env.local',   // 🔐 Secret များအားလုံး ဤဖိုင်မှ load လုပ်မည်
       env: {
         NODE_ENV: 'production',
         ADMIN_HASH: 'super-secret-admin-step',
         NEXT_PUBLIC_ADMIN_HASH: 'super-secret-admin-step',
-        UPSTASH_REDIS_URL: 'https://intense-clam-153623.upstash.io',
-        UPSTASH_REDIS_TOKEN: process.env.UPSTASH_REDIS_TOKEN || 'YOUR_REST_TOKEN_HERE',
-        DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY, // 👈 Key ကို တိုက်ရိုက်မရေးဘဲ Environment variable ပြောင်းလိုက်ပါပြီ
-        NEON_DATABASE_URL: process.env.NEON_DATABASE_URL,
+        // UPSTASH, DATABASE_URL, DEEPSEEK တို့ကို .env.local တွင် သိမ်းပါ
       },
       restart_delay: 5000,
       max_restarts: 20,

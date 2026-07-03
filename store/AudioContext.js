@@ -1,43 +1,119 @@
 'use client';
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 
 const AudioContext = createContext();
 
 export function AudioProvider({ children }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [musicEnabled, setMusicEnabled] = useState(false);
-  const [audio, setAudio] = useState(null);
-  const [musicUrl, setMusicUrl] = useState('');
+  const [musicState, setMusicState] = useState({
+    playing: false,
+    volume: 0.5,
+    speed: 1.0,
+    currentTime: 0,
+    url: '',
+    title: 'Thaesu Radio',
+    accentColor: '#a855f7',
+    enabled: true,
+    visualizerType: 'Status Bar',
+    visualizerAlign: 'left',
+    visualizerOffsetY: 0,
+    visualizerOffsetX: 0,
+  });
+  const audioRef = useRef(null);
+  const analyserRef = useRef(null);
+  const pollingRef = useRef(null);
+  const [actualPlaying, setActualPlaying] = useState(false); // real audio state
 
-  useEffect(() => {
-    // Load music config from API
-    fetch('/api/music-config')
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-          setMusicUrl(data.url);
-          setMusicEnabled(data.enabled !== false);
-          const audioEl = new Audio(data.url);
-          audioEl.loop = true;
-          audioEl.volume = (data.volume || 50) / 100;
-          setAudio(audioEl);
+  // Sync metadata (url, volume, speed, seek) but NOT play/pause
+  const fetchState = useCallback(async () => {
+    try {
+      const res = await fetch('/api/music-config');
+      const data = await res.json();
+      setMusicState(prev => {
+        const newState = { ...prev, ...data };
+        const audio = audioRef.current;
+        if (audio) {
+          // apply source change
+          if (newState.url && newState.url !== prev.url) {
+            audio.src = newState.url;
+            audio.load();
+          }
+          audio.volume = newState.volume;
+          audio.playbackRate = newState.speed;
+          if (Math.abs(newState.currentTime - audio.currentTime) > 2) {
+            audio.currentTime = newState.currentTime;
+          }
         }
-      })
-      .catch(() => {});
+        return newState;
+      });
+    } catch (e) {}
   }, []);
 
-  const togglePlay = () => {
-    if (!audio || !musicUrl) return;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play().catch(() => {});
+  useEffect(() => {
+    fetchState();
+    pollingRef.current = setInterval(fetchState, 1000);
+    return () => clearInterval(pollingRef.current);
+  }, [fetchState]);
+
+  // Create audio & analyser once
+  useEffect(() => {
+    const audio = new Audio();
+    audio.loop = true;
+    audio.volume = musicState.volume;
+    audio.playbackRate = musicState.speed;
+    audioRef.current = audio;
+
+    const onPlay = () => setActualPlaying(true);
+    const onPause = () => setActualPlaying(false);
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('pause', onPause);
+
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (AudioCtx) {
+      try {
+        const ctx = new AudioCtx();
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 64;
+        const source = ctx.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(ctx.destination);
+        analyserRef.current = analyser;
+      } catch(e) {}
     }
-    setIsPlaying(!isPlaying);
-  };
+    return () => {
+      audio.pause();
+      audio.removeEventListener('play', onPlay);
+      audio.removeEventListener('pause', onPause);
+      audioRef.current = null;
+    };
+  }, []);
+
+  // Local toggle – only user gesture triggers
+  const togglePlayLocal = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || !musicState.url) return;
+    if (audio.paused) {
+      audio.currentTime = musicState.currentTime || 0;
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+    // sync remote state
+    const newPlaying = !audio.paused;
+    fetch('/api/music-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ playing: newPlaying, currentTime: audio.currentTime }),
+    });
+  }, [musicState.url, musicState.currentTime]);
 
   return (
-    <AudioContext.Provider value={{ isPlaying, togglePlay, musicEnabled }}>
+    <AudioContext.Provider value={{
+      musicState,
+      audioRef,
+      analyserRef,
+      togglePlayLocal,
+      actualPlaying,  // real playing state
+    }}>
       {children}
     </AudioContext.Provider>
   );
