@@ -3,73 +3,39 @@ import { useAudio } from "@/store/AudioContext";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 
-const BAR_COUNT = 20;
-
+const N = 20;
 export default function StatusBarVisualizer() {
-  const { musicState, analyserRef, togglePlayLocal, actualPlaying } = useAudio();
-  const [heights, setHeights] = useState(Array(BAR_COUNT).fill(3));
-  const animFrameRef = useRef(null);
+  const { musicState, analyserRef, togglePlayLocal } = useAudio();
+  const [heights, setHeights] = useState(Array(N).fill(3));
+  const frame = useRef(null);
 
-  const updateBars = useCallback(() => {
-    if (!analyserRef.current || !actualPlaying) return;
-    const analyser = analyserRef.current;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-    analyser.getByteFrequencyData(dataArray);
-    const newHeights = [];
-    const groupSize = Math.floor(bufferLength / BAR_COUNT);
-    for (let i = 0; i < BAR_COUNT; i++) {
-      let sum = 0;
-      for (let j = 0; j < groupSize; j++) {
-        sum += dataArray[i * groupSize + j] || 0;
+  const update = useCallback(() => {
+    if (analyserRef.current && musicState.playing) {
+      const buf = new Uint8Array(analyserRef.current.frequencyBinCount);
+      analyserRef.current.getByteFrequencyData(buf);
+      const g = Math.floor(buf.length / N);
+      const h = [];
+      for (let i = 0; i < N; i++) {
+        let s = 0; for (let j = 0; j < g; j++) s += buf[i * g + j] || 0;
+        h.push(Math.max(2, (s / g / 255) * 12));
       }
-      newHeights.push(Math.max(2, (sum / groupSize / 255) * 12));
-    }
-    setHeights(newHeights);
-    animFrameRef.current = requestAnimationFrame(updateBars);
-  }, [analyserRef, actualPlaying]);
-
-  useEffect(() => {
-    if (actualPlaying) {
-      updateBars();
+      setHeights(h);
     } else {
-      cancelAnimationFrame(animFrameRef.current);
-      setHeights(Array.from({ length: BAR_COUNT }, () => Math.random() * 4 + 2));
+      setHeights(Array.from({ length: N }, () => Math.random() * 4 + 2));
     }
-    return () => cancelAnimationFrame(animFrameRef.current);
-  }, [actualPlaying, updateBars]);
+    frame.current = requestAnimationFrame(update);
+  }, [analyserRef, musicState.playing]);
+
+  useEffect(() => { frame.current = requestAnimationFrame(update); return () => cancelAnimationFrame(frame.current); }, [update]);
 
   const accent = musicState.accentColor || '#a855f7';
-
   return (
-    <motion.button
-      onClick={togglePlayLocal}
-      className="w-full h-full flex items-center cursor-pointer select-none"
-      style={{
-        transform: `translate(${musicState.visualizerOffsetX}px, ${musicState.visualizerOffsetY}px)`,
-        justifyContent:
-          musicState.visualizerAlign === 'center'
-            ? 'center'
-            : musicState.visualizerAlign === 'right'
-            ? 'flex-end'
-            : 'flex-start',
-        gap: '1.5px',
-      }}
-      whileTap={{ scale: 0.98 }}
-    >
+    <button onClick={togglePlayLocal} className="w-full h-full flex items-center cursor-pointer select-none"
+      style={{ justifyContent: musicState.visualizerAlign === 'center' ? 'center' : musicState.visualizerAlign === 'right' ? 'flex-end' : 'flex-start', gap: '1.5px' }}>
       {heights.map((h, i) => (
-        <motion.div
-          key={i}
-          className="w-[2px] rounded-full origin-bottom"
-          style={{
-            height: h,
-            backgroundColor: accent,
-            boxShadow: actualPlaying ? `0 0 4px ${accent}` : 'none',
-          }}
-          animate={{ height: actualPlaying ? h : [h, 3, h] }}
-          transition={{ duration: actualPlaying ? 0.1 : 1 }}
-        />
+        <motion.div key={i} className="w-[2px] rounded-full origin-bottom" style={{ height: h, backgroundColor: accent, boxShadow: musicState.playing ? `0 0 4px ${accent}` : 'none' }}
+          animate={{ height: musicState.playing ? h : [h, 3, h] }} transition={{ duration: musicState.playing ? 0.1 : 1 }} />
       ))}
-    </motion.button>
+    </button>
   );
 }

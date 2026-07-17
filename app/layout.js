@@ -1,4 +1,4 @@
-import FloatingVisualizer from "@/components/atoms/FloatingVisualizer";
+import MusicFloatingPlayer from "@/components/atoms/MusicFloatingPlayer";
 import './globals.css';
 import { ThemeProvider } from '@/hooks/useTheme';
 import { AudioProvider } from '@/store/AudioContext';
@@ -8,8 +8,6 @@ import BottomNav from '@/components/organisms/BottomNav';
 import ErudaLoader from '@/components/atoms/ErudaLoader';
 import ErrorBoundary from '@/components/atoms/ErrorBoundary';
 import Toast from '@/components/atoms/Toast';
-import Link from 'next/link';
-import AudioWaveformTrigger from '@/components/atoms/AudioWaveformTrigger';
 
 export const metadata = {
   title: 'Thaesu Online - Premium Marketplace',
@@ -24,25 +22,11 @@ export default function RootLayout({ children }) {
           <I18nProvider initialLocale="en">
             <ThemeProvider>
               <AudioProvider>
-                <FloatingVisualizer />
                 <StatusBar />
-                <nav className="glass-card sticky top-0 z-50 p-3 flex gap-4 justify-between items-center flex-wrap text-sm">
-                  <div className="flex gap-4 items-center flex-wrap">
-                    <Link href="/" className="font-bold text-lg bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">
-                      Thaesu Online
-                    </Link>
-                    <Link href="/products">🛍️ Products</Link>
-                    <Link href="/cart">🛒 Cart</Link>
-                    <Link href="/wishlist">❤️ Wishlist</Link>
-                    <Link href="/profile">👤 Profile</Link>
-                    <Link href="/chat">💬 Chat</Link>
-                    <Link href="/vendor/dashboard">🏪 Vendor</Link>
-                  </div>
-                  <AudioWaveformTrigger />
-                </nav>
-                <main className="animate-fadeIn">{children}</main>
+                <main className="animate-fadeIn pt-10">{children}</main>
                 <BottomNav />
                 <Toast />
+                <MusicFloatingPlayer />
               </AudioProvider>
             </ThemeProvider>
           </I18nProvider>

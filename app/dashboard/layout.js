@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
@@ -73,20 +73,42 @@ function MusicToggle() {
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    const hash = window.location.hash.substring(1);
-    if (hash === process.env.NEXT_PUBLIC_ADMIN_HASH) {
+    // Check admin hash from URL or localStorage
+    const hashFromUrl = window.location.hash.substring(1);
+    const hashFromStorage = localStorage.getItem('adminSecret');
+    const expectedHash = process.env.NEXT_PUBLIC_ADMIN_HASH || 'super-secret-admin-step';
+    
+    if (hashFromUrl === expectedHash) {
+      localStorage.setItem('adminSecret', expectedHash);
       setAuthenticated(true);
-      localStorage.setItem('adminSecret', process.env.NEXT_PUBLIC_ADMIN_HASH);
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (hashFromStorage === expectedHash) {
+      setAuthenticated(true);
     } else {
+      // Not authenticated – redirect to home
       router.replace('/');
+      return;
     }
-  }, []);
+    setAuthLoading(false);
+  }, [router]);
 
+  // Show loading screen while checking auth
+  if (authLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <p className="text-muted-foreground">Checking Admin Authorization...</p>
+      </div>
+    );
+  }
+
+  // If not authenticated after loading, don't render admin panel
   if (!authenticated) return null;
 
   const handleGlobalSearch = (e) => {

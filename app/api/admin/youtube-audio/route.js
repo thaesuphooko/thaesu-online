@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
-import ytdl from 'ytdl-core';
-
 export async function POST(req) {
+  const { url } = await req.json();
+  if (!url) return NextResponse.json({ error: 'No URL' }, { status: 400 });
   try {
-    const { url } = await req.json();
-    if (!url) return NextResponse.json({ error: 'No URL' }, { status: 400 });
-    const info = await ytdl.getInfo(url);
-    const format = ytdl.chooseFormat(info.formats, { quality: 'highestaudio' });
-    return NextResponse.json({ audioUrl: format.url, title: info.videoDetails.title });
-  } catch(e) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
-  }
+    const apiRes = await fetch('https://api.cobalt.tools/api/json', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, audioFormat: 'mp3', isAudioOnly: true }),
+    });
+    const data = await apiRes.json();
+    if (data.url) return NextResponse.json({ audioUrl: data.url, title: data.filename || 'YouTube Audio' });
+  } catch (e) {}
+  return NextResponse.json({ error: 'Extraction failed. Use direct URL.' }, { status: 422 });
 }
