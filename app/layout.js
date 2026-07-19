@@ -1,4 +1,3 @@
-import MusicFloatingPlayer from "@/components/atoms/MusicFloatingPlayer";
 import './globals.css';
 import { ThemeProvider } from '@/hooks/useTheme';
 import { AudioProvider } from '@/store/AudioContext';
@@ -26,7 +25,6 @@ export default function RootLayout({ children }) {
                 <main className="animate-fadeIn pt-10">{children}</main>
                 <BottomNav />
                 <Toast />
-                <MusicFloatingPlayer />
               </AudioProvider>
             </ThemeProvider>
           </I18nProvider>
