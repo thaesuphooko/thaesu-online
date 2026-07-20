@@ -3,14 +3,12 @@ import { query } from '@/lib/db';
 import { authenticate } from '@/lib/socialAuth';
 
 export async function POST(req, { params }) {
+  const { id: postId } = await params;
   const user = authenticate(req);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const postId = params.id;
+  if (!user) return NextResponse.json({ error: 'Login required' }, { status: 401 });
   try {
-    // Check if already liked
     const existing = await query('SELECT id FROM likes WHERE user_id = $1 AND post_id = $2', [user.id, postId]);
     if (existing.rows.length > 0) {
-      // Unlike
       await query('DELETE FROM likes WHERE user_id = $1 AND post_id = $2', [user.id, postId]);
       return NextResponse.json({ liked: false });
     } else {
@@ -18,6 +16,7 @@ export async function POST(req, { params }) {
       return NextResponse.json({ liked: true });
     }
   } catch (error) {
-    return NextResponse.json({ error: 'Failed' }, { status: 500 });
+    console.error('Like error:', error);
+    return NextResponse.json({ error: 'Like failed' }, { status: 500 });
   }
 }
