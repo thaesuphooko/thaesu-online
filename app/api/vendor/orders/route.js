@@ -1,27 +1,28 @@
-import { query } from '@/lib/db';
-import { verifyToken } from '@/lib/auth';
+import { NextResponse } from 'next/server';
+import { verifyVendor } from '@/lib/vendorAuth';
+import pool from '@/lib/db';
 
 export async function GET(request) {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  const token = authHeader.split(' ')[1];
-  let user;
-  try { user = verifyToken(token); } catch { return Response.json({ error: 'Invalid token' }, { status: 401 }); }
-  if (user.role !== 'vendor' && user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
+  const vendor = await verifyVendor(request);
+  if (!vendor) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const vendorRes = await query('SELECT id FROM vendors WHERE user_id = $1', [user.id]);
-  if (vendorRes.rows.length === 0) return Response.json({ error: 'Not a vendor' }, { status: 403 });
-  const vendorId = vendorRes.rows[0].id;
+  const { searchParams } = new URL(request.url);
+  const status = searchParams.get('status') || 'all';
+  let where = 'WHERE o.vendor_id = $1';
+  const params = [vendor.id];
+  if (status !== 'all') { where += ' AND o.status = $2'; params.push(status); }
 
-  const res = await query(
-    `SELECT o.id, o.total_amount, o.status, o.created_at,
-            json_agg(json_build_object('title', oi.product_title, 'qty', oi.quantity, 'price', oi.price)) as items
-     FROM orders o
-     JOIN order_items oi ON oi.order_id = o.id
-     WHERE o.vendor_id = $1
-     GROUP BY o.id
-     ORDER BY o.created_at DESC`,
-    [vendorId]
+  const result = await pool.query(
+    `SELECT o.*, u.full_name AS customer_name FROM orders o JOIN users u ON o.user_id = u.id ${where} ORDER BY o.created_at DESC`,
+    params
   );
-  return Response.json(res.rows);
+  return NextResponse.json(result.rows);
+}
+
+export async function PATCH(request) {
+  const vendor = await verifyVendor(request);
+  if (!vendor) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const { orderId, status } = await request.json();
+  await pool.query('UPDATE orders SET status = $1 WHERE id = $2 AND vendor_id = $3', [status, orderId, vendor.id]);
+  return NextResponse.json({ success: true });
 }

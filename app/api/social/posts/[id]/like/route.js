@@ -4,7 +4,7 @@ import { authenticate } from '@/lib/socialAuth';
 
 export async function POST(req, { params }) {
   const { id: postId } = await params;
-  const user = authenticate(req);
+  const user = await authenticate(req);
   if (!user) return NextResponse.json({ error: 'Login required' }, { status: 401 });
   try {
     const existing = await query('SELECT id FROM likes WHERE user_id = $1 AND post_id = $2', [user.id, postId]);

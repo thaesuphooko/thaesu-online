@@ -1,317 +1,445 @@
-"use client";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+'use client';
+import { useState, useEffect, useRef, useCallback, useOptimistic } from 'react';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Heart, MessageCircle, Share2, Smile, Send,
-  ImagePlus, Tag, X, ShoppingCart, Search,
-  MoreHorizontal, Edit3, Trash2
-} from "lucide-react";
+  Heart, MessageCircle, Share2, Send, ShoppingCart,
+  MoreHorizontal, Edit3, Trash2, Sparkles, ImagePlus, Tag, X,
+  BookOpen, Loader2, ExternalLink
+} from 'lucide-react';
+import { toast } from 'sonner';
 
-const REACTIONS = { like: "👍", love: "❤️", haha: "😂", wow: "😮", sad: "😢", angry: "😡" };
+// ---------- Utilities ----------
+const getUser = () => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } };
+const getToken = () => localStorage.getItem('token');
 
-function getUser() { try { return JSON.parse(localStorage.getItem('user')); } catch(e) { return null; } }
-function getToken() { return localStorage.getItem('token'); }
-
-export default function FeedPage() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [showPostForm, setShowPostForm] = useState(false);
-  const [postContent, setPostContent] = useState("");
-  const [postMedia, setPostMedia] = useState([]);
-  const [postProduct, setPostProduct] = useState(null);
-  const [showProductSearch, setShowProductSearch] = useState(false);
-  const [productSearchQuery, setProductSearchQuery] = useState("");
-  const [productResults, setProductResults] = useState([]);
-
-  useEffect(() => { setUser(getUser()); fetchPosts(); }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const token = getToken();
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const res = await fetch('/api/social/posts', { headers });
-      const data = await res.json();
-      setPosts(data.posts || []);
-    } catch(e) { console.error(e); } finally { setLoading(false); }
+// ---------- Particle Effect for Like ----------
+const useParticles = () => {
+  const [particles, setParticles] = useState([]);
+  const createBurst = (x, y) => {
+    const newParticles = Array.from({ length: 8 }).map((_, i) => ({
+      id: Date.now() + i,
+      x, y,
+      angle: (i / 8) * 360,
+      distance: 50 + Math.random() * 60,
+    }));
+    setParticles(prev => [...prev, ...newParticles]);
+    setTimeout(() => {
+      setParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
+    }, 600);
   };
+  return { particles, createBurst };
+};
 
-  const handleCreatePost = async () => {
-    const token = getToken();
-    if (!token) return alert("Please login");
-    const res = await fetch('/api/social/posts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ content: postContent, media_urls: postMedia.length > 0 ? postMedia : undefined, product_id: postProduct?.id || undefined })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setPostContent(""); setPostMedia([]); setPostProduct(null); setShowPostForm(false);
-      fetchPosts();
-    } else { alert(data.error || "Failed to create post"); }
-  };
-
-  const searchProducts = async (q) => {
-    if (!q.trim()) { setProductResults([]); return; }
-    const res = await fetch(`/api/products/search?q=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    setProductResults(data.products || []);
-  };
-
-  if (loading) return <div className="p-8 text-center text-white">Loading...</div>;
-
-  return (
-    <div className="min-h-screen bg-black text-white p-4 pt-24 pb-24">
-      <div className="max-w-xl mx-auto space-y-6">
-        <h1 className="text-3xl font-bold text-zinc-100">📰 Feed</h1>
-
-        {user && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shrink-0">
-                {user.name?.[0] || user.full_name?.[0] || 'U'}
-              </div>
-              <button onClick={() => setShowPostForm(!showPostForm)} className="flex-1 text-left text-zinc-400 hover:text-zinc-200 transition bg-zinc-800/50 rounded-xl px-4 py-2">
-                What's on your mind?
-              </button>
-            </div>
-
-            <AnimatePresence>
-              {showPostForm && (
-                <motion.div initial={{ height:0, opacity:0 }} animate={{ height:'auto', opacity:1 }} exit={{ height:0, opacity:0 }} className="overflow-hidden">
-                  <textarea value={postContent} onChange={e => setPostContent(e.target.value)} placeholder="Write something..." className="w-full mt-3 p-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-zinc-200 placeholder-zinc-500 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500" rows={3} />
-                  {postMedia.length > 0 && (
-                    <div className="grid grid-cols-2 gap-2 mt-2">
-                      {postMedia.map((url,i) => (
-                        <div key={i} className="relative rounded-lg overflow-hidden bg-zinc-800">
-                          {url.match(/\.(mp4|webm|ogg)$/) ? <video src={url} className="w-full h-24 object-cover" controls /> : <img src={url} className="w-full h-24 object-cover" alt="" />}
-                          <button onClick={() => setPostMedia(prev => prev.filter((_,idx) => idx !== i))} className="absolute top-1 right-1 bg-black/60 rounded-full p-0.5"><X className="w-3 h-3 text-white" /></button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {postProduct && (
-                    <div className="mt-2 p-2 bg-purple-500/10 border border-purple-500/30 rounded-xl flex items-center justify-between">
-                      <span className="text-sm text-purple-300">🔗 {postProduct.title}</span>
-                      <button onClick={() => setPostProduct(null)} className="text-zinc-400 hover:text-white"><X className="w-4 h-4" /></button>
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => { const url = prompt("Enter image or video URL:"); if (url) setPostMedia(prev => [...prev, url]); }} className="p-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-400 transition"><ImagePlus className="w-4 h-4" /></button>
-                      <button onClick={() => setShowProductSearch(!showProductSearch)} className="p-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-400 transition"><Tag className="w-4 h-4" /></button>
-                    </div>
-                    <button onClick={handleCreatePost} disabled={!postContent.trim() && postMedia.length === 0 && !postProduct} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-xl font-bold text-sm transition disabled:opacity-50">Post</button>
-                  </div>
-                  {showProductSearch && (
-                    <div className="mt-3">
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                        <input type="text" placeholder="Search products..." value={productSearchQuery} onChange={e => { setProductSearchQuery(e.target.value); searchProducts(e.target.value); }} className="w-full pl-10 pr-3 py-2 bg-zinc-800 border border-zinc-700 rounded-xl text-zinc-200 text-sm" />
-                      </div>
-                      {productResults.length > 0 && (
-                        <div className="mt-1 bg-zinc-800 border border-zinc-700 rounded-xl overflow-hidden max-h-40 overflow-y-auto">
-                          {productResults.map(prod => (
-                            <button key={prod.id} onClick={() => { setPostProduct(prod); setShowProductSearch(false); setProductSearchQuery(""); setProductResults([]); }} className="w-full text-left px-3 py-2 hover:bg-zinc-700 text-sm text-zinc-300 flex justify-between">
-                              <span className="truncate">{prod.title}</span>
-                              <span className="text-purple-400">${parseFloat(prod.price).toFixed(2)}</span>
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        )}
-
-        {posts.map(post => (
-          <PostCard key={post.id} post={post} user={user} refresh={fetchPosts} />
-        ))}
-
-        {!loading && posts.length === 0 && (
-          <p className="text-center text-zinc-500 py-10">No posts yet. Be the first!</p>
-        )}
-      </div>
+// ---------- Skeleton Loader ----------
+const PostSkeleton = () => (
+  <div className="bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 rounded-2xl p-5 animate-pulse space-y-4">
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 rounded-full bg-zinc-800" />
+      <div className="flex-1 space-y-2"><div className="h-4 bg-zinc-800 rounded w-1/3" /><div className="h-3 bg-zinc-800 rounded w-1/4" /></div>
     </div>
-  );
-}
+    <div className="h-48 bg-zinc-800 rounded-xl" />
+    <div className="flex gap-4"><div className="h-6 w-16 bg-zinc-800 rounded" /><div className="h-6 w-16 bg-zinc-800 rounded" /></div>
+  </div>
+);
 
+// ---------- Post Card (Optimistic Like + Persist) ----------
 function PostCard({ post, user, refresh }) {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
-  const [commentText, setCommentText] = useState("");
-  const [reactOpen, setReactOpen] = useState(false);
-  const [liked, setLiked] = useState(post.liked_by_user || false);
-  const [likeCount, setLikeCount] = useState(post.like_count || 0);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editContent, setEditContent] = useState(post.content || "");
+  const [commentText, setCommentText] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  const { particles, createBurst } = useParticles();
   const isOwner = user && (user.uid === post.user_uid);
 
-  useEffect(() => {
-    if (showComments) {
-      fetch(`/api/social/posts/${post.id}/comments`).then(r=>r.json()).then(d=>setComments(d.comments||[]));
-    }
-  }, [showComments, post.id]);
+  // Optimistic like state
+  const [likeState, setLikeState] = useState({
+    liked: post.liked_by_user || false,
+    count: post.like_count || 0,
+  });
+  const [optimisticLike, addOptimisticLike] = useOptimistic(
+    likeState,
+    (state, newLiked) => ({
+      liked: newLiked,
+      count: state.count + (newLiked ? 1 : -1),
+    })
+  );
 
-  const handleLike = async () => {
-    const token = getToken(); if (!token) return alert("Login required");
-    const res = await fetch(`/api/social/posts/${post.id}/like`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } });
-    const data = await res.json();
-    if (res.ok) { setLiked(data.liked); setLikeCount(prev => data.liked ? prev+1 : prev-1); } else { alert(data.error || "Like failed"); }
+  const handleLike = async (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    createBurst(rect.left + rect.width/2, rect.top + rect.height/2);
+    const newLiked = !optimisticLike.liked;
+    // Optimistic update
+    addOptimisticLike(newLiked);
+    try {
+      const token = getToken();
+      if (!token) { toast.error('Login required'); return; }
+      const res = await fetch(`/api/social/posts/${post.id}/like`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        // Server confirmed – update real state
+        setLikeState({
+          liked: data.liked,
+          count: data.liked ? likeState.count + 1 : likeState.count - 1,
+        });
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      // Rollback optimistic update
+      addOptimisticLike(!newLiked);
+      toast.error('Like failed');
+    }
   };
 
   const submitComment = async () => {
     if (!commentText.trim()) return;
-    const token = getToken(); if (!token) return alert("Login required");
-    const res = await fetch(`/api/social/posts/${post.id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: commentText }) });
-    const data = await res.json();
-    if (!res.ok) { alert(data.error || "Comment failed"); return; }
-    setCommentText(""); refresh();
-  };
-
-  const handleShare = async () => {
-    const token = getToken(); if (!token) return alert("Login required");
-    const res = await fetch(`/api/social/posts/${post.id}/share`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } });
-    const data = await res.json();
-    if (!res.ok) { alert(data.error || "Share failed"); return; }
-    refresh();
-  };
-
-  const handleEdit = async () => {
-    if (!editContent.trim()) return;
-    const token = getToken(); if (!token) return;
-    const res = await fetch(`/api/social/posts/${post.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: editContent }) });
-    const data = await res.json();
-    if (res.ok) { setIsEditing(false); refresh(); } else { alert(data.error || "Edit failed"); }
-  };
-
-  const handleDelete = async () => {
-    if (!confirm("Delete this post?")) return;
-    const token = getToken(); if (!token) return;
-    const res = await fetch(`/api/social/posts/${post.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-    const data = await res.json();
-    if (!res.ok) { alert(data.error || "Delete failed"); return; }
-    refresh();
-  };
-
-  const handleReact = async (type) => {
-    const token = getToken(); if (!token) return alert("Login required");
-    if (type === 'remove') {
-      const res = await fetch(`/api/social/posts/${post.id}/react`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-      if (!res.ok) alert("Failed to remove reaction");
-      refresh();
+    const token = getToken(); if (!token) return toast.error('Login required');
+    const res = await fetch(`/api/social/posts/${post.id}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ content: commentText }),
+    });
+    if (res.ok) {
+      toast.success('Comment added');
+      setCommentText('');
+      refresh(); // re-fetch post to update comment count
     } else {
-      const res = await fetch(`/api/social/posts/${post.id}/react`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ type }) });
-      if (!res.ok) alert("Failed to react");
-      refresh();
+      toast.error('Comment failed');
     }
   };
 
+  const handleShare = async () => {
+    const token = getToken(); if (!token) return toast.error('Login required');
+    const res = await fetch(`/api/social/posts/${post.id}/share`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      toast.success('Shared');
+      refresh();
+    } else {
+      toast.error('Share failed');
+    }
+  };
+
+  useEffect(() => {
+    if (showComments) {
+      fetch(`/api/social/posts/${post.id}/comments`)
+        .then(r => r.json())
+        .then(d => setComments(d.comments || []));
+    }
+  }, [showComments, post.id]);
+
   return (
-    <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
-      <div className="flex items-center gap-3 mb-4">
-        <Link href={`/profile?uid=${post.user_uid}`} className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shrink-0">
-          {post.user_name?.[0] || 'U'}
-        </Link>
-        <div className="flex-1">
-          <Link href={`/profile?uid=${post.user_uid}`} className="text-zinc-100 font-semibold text-sm hover:text-purple-400 transition">{post.user_name}</Link>
-          <p className="text-zinc-500 text-xs">{new Date(post.created_at).toLocaleString()}</p>
-        </div>
-        {isOwner && (
-          <div className="relative">
-            <button onClick={() => setMenuOpen(!menuOpen)} className="p-1 rounded-full hover:bg-zinc-800 text-zinc-400"><MoreHorizontal className="w-5 h-5" /></button>
-            {menuOpen && (
-              <div className="absolute right-0 mt-1 bg-zinc-800 border border-zinc-700 rounded-xl shadow-xl z-10 py-1 min-w-[120px]">
-                <button onClick={() => { setIsEditing(true); setEditContent(post.content||''); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-700 flex items-center gap-2"><Edit3 className="w-4 h-4" /> Edit</button>
-                <button onClick={() => { handleDelete(); setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-sm text-red-400 hover:bg-zinc-700 flex items-center gap-2"><Trash2 className="w-4 h-4" /> Delete</button>
-              </div>
-            )}
+    <motion.div
+      initial={{ opacity:0, y:20 }}
+      animate={{ opacity:1, y:0 }}
+      className="relative bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-600/80 transition-all duration-300"
+    >
+      {particles.map(p => (
+        <motion.div key={p.id} initial={{ x:0, y:0, opacity:1, scale:1 }} animate={{ x: Math.cos(p.angle*Math.PI/180)*p.distance, y: Math.sin(p.angle*Math.PI/180)*p.distance, opacity:0, scale:0 }} transition={{ duration:0.5 }} className="absolute w-2 h-2 rounded-full bg-purple-500 z-50 pointer-events-none" style={{ left: p.x, top: p.y }} />
+      ))}
+      <div className="p-4">
+        <div className="flex items-center gap-3 mb-3">
+          <Link href={`/profile?uid=${post.user_uid}`} className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+            {post.user_name?.[0] || 'U'}
+          </Link>
+          <div className="flex-1 min-w-0">
+            <Link href={`/profile?uid=${post.user_uid}`} className="font-semibold text-sm hover:underline">{post.user_name}</Link>
+            <p className="text-xs text-zinc-500">{new Date(post.created_at).toLocaleString()}</p>
           </div>
-        )}
-      </div>
-
-      {isEditing ? (
-        <div className="space-y-2 mb-4">
-          <textarea value={editContent} onChange={e => setEditContent(e.target.value)} className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded-xl text-zinc-200 text-sm resize-none" rows={3} />
-          <div className="flex gap-2">
-            <button onClick={handleEdit} className="px-4 py-1 bg-purple-600 rounded-lg text-sm">Save</button>
-            <button onClick={() => setIsEditing(false)} className="px-4 py-1 bg-zinc-700 rounded-lg text-sm">Cancel</button>
-          </div>
-        </div>
-      ) : (
-        post.content && <p className="text-zinc-300 text-sm leading-relaxed mb-4">{post.content}</p>
-      )}
-
-      {post.product && (
-        <Link href={`/products/${post.product.slug || post.product_id}`} className="block p-3 bg-zinc-800/50 border border-zinc-700 rounded-xl mb-4 hover:border-purple-500 transition">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-zinc-700 overflow-hidden shrink-0">
-              {post.media_urls?.[0] ? <img src={post.media_urls[0]} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-2xl">📦</div>}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-zinc-200 text-sm truncate">{post.product.title}</p>
-              <p className="text-purple-400 font-bold text-sm">${parseFloat(post.product.price).toFixed(2)}</p>
-            </div>
-            <ShoppingCart className="w-5 h-5 text-purple-400 shrink-0" />
-          </div>
-        </Link>
-      )}
-
-      {post.media_urls?.length > 0 && !post.product && (
-        <div className="grid grid-cols-1 gap-2 mb-4">
-          {post.media_urls.map((url,i) => (
-            <div key={i} className="rounded-xl overflow-hidden bg-zinc-800">
-              {url.match(/\.(mp4|webm|ogg)$/) ? <video src={url} controls className="w-full max-h-96 object-cover" /> : <img src={url} alt="" className="w-full max-h-96 object-cover" />}
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="flex items-center gap-6 border-t border-zinc-800 pt-3 text-zinc-400 text-xs">
-        <div className="relative flex items-center gap-2">
-          <motion.button onClick={handleLike} className={`flex items-center gap-1 transition ${liked ? 'text-red-500' : 'hover:text-red-500'}`} whileTap={{ scale: 1.3 }}>
-            <Heart className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
-          </motion.button>
-          <span className="tabular-nums">{likeCount}</span>
-          <button onClick={() => setReactOpen(!reactOpen)} className="ml-1 hover:text-zinc-200"><Smile className="w-4 h-4" /></button>
-          {reactOpen && (
-            <div className="absolute bottom-full mb-2 left-0 flex gap-1 bg-zinc-800 border border-zinc-700 rounded-full px-2 py-1 shadow-xl z-10">
-              {Object.entries(REACTIONS).map(([key, emoji]) => (
-                <button key={key} onClick={() => { handleReact(key); setReactOpen(false); }} className="text-lg hover:scale-125 transition">{emoji}</button>
-              ))}
-              <button onClick={() => { handleReact('remove'); setReactOpen(false); }} className="text-xs text-red-400 px-1">✕</button>
+          {isOwner && (
+            <div className="relative">
+              <button onClick={() => setMenuOpen(!menuOpen)} className="p-1 rounded-full hover:bg-zinc-800"><MoreHorizontal className="w-5 h-5" /></button>
+              {menuOpen && (
+                <div className="absolute right-0 mt-1 w-36 bg-zinc-800 border border-zinc-700 rounded-xl shadow-xl z-10 py-1">
+                  <button onClick={() => { setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-sm hover:bg-zinc-700 flex items-center gap-2"><Edit3 className="w-4 h-4" /> Edit</button>
+                  <button onClick={() => { setMenuOpen(false); }} className="w-full text-left px-3 py-1.5 text-sm text-red-400 hover:bg-zinc-700 flex items-center gap-2"><Trash2 className="w-4 h-4" /> Delete</button>
+                </div>
+              )}
             </div>
           )}
         </div>
-        <button onClick={() => setShowComments(!showComments)} className="flex items-center gap-1 hover:text-blue-400 transition"><MessageCircle className="w-4 h-4" /> <span>{post.comment_count || 0}</span></button>
-        <button onClick={handleShare} className="flex items-center gap-1 hover:text-green-400 transition"><Share2 className="w-4 h-4" /> <span>Share</span></button>
+        {post.content && <p className="text-sm leading-relaxed mb-3">{post.content}</p>}
+        {post.media_urls?.length > 0 && !post.product && (
+          <div className="mb-3 rounded-xl overflow-hidden">
+            {post.media_urls.map((url,i) => (
+              url.match(/\.(mp4|webm|ogg)$/) ? <video key={i} src={url} controls className="w-full max-h-80 object-cover" /> : <img key={i} src={url} alt="" className="w-full max-h-80 object-cover" />
+            ))}
+          </div>
+        )}
+        {post.product && (
+          <Link href={`/products/${post.product.slug || post.product_id}`} className="block p-3 bg-zinc-800/50 border border-zinc-700 rounded-xl mb-3 hover:border-purple-500 transition">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-zinc-700 flex items-center justify-center text-2xl shrink-0">📦</div>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">{post.product.title}</p>
+                <p className="text-purple-400 font-bold text-sm">${parseFloat(post.product.price).toFixed(2)}</p>
+              </div>
+              <ShoppingCart className="w-5 h-5 text-purple-400" />
+            </div>
+          </Link>
+        )}
+        <div className="flex items-center gap-6 border-t border-zinc-800 pt-3 text-zinc-400 text-xs">
+          <button onClick={handleLike} className={`flex items-center gap-1 transition ${optimisticLike.liked ? 'text-red-500' : 'hover:text-red-500'}`}>
+            <Heart className={`w-4 h-4 ${optimisticLike.liked ? 'fill-current' : ''}`} />
+            <span>{optimisticLike.count}</span>
+          </button>
+          <button onClick={() => setShowComments(!showComments)} className="flex items-center gap-1 hover:text-blue-400 transition"><MessageCircle className="w-4 h-4" /> <span>{post.comment_count || 0}</span></button>
+          <button onClick={handleShare} className="flex items-center gap-1 hover:text-green-400 transition"><Share2 className="w-4 h-4" /> Share</button>
+        </div>
+        <AnimatePresence>
+          {showComments && (
+            <motion.div initial={{ height:0 }} animate={{ height:'auto' }} exit={{ height:0 }} className="overflow-hidden border-t border-zinc-800 mt-3 pt-3">
+              <div className="space-y-2">
+                {comments.map(c => (
+                  <div key={c.id} className="flex gap-2 text-sm">
+                    <Link href={`/profile?uid=${c.uid}`} className="font-medium text-purple-400 shrink-0">{c.user_name}</Link>
+                    <p className="text-zinc-300">{c.content}</p>
+                  </div>
+                ))}
+                {user && (
+                  <div className="flex gap-2 mt-2">
+                    <input type="text" placeholder="Write a comment..." value={commentText} onChange={e=>setCommentText(e.target.value)} className="flex-1 px-3 py-1 bg-zinc-800 rounded-xl text-sm text-white placeholder-zinc-500" />
+                    <button onClick={submitComment} className="text-purple-400"><Send className="w-4 h-4" /></button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
+// ---------- Product Card ----------
+function ProductCard({ product }) {
+  const addToCart = async () => {
+    const token = getToken(); if (!token) return toast.error('Login required');
+    await fetch('/api/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ productId: product.id, quantity: 1 }),
+    });
+    toast.success('Added to cart');
+  };
+  return (
+    <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} className="bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-600/80 transition-all">
+      <Link href={`/products/${product.slug || product.id}`}>
+        <div className="relative h-52 bg-zinc-800">
+          <img src={product.image || '/placeholder.jpg'} alt={product.title} className="w-full h-full object-cover" />
+          <span className="absolute top-2 left-2 bg-black/60 backdrop-blur text-xs px-2 py-1 rounded-full">{product.category || 'Product'}</span>
+        </div>
+      </Link>
+      <div className="p-4">
+        <h3 className="font-semibold text-sm truncate">{product.title}</h3>
+        <p className="text-xs text-zinc-400 mt-1 line-clamp-2">{product.description}</p>
+        <div className="flex items-center justify-between mt-3">
+          <span className="text-lg font-bold text-purple-400">${parseFloat(product.price).toFixed(2)}</span>
+          <button onClick={addToCart} className="flex items-center gap-1 bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1.5 rounded-full transition">
+            <ShoppingCart className="w-3 h-3" /> Add
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ---------- Wattpad Card ----------
+function WattpadCard({ story }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} whileHover={{ y:-2, boxShadow:'0 0 25px -5px rgba(168,85,247,0.4)' }} onClick={() => setOpen(true)} className="relative bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 rounded-2xl overflow-hidden cursor-pointer group transition-all">
+        <div className="h-40 relative overflow-hidden">
+          <img src={story.cover_url} alt={story.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute bottom-2 left-2 right-2 text-white">
+            <p className="font-semibold text-sm drop-shadow-lg">{story.title}</p>
+            <p className="text-xs text-zinc-300">{story.author}</p>
+          </div>
+        </div>
+      </motion.div>
+      <AnimatePresence>
+        {open && (
+          <motion.div className="fixed inset-0 z-50 flex justify-end" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}>
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
+            <motion.div initial={{ x:'100%' }} animate={{ x:0 }} exit={{ x:'100%' }} transition={{ type:'spring', damping:25, stiffness:300 }} className="relative w-full max-w-md bg-zinc-900/90 backdrop-blur-xl border-l border-zinc-700 h-full overflow-y-auto p-6 shadow-2xl">
+              <button onClick={() => setOpen(false)} className="absolute top-4 right-4 p-1 rounded-full bg-zinc-800 text-zinc-400"><X className="w-5 h-5" /></button>
+              <img src={story.cover_url} className="w-full h-48 object-cover rounded-xl" />
+              <h2 className="text-2xl font-bold mt-4">{story.title}</h2>
+              <p className="text-sm text-zinc-400">by {story.author}</p>
+              <p className="text-zinc-300 leading-relaxed mt-4">{story.description}</p>
+              <a href={story.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-full text-sm font-medium mt-6 transition"><ExternalLink className="w-4 h-4" /> Read on Wattpad</a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ---------- Premium Composer ----------
+function Composer({ onPost }) {
+  const [expanded, setExpanded] = useState(false);
+  const [content, setContent] = useState('');
+  const [mediaUrls, setMediaUrls] = useState([]);
+  const [taggedProduct, setTaggedProduct] = useState(null);
+  const [posting, setPosting] = useState(false);
+
+  const handlePost = async () => {
+    if (!content.trim() && mediaUrls.length === 0 && !taggedProduct) return;
+    setPosting(true);
+    try {
+      const token = getToken(); if (!token) { toast.error('Login required'); return; }
+      const res = await fetch('/api/social/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ content, media_urls: mediaUrls.length > 0 ? mediaUrls : undefined, product_id: taggedProduct?.id || undefined }),
+      });
+      if (res.ok) {
+        toast.success('Post created!');
+        setContent(''); setMediaUrls([]); setTaggedProduct(null); setExpanded(false);
+        onPost();
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Post failed');
+      }
+    } catch (e) { toast.error('Network error'); }
+    setPosting(false);
+  };
+
+  return (
+    <div className="bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 rounded-2xl p-4 mb-6">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+          {getUser()?.name?.[0] || getUser()?.full_name?.[0] || 'U'}
+        </div>
+        <button onClick={() => setExpanded(true)} className="flex-1 text-left text-zinc-400 hover:text-white bg-zinc-800/50 rounded-xl px-4 py-2.5 transition">
+          What's on your mind? ✨
+        </button>
       </div>
 
       <AnimatePresence>
-        {showComments && (
-          <motion.div initial={{ height:0, opacity:0 }} animate={{ height:'auto', opacity:1 }} exit={{ height:0, opacity:0 }} className="overflow-hidden border-t border-zinc-800 mt-3 pt-3">
-            <div className="space-y-2">
-              {comments.map(c => (
-                <div key={c.id} className="flex gap-2 text-sm">
-                  <Link href={`/profile?uid=${c.uid}`} className="font-medium text-purple-400 shrink-0">{c.user_name}</Link>
-                  <p className="text-zinc-300">{c.content}</p>
-                </div>
-              ))}
-              {user && (
-                <div className="flex gap-2 mt-2">
-                  <input type="text" placeholder="Add a comment..." value={commentText} onChange={e => setCommentText(e.target.value)} className="flex-1 px-3 py-1 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm placeholder-zinc-500" />
-                  <button onClick={submitComment} className="text-purple-400"><Send className="w-4 h-4" /></button>
-                </div>
-              )}
+        {expanded && (
+          <motion.div initial={{ height:0, opacity:0 }} animate={{ height:'auto', opacity:1 }} exit={{ height:0, opacity:0 }} className="mt-4 space-y-3 overflow-hidden">
+            <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Write something..." className="w-full p-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-sm text-white placeholder-zinc-500 resize-none" rows={4} />
+            {mediaUrls.length > 0 && (
+              <div className="grid grid-cols-2 gap-2">
+                {mediaUrls.map((url,i) => (
+                  <div key={i} className="relative rounded-lg overflow-hidden bg-zinc-800 group">
+                    {url.match(/\.(mp4|webm|ogg)$/) ? <video src={url} className="w-full h-24 object-cover" controls /> : <img src={url} className="w-full h-24 object-cover" alt="" />}
+                    <button onClick={() => setMediaUrls(prev => prev.filter((_,idx) => idx !== i))} className="absolute top-1 right-1 bg-black/60 rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition"><X className="w-3 h-3 text-white" /></button>
+                  </div>
+                ))}
+              </div>
+            )}
+            {taggedProduct && (
+              <div className="flex items-center justify-between bg-purple-500/10 border border-purple-500/30 rounded-xl p-2">
+                <span className="text-sm text-purple-300">🔗 {taggedProduct.title}</span>
+                <button onClick={() => setTaggedProduct(null)} className="text-zinc-400 hover:text-white"><X className="w-4 h-4" /></button>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2">
+                <button onClick={() => { const url = prompt('Enter image/video URL:'); if (url) setMediaUrls(prev => [...prev, url]); }} className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 transition"><ImagePlus className="w-4 h-4" /></button>
+                <button onClick={() => { /* product search logic (simplified) */ }} className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 transition"><Tag className="w-4 h-4" /></button>
+                <button className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-yellow-400 transition"><Sparkles className="w-4 h-4" /></button>
+              </div>
+              <button onClick={handlePost} disabled={posting || (!content.trim() && mediaUrls.length === 0 && !taggedProduct)} className="px-4 py-1.5 bg-purple-600 hover:bg-purple-700 rounded-full text-sm font-medium transition disabled:opacity-50">
+                {posting ? 'Posting...' : 'Post'}
+              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
+  );
+}
+
+// ---------- Main Feed Page ----------
+export default function FeedPage() {
+  const [items, setItems] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const loaderRef = useRef(null);
+
+  const fetchFeed = useCallback(async (pageNum = 1, reset = false) => {
+    if (pageNum === 1) setInitialLoading(true);
+    setLoading(true);
+    const token = getToken();
+    const res = await fetch(`/api/feed/combined?page=${pageNum}&limit=10`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    const data = await res.json();
+    if (data.items) {
+      if (reset || pageNum === 1) setItems(data.items);
+       else setItems(prev => [...prev, ...data.items]);
+      setHasMore(data.hasMore);
+    }
+    setLoading(false);
+    setInitialLoading(false);
+  }, []);
+
+  useEffect(() => {
+    setUser(getUser());
+    fetchFeed(1, true);
+  }, []);
+
+  // Infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore && !loading) {
+        setPage(p => p + 1);
+      }
+    }, { threshold: 0.1 });
+    if (loaderRef.current) observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [hasMore, loading]);
+
+  useEffect(() => {
+    if (page > 1) fetchFeed(page);
+  }, [page]);
+
+  return (
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      <div className="fixed inset-0 z-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(168,85,247,0.15) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-900/20 via-transparent to-cyan-900/20" />
+      <div className="relative z-10 max-w-2xl mx-auto px-4 pt-24 pb-24">
+        {user && <Composer onPost={() => fetchFeed(1, true)} />}
+
+        {initialLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => <PostSkeleton key={i} />)}
+          </div>
+        ) : items.length === 0 ? (
+          <div className="text-center py-20 text-zinc-500">
+            <Sparkles className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p>No content yet. Be the first to share!</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {items.map((item, i) => {
+                if (item.type === 'post') return <PostCard key={item.data.id} post={item.data} user={user} refresh={() => fetchFeed(1, true)} />;
+                if (item.type === 'product') return <ProductCard key={`product-${item.data.id}`} product={item.data} />;
+                if (item.type === 'wattpad') return <WattpadCard key={`wattpad-${item.data.story_id}`} story={item.data} />;
+                return null;
+              })}
+            </div>
+            {hasMore && <div ref={loaderRef} className="h-10" />}
+            {loading && <div className="flex justify-center py-4"><Loader2 className="w-6 h-6 animate-spin text-purple-400" /></div>}
+          </>
+        )}
+      </div>
+    </div>
   );
 }

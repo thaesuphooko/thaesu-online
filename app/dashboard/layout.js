@@ -2,170 +2,258 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
-import { Toaster } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { motion, AnimatePresence } from 'framer-motion';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  LayoutDashboard, Package, ShoppingCart, TicketPercent, Store,
+  BarChart3, Globe, Monitor, Wrench, HeartPulse, ShieldAlert,
+  Bot, KeyRound, Activity, Settings, Send, Music, Users,
+  ChevronDown, PanelLeftClose, PanelLeftOpen, Menu, X,
+  BadgeCheck, Circle, FileText, Newspaper,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Search, Moon, Sun, RefreshCw, Play, Pause } from 'lucide-react';
-import { useAudio } from '@/store/AudioContext';
 
 const queryClient = new QueryClient();
 
-const menuItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: '📊' },
-  { name: 'Products', href: '/dashboard/products', icon: '📦' },
-  { name: 'Orders', href: '/dashboard/orders', icon: '🛒' },
-  { name: 'Coupons', href: '/dashboard/coupons', icon: '🎫' },
-  { name: 'Settings', href: '/dashboard/settings', icon: '⚙️' },
-  { name: 'Telegram Config', href: '/dashboard/telegram-config', icon: '📡' },
-  { name: 'Scrape', href: '/dashboard/scrape', icon: '🕷️' },
-  { name: 'Crawl', href: '/dashboard/crawl', icon: '🕸️' },
-  { name: 'Browser', href: '/dashboard/browser', icon: '🌐' },
-  { name: 'System Health', href: '/dashboard/health', icon: '🫀' },
-  { name: 'Catalog Sanitizer', href: '/dashboard/catalog-sanitizer', icon: '🧹' },
-  { name: 'Health Monitor', href: '/dashboard/health-monitor', icon: '💓' },
-  { name: 'Users', href: '/dashboard/users', icon: '👥' },
-  { name: 'Error Bot', href: '/dashboard/error-bot', icon: '🤖' },
-  { name: 'AI Chat', href: '/dashboard/ai-chat', icon: '🤖' },
-  { name: 'Key Tester', href: '/dashboard/key-tester', icon: '🔬' },
-  { name: 'Music', href: '/dashboard/music', icon: '🎵' },
+const menuCategories = [
+  {
+    id: 'main',
+    items: [
+      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    ],
+  },
+  {
+    id: 'ecommerce',
+    label: 'E‑Commerce Management',
+    icon: Package,
+    items: [
+      { name: 'Products', href: '/dashboard/products', icon: Package },
+      { name: 'Orders', href: '/dashboard/orders', icon: ShoppingCart },
+      { name: 'Coupons', href: '/dashboard/coupons', icon: TicketPercent },
+      { name: 'Vendor Mgmt', href: '/dashboard/vendor-management', icon: Store },
+      { name: 'Reports', href: '/dashboard/reports', icon: BarChart3 },
+    ],
+  },
+  {
+    id: 'automation',
+    label: 'Automation & Scrapers',
+    icon: Globe,
+    items: [
+      { name: 'Scrape', href: '/dashboard/scrape', icon: Globe },
+      { name: 'Crawl', href: '/dashboard/crawl', icon: Globe },
+      { name: 'Browser', href: '/dashboard/browser', icon: Monitor },
+      { name: 'Catalog Sanitizer', href: '/dashboard/catalog-sanitizer', icon: Wrench },
+    ],
+  },
+  {
+    id: 'system',
+    label: 'System & AI Security',
+    icon: ShieldAlert,
+    items: [
+      { name: 'System Health', href: '/dashboard/health', icon: HeartPulse },
+      { name: 'Error Bot', href: '/dashboard/error-bot', icon: ShieldAlert },
+      { name: 'AI Chat', href: '/dashboard/ai-chat', icon: Bot },
+      { name: 'Key Tester', href: '/dashboard/key-tester', icon: KeyRound },
+      { name: 'Health Monitor', href: '/dashboard/health-monitor', icon: Activity },
+    ],
+  },
+  {
+    id: 'content',
+    label: 'Content',
+    icon: FileText,
+    items: [
+      { name: 'Feed Mgmt', href: '/dashboard/feed-management', icon: Newspaper },
+      { name: 'Users', href: '/dashboard/users', icon: Users },
+    ],
+  },
+  {
+    id: 'settings',
+    label: 'Global Settings',
+    icon: Settings,
+    items: [
+      { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+      { name: 'Telegram Config', href: '/dashboard/telegram-config', icon: Send },
+      { name: 'Music', href: '/dashboard/music', icon: Music },
+    ],
+  },
 ];
 
-function ThemeToggle() {
-  const [dark, setDark] = useState(false);
+function AdminFooter() {
+  const [admin, setAdmin] = useState(null);
   useEffect(() => {
-    const stored = localStorage.getItem('themePreference');
-    if (stored === 'dark') setDark(true);
+    const u = JSON.parse(localStorage.getItem('user') || 'null');
+    if (u) setAdmin(u);
   }, []);
-  const toggle = () => {
-    const next = !dark;
-    setDark(next);
-    localStorage.setItem('themePreference', next ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', next);
-  };
+  if (!admin) return null;
   return (
-    <Button variant="ghost" size="icon" onClick={toggle}>
-      {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-    </Button>
-  );
-}
-
-function RefreshButton() {
-  const queryClient = useQueryClient();
-  return (
-    <Button variant="ghost" size="icon" onClick={() => queryClient.invalidateQueries()}>
-      <RefreshCw className="w-5 h-5" />
-    </Button>
-  );
-}
-
-function MusicToggle() {
-  const { isPlaying, togglePlay, musicEnabled } = useAudio();
-  if (!musicEnabled) return null;
-  return (
-    <Button variant="ghost" size="icon" onClick={togglePlay} title={isPlaying ? 'Pause Music' : 'Play Music'}>
-      {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-    </Button>
+    <div className="p-3 border-t border-white/10 flex items-center gap-3">
+      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-lg shadow-purple-500/30">
+        {admin.name?.[0] || admin.full_name?.[0] || 'A'}
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-semibold text-white truncate">{admin.name || admin.full_name}</p>
+        <div className="flex items-center gap-1 mt-0.5">
+          <BadgeCheck className="w-3.5 h-3.5 text-purple-400" />
+          <span className="text-[10px] text-purple-400">Super Admin</span>
+        </div>
+      </div>
+      <div className="flex items-center gap-1">
+        <Circle className="w-2 h-2 fill-green-400 text-green-400" />
+        <span className="text-[10px] text-green-400">Online</span>
+      </div>
+    </div>
   );
 }
 
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [expandedCategories, setExpandedCategories] = useState(
+    menuCategories.map(c => c.id)
+  );
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    // Check admin hash from URL or localStorage
-    const hashFromUrl = window.location.hash.substring(1);
-    const hashFromStorage = localStorage.getItem('adminSecret');
-    const expectedHash = process.env.NEXT_PUBLIC_ADMIN_HASH || 'super-secret-admin-step';
-    
-    if (hashFromUrl === expectedHash) {
-      localStorage.setItem('adminSecret', expectedHash);
+    const hash = window.location.hash.substring(1);
+    const stored = localStorage.getItem('adminSecret');
+    const expected = process.env.NEXT_PUBLIC_ADMIN_HASH || 'step';
+    if (hash === expected) {
+      localStorage.setItem('adminSecret', expected);
       setAuthenticated(true);
-      // Clean URL
       window.history.replaceState({}, '', window.location.pathname);
-    } else if (hashFromStorage === expectedHash) {
+    } else if (stored === expected) {
       setAuthenticated(true);
     } else {
-      // Not authenticated – redirect to home
       router.replace('/');
-      return;
     }
-    setAuthLoading(false);
   }, [router]);
 
-  // Show loading screen while checking auth
-  if (authLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <p className="text-muted-foreground">Checking Admin Authorization...</p>
-      </div>
-    );
-  }
-
-  // If not authenticated after loading, don't render admin panel
   if (!authenticated) return null;
 
-  const handleGlobalSearch = (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-    router.push(`/dashboard/products?search=${encodeURIComponent(searchQuery)}`);
+  const toggleCategory = (id) => {
+    setExpandedCategories(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    );
   };
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background text-foreground">
-        <Toaster position="top-right" />
-        {sidebarOpen && (
-          <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
-        )}
+      <div className="min-h-screen bg-black text-white flex">
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+        </AnimatePresence>
 
-        <aside className={cn(
-          "fixed top-0 left-0 z-50 h-full w-64 glass-card !rounded-none border-r border-border transform transition-transform duration-300",
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-          "lg:translate-x-0 lg:static lg:z-auto"
-        )}>
-          <div className="p-4 border-b border-border flex items-center justify-between">
-            <h1 className="text-lg font-bold bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">
-              King Panel <span className="text-xs text-muted-foreground">v3.0</span>
-            </h1>
-            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(false)}>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </Button>
+        <motion.aside
+          initial={false}
+          animate={{ width: collapsed ? 72 : 280 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          className={cn(
+            "fixed top-0 left-0 h-full z-50 bg-black/40 backdrop-blur-xl border-r border-white/10 flex flex-col lg:translate-x-0 lg:static lg:z-auto",
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          )}
+        >
+          <div className="p-3 border-b border-white/10 flex items-center justify-between">
+            {!collapsed && (
+              <h1 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                King Panel v4.0
+              </h1>
+            )}
+            <button
+              onClick={() => setCollapsed(!collapsed)}
+              className="p-1.5 rounded-lg hover:bg-white/10 text-white/70 hover:text-white transition"
+            >
+              {collapsed ? <PanelLeftOpen className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
+            </button>
           </div>
-          <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100%-4rem)]">
-            {menuItems.map(item => (
-              <Link key={item.href} href={item.href} onClick={() => setSidebarOpen(false)}
-                className={cn("flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-200",
-                  pathname === item.href ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-accent/10')}>
-                <span>{item.icon}</span>{item.name}
-              </Link>
+
+          <nav className="flex-1 overflow-y-auto p-2 space-y-1">
+            {menuCategories.map(category => (
+              <div key={category.id}>
+                {category.label && !collapsed && (
+                  <button
+                    onClick={() => toggleCategory(category.id)}
+                    className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition"
+                  >
+                    <span className="flex items-center gap-2">
+                      {category.icon && <category.icon className="w-4 h-4" />}
+                      {category.label}
+                    </span>
+                    <ChevronDown
+                      className={cn(
+                        "w-4 h-4 transition-transform",
+                        expandedCategories.includes(category.id) ? 'rotate-0' : '-rotate-90'
+                      )}
+                    />
+                  </button>
+                )}
+                {category.label && collapsed ? (
+                  <div className="flex justify-center py-1">
+                    {category.icon && <category.icon className="w-5 h-5 text-zinc-500" />}
+                  </div>
+                ) : null}
+
+                <AnimatePresence>
+                  {(collapsed || expandedCategories.includes(category.id)) && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-0.5 overflow-hidden"
+                    >
+                      {category.items.map(item => {
+                        const isActive = pathname === item.href;
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setSidebarOpen(false)}
+                            className={cn(
+                              "flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all group",
+                              isActive
+                                ? 'bg-purple-600/20 text-purple-400 shadow-[inset_0_0_0_1px_rgba(168,85,247,0.2)]'
+                                : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                            )}
+                          >
+                            <div className="relative shrink-0">
+                              <item.icon className={cn(
+                                "w-5 h-5 transition-transform group-hover:scale-110",
+                                isActive && 'drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]'
+                              )} />
+                            </div>
+                            {!collapsed && (
+                              <span className="truncate flex-1">{item.name}</span>
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ))}
           </nav>
-        </aside>
+          {!collapsed && <AdminFooter />}
+        </motion.aside>
 
-        <div className="lg:pl-64">
-          <header className="sticky top-0 z-30 glass-card !rounded-none border-b border-border p-4 flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
-            </Button>
-            <form onSubmit={handleGlobalSearch} className="flex-1 max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search..." className="pl-10" />
-              </div>
-            </form>
-            <MusicToggle />
-            <RefreshButton />
-            <ThemeToggle />
-            <Link href="/" className="text-sm text-primary hover:underline">View Site</Link>
+        <div className="flex-1 lg:pl-[var(--sidebar-width)] min-w-0">
+          <header className="sticky top-0 z-30 bg-black/20 backdrop-blur-xl border-b border-white/10 p-4 flex items-center gap-4">
+            <button className="lg:hidden text-white" onClick={() => setSidebarOpen(true)}>
+              <Menu className="w-6 h-6" />
+            </button>
+            <div className="flex-1" />
           </header>
-          <main className="p-4 md:p-6 animate-fadeIn">{children}</main>
+          <main className="p-4 md:p-6">{children}</main>
         </div>
       </div>
     </QueryClientProvider>

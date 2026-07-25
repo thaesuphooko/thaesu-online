@@ -1,31 +1,31 @@
 import { NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
-import path from 'path';
+import { authenticateSync } from '@/lib/socialAuth';
 import { query } from '@/lib/db';
-import { verifyToken } from '@/lib/auth';
+import { v2 as cloudinary } from 'cloudinary';
 
-export async function PUT(request) {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+cloudinary.config({ url: process.env.CLOUDINARY_URL_1 });
+
+export async function PUT(req) {
+  const user = authenticateSync(req);
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  try {
+    const formData = await req.formData();
+    const file = formData.get('avatar');
+    if (!file) return NextResponse.json({ error: 'No file' }, { status: 400 });
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        { folder: 'avatars', transformation: [{ width: 200, height: 200, crop: 'thumb', gravity: 'face' }] },
+        (err, result) => err ? reject(err) : resolve(result)
+      ).end(buffer);
+    });
+
+    await query('UPDATE users SET avatar_url = $1 WHERE id = $2', [result.secure_url, user.id]);
+    return NextResponse.json({ avatarUrl: result.secure_url });
+  } catch (error) {
+    console.error('Avatar upload error:', error);
+    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
   }
-  const token = authHeader.split(' ')[1];
-  const user = verifyToken(token);
-  if (!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-
-  const formData = await request.formData();
-  const file = formData.get('avatar');
-  if (!file) return NextResponse.json({ error: 'No file' }, { status: 400 });
-
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const ext = file.name.split('.').pop().toLowerCase();
-  const filename = `avatar_${user.id}_${Date.now()}.${ext}`;
-  const filePath = path.join(process.cwd(), 'public', 'avatars', filename);
-  await writeFile(filePath, buffer);
-
-  const avatarUrl = `/avatars/${filename}`;
-  await query('UPDATE users SET avatar_url = $1 WHERE id = $2', [avatarUrl, user.id]);
-
-  return NextResponse.json({ avatarUrl });
 }

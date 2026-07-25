@@ -1,63 +1,114 @@
-export const dynamic = 'force-dynamic';
-import { query } from '@/lib/db';
-import { verifyToken } from '@/lib/auth';
+import { NextResponse } from 'next/server';
+import { Server as SocketIOServer } from 'socket.io';
+import pool from '@/lib/db';
+import jwt from 'jsonwebtoken';
+import { generateAIReply } from '@/lib/aiChatHelper';
 
-export async function GET(request) {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  const token = authHeader.split(' ')[1];
-  let user;
-  try { user = verifyToken(token); } catch { return Response.json({ error: 'Invalid token' }, { status: 401 }); }
+let io;
+const JWT_SECRET = process.env.JWT_SECRET || 'thaesu-secret-key-2024-prod-v2';
 
-  const { searchParams } = new URL(request.url);
-  const otherUserId = searchParams.get('with');
-  const productId = searchParams.get('product_id') || null;
+const onlineUsers = new Map(); // userId -> Set<socketId>
 
-  // Build dynamic conditions
-  const conditions = ['(sender_id = $1 OR receiver_id = $1)'];
-  const params = [user.id];
-  let idx = 2;
+export async function GET(req) {
+  if (!io) {
+    const { socket: serverSocket } = await import('http').then(m => m);
+    io = new SocketIOServer(serverSocket, {
+      path: '/api/chat/socket',
+      addTrailingSlash: false,
+      cors: { origin: '*' },
+    });
 
-  if (otherUserId) {
-    conditions.push(`(sender_id = $${idx} OR receiver_id = $${idx})`);
-    params.push(otherUserId);
-    idx++;
+    io.on('connection', (socket) => {
+      console.log('User connected:', socket.id);
+
+      socket.on('join', ({ token }) => {
+        try {
+          const decoded = jwt.verify(token, JWT_SECRET);
+          socket.user = decoded;
+          socket.join(decoded.id); // personal room for customer
+          if (decoded.role === 'admin') {
+            socket.join('admins');
+          }
+          // Track online users
+          if (!onlineUsers.has(decoded.id)) onlineUsers.set(decoded.id, new Set());
+          onlineUsers.get(decoded.id).add(socket.id);
+          io.to('admins').emit('user online', { userId: decoded.id, role: decoded.role });
+          console.log(`${decoded.role} joined: ${decoded.id}`);
+        } catch (err) {
+          console.error('Invalid token:', err.message);
+        }
+      });
+
+      // Typing indicator
+      socket.on('typing', ({ conversationId, to }) => {
+        if (socket.user) {
+          socket.to(to).emit('typing', { conversationId, userId: socket.user.id });
+        }
+      });
+      socket.on('stop typing', ({ conversationId, to }) => {
+        if (socket.user) {
+          socket.to(to).emit('stop typing', { conversationId, userId: socket.user.id });
+        }
+      });
+
+      // Customer message
+      socket.on('customer message', async ({ conversationId, message }) => {
+        if (!socket.user || socket.user.role !== 'customer') return;
+        try {
+          const { rows: [msg] } = await pool.query(
+            'INSERT INTO chat_messages (sender_id, sender_role, message, conversation_id) VALUES ($1, $2, $3, $4) RETURNING *',
+            [socket.user.id, 'customer', message, conversationId]
+          );
+          io.to('admins').emit('new message', msg);
+          // Auto AI reply
+          setTimeout(async () => {
+            try {
+              const aiReply = await generateAIReply(message);
+              const { rows: [aiMsg] } = await pool.query(
+                'INSERT INTO chat_messages (sender_id, sender_role, message, conversation_id) VALUES ($1, $2, $3, $4) RETURNING *',
+                [null, 'ai', aiReply, conversationId]
+              );
+              io.to(socket.user.id).emit('new message', aiMsg);
+              io.to('admins').emit('new message', aiMsg);
+            } catch (e) { console.error('AI reply error:', e); }
+          }, 1500);
+        } catch (err) {
+          console.error('Message error:', err);
+        }
+      });
+
+      // Admin message
+      socket.on('admin message', async ({ conversationId, message, customerId }) => {
+        if (!socket.user || socket.user.role !== 'admin') return;
+        try {
+          const { rows: [msg] } = await pool.query(
+            'INSERT INTO chat_messages (sender_id, sender_role, message, conversation_id) VALUES ($1, $2, $3, $4) RETURNING *',
+            [socket.user.id, 'admin', message, conversationId]
+          );
+          io.to(customerId).emit('new message', msg);
+          io.to('admins').emit('new message', msg);
+        } catch (err) {
+          console.error('Admin message error:', err);
+        }
+      });
+
+      // Disconnect handling
+      socket.on('disconnect', () => {
+        if (socket.user) {
+          const userSockets = onlineUsers.get(socket.user.id);
+          if (userSockets) {
+            userSockets.delete(socket.id);
+            if (userSockets.size === 0) {
+              onlineUsers.delete(socket.user.id);
+              io.to('admins').emit('user offline', { userId: socket.user.id });
+            }
+          }
+        }
+        console.log('User disconnected:', socket.id);
+      });
+    });
   }
-  if (productId) {
-    conditions.push(`product_id = $${idx}`);
-    params.push(productId);
-    idx++;
-  }
-
-  const res = await query(
-    `SELECT m.*, s.full_name as sender_name, r.full_name as receiver_name 
-     FROM messages m 
-     JOIN users s ON s.id = m.sender_id
-     JOIN users r ON r.id = m.receiver_id
-     WHERE ${conditions.join(' AND ')} 
-     ORDER BY m.created_at DESC 
-     LIMIT 100`,
-    params
-  );
-  return Response.json(res.rows);
+  return NextResponse.json({ status: 'Socket.IO server active' });
 }
 
-export async function POST(request) {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  const token = authHeader.split(' ')[1];
-  let user;
-  try { user = verifyToken(token); } catch { return Response.json({ error: 'Invalid token' }, { status: 401 }); }
-
-  const { receiver_id, product_id, content } = await request.json();
-  if (!receiver_id || !content) {
-    return Response.json({ error: 'receiver_id and content are required' }, { status: 400 });
-  }
-
-  const res = await query(
-    `INSERT INTO messages (sender_id, receiver_id, product_id, content) 
-     VALUES ($1, $2, $3, $4) RETURNING *`,
-    [user.id, receiver_id, product_id || null, content]
-  );
-  return Response.json(res.rows[0], { status: 201 });
-}
+export const runtime = 'nodejs';

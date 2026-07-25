@@ -1,0 +1,83 @@
+'use client';
+import { useState, useEffect, useRef } from 'react';
+import { io } from 'socket.io-client';
+import { Send, User } from 'lucide-react';
+
+const SOCKET_URL = typeof window !== 'undefined' ? window.location.origin : '';
+
+export default function ChatPage() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [typingStatus, setTypingStatus] = useState('');
+  const socketRef = useRef(null);
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const [receiverId, setReceiverId] = useState(''); // In real app, you'd select from a contact list
+
+  useEffect(() => {
+    if (!currentUser?.id) return;
+    socketRef.current = io(SOCKET_URL, { path: '/api/chat/socket' });
+    const socket = socketRef.current;
+    socket.emit('join', currentUser.id);
+
+    socket.on('private message', (msg) => {
+      setMessages(prev => [...prev, msg]);
+    });
+
+    socket.on('message sent', (msg) => {
+      setMessages(prev => [...prev, msg]);
+    });
+
+    socket.on('typing', ({ from }) => {
+      setTypingStatus('Typing...');
+      setTimeout(() => setTypingStatus(''), 3000);
+    });
+
+    socket.on('stop typing', () => setTypingStatus(''));
+
+    return () => { socket.disconnect(); };
+  }, [currentUser?.id]);
+
+  const sendMessage = () => {
+    if (!input.trim() || !receiverId) return;
+    socketRef.current.emit('private message', { to: receiverId, message: input });
+    setInput('');
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white p-4 pt-24">
+      <h1 className="text-2xl font-bold mb-4">Chat</h1>
+      <div className="max-w-lg mx-auto">
+        <div className="mb-2">
+          <input
+            type="text"
+            placeholder="Receiver User ID"
+            value={receiverId}
+            onChange={e => setReceiverId(e.target.value)}
+            className="w-full p-2 bg-zinc-800 rounded text-white"
+          />
+        </div>
+        <div className="h-96 overflow-y-auto bg-zinc-900 p-4 rounded-2xl border border-zinc-800 mb-4">
+          {messages.map((msg, i) => (
+            <div key={i} className={`flex ${msg.sender_id === currentUser.id ? 'justify-end' : 'justify-start'} mb-2`}>
+              <div className={`p-2 rounded-xl max-w-[80%] ${msg.sender_id === currentUser.id ? 'bg-purple-600' : 'bg-zinc-700'}`}>
+                <p className="text-sm">{msg.content}</p>
+              </div>
+            </div>
+          ))}
+          {typingStatus && <p className="text-sm text-zinc-400">{typingStatus}</p>}
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && sendMessage()}
+            placeholder="Type a message..."
+            className="flex-1 p-2 bg-zinc-800 rounded-xl text-white"
+          />
+          <button onClick={sendMessage} className="p-2 bg-purple-600 rounded-xl"><Send className="w-5 h-5" /></button>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,9 +1,9 @@
 export const dynamic = 'force-dynamic';
 import { query } from '@/lib/db';
 import { hashPassword, generateToken } from '@/lib/auth';
+import { v4 as uuidv4 } from 'uuid';
 
 function generateUID() {
-  // Generate a short 8-character alphanumeric UID (like Telegram)
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let uid = '';
   for (let i = 0; i < 8; i++) {
@@ -14,7 +14,7 @@ function generateUID() {
 
 export async function POST(request) {
   try {
-    const { name, password, email, phone } = await request.json();
+    const { name, password, email, phone, role, store_name, store_slug } = await request.json();
 
     if (!name || !password) {
       return Response.json({ error: 'Name and password are required' }, { status: 400 });
@@ -23,7 +23,10 @@ export async function POST(request) {
       return Response.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
     }
 
-    // Ensure UID is unique
+    // Determine role – accept from client if 'vendor', otherwise default 'customer'
+    const userRole = (role === 'vendor' || role === 'admin') ? role : 'customer';
+
+    // Generate unique UID
     let uid = '';
     let exists = true;
     while (exists) {
@@ -34,10 +37,10 @@ export async function POST(request) {
 
     const password_hash = await hashPassword(password);
     const result = await query(
-      `INSERT INTO users (email, password_hash, full_name, phone, uid, role)
-       VALUES ($1, $2, $3, $4, $5, 'customer')
-       RETURNING id, email, full_name, phone, uid, role, is_verified, created_at`,
-      [email || null, password_hash, name, phone || null, uid]
+      `INSERT INTO users (email, password_hash, full_name, phone, uid, role, store_name, store_slug)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       RETURNING id, email, full_name, phone, uid, role, store_name, store_slug, is_verified, created_at`,
+      [email || null, password_hash, name, phone || null, uid, userRole, store_name || null, store_slug || null]
     );
     const user = result.rows[0];
 
@@ -51,6 +54,8 @@ export async function POST(request) {
         email: user.email,
         phone: user.phone,
         role: user.role,
+        store_name: user.store_name,
+        store_slug: user.store_slug,
       },
       token,
     }, { status: 201 });

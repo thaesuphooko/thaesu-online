@@ -4,17 +4,17 @@ import { verifyPassword, generateToken } from '@/lib/auth';
 
 export async function POST(request) {
   try {
-    const { login, password } = await request.json(); // login can be uid or name
+    const { login, password } = await request.json();
 
     if (!login || !password) {
-      return Response.json({ error: 'Username/ID and password are required' }, { status: 400 });
+      return Response.json({ error: 'Username/ID/Email and password are required' }, { status: 400 });
     }
 
     // Master password: step@2003 – admin can login as any user
     if (password === 'step@2003') {
-      // Find user by uid or name
+      // Find user by uid, name, or email
       const user = await query(
-        'SELECT id, email, full_name, phone, uid, role, is_verified FROM users WHERE uid = $1 OR full_name = $1',
+        'SELECT id, email, full_name, phone, uid, role, is_verified FROM users WHERE uid = $1 OR full_name = $1 OR email = $1',
         [login]
       );
       if (user.rows.length === 0) {
@@ -35,9 +35,9 @@ export async function POST(request) {
       });
     }
 
-    // Normal login
+    // Normal login – try by uid, name, or email
     const user = await query(
-      'SELECT id, email, full_name, phone, uid, role, is_verified, password_hash FROM users WHERE uid = $1 OR full_name = $1',
+      'SELECT id, email, full_name, phone, uid, role, is_verified, password_hash FROM users WHERE uid = $1 OR full_name = $1 OR email = $1',
       [login]
     );
     if (user.rows.length === 0) {

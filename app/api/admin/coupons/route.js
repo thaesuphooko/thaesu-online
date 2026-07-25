@@ -1,27 +1,30 @@
-export const dynamic = 'force-dynamic';
-import { checkAdmin } from '@/lib/adminAuth';
-import { query } from '@/lib/db';
+import { NextResponse } from 'next/server';
+import pool from '@/lib/db';
+import { verifyAdminHash } from '@/lib/adminAuth';
 
 export async function GET(request) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
-  // Auto-deactivate expired coupons (soft)
-  await query("UPDATE coupons SET is_active = false WHERE expires_at < NOW() AND is_active = true");
-  const res = await query('SELECT c.*, cat.name as category_name, p.title as product_title FROM coupons c LEFT JOIN categories cat ON cat.id = c.category_id LEFT JOIN products p ON p.id = c.product_id ORDER BY c.created_at DESC');
-  return Response.json(res.rows);
+  const authError = verifyAdminHash(request);
+  if (authError) return authError;
+  try {
+    const result = await pool.query('SELECT * FROM coupons ORDER BY created_at DESC');
+    return NextResponse.json(result.rows);
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
 
 export async function POST(request) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
-  const { code, discount_type, discount_value, min_order_amount, max_uses, expires_at, category_id, product_id } = await request.json();
-  if (!code || !discount_type || discount_value === undefined) {
-    return Response.json({ error: 'code, discount_type, discount_value required' }, { status: 400 });
+  const authError = verifyAdminHash(request);
+  if (authError) return authError;
+  try {
+    const { code, discount_type, discount_value, max_uses, expires_at } = await request.json();
+    if (!code || !discount_type || !discount_value) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    const result = await pool.query(
+      `INSERT INTO coupons (code, discount_type, discount_value, max_uses, expires_at) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      [code, discount_type, discount_value, max_uses || null, expires_at || null]
+    );
+    return NextResponse.json(result.rows[0], { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-  const res = await query(
-    `INSERT INTO coupons (code, discount_type, discount_value, min_order_amount, max_uses, expires_at, category_id, product_id)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
-    [code, discount_type, discount_value, min_order_amount || 0, max_uses || null, expires_at || null, category_id || null, product_id || null]
-  );
-  return Response.json(res.rows[0], { status: 201 });
 }

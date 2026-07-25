@@ -1,53 +1,67 @@
-export const dynamic = 'force-dynamic';
-import { query } from '@/lib/db';
-import { checkAdmin } from '@/lib/adminAuth';
+import { NextResponse } from 'next/server';
+import { verifyAdminHash } from '@/lib/adminAuth';
+import pool from '@/lib/db';
 
-// GET single product by ID
-export async function GET(request, { params }) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
-
-  const { id } = params;
-  const res = await query('SELECT * FROM products WHERE id = $1', [id]);
-  if (res.rows.length === 0) return Response.json({ error: 'Not found' }, { status: 404 });
-  return Response.json(res.rows[0]);
-}
-
-// PUT update a product
 export async function PUT(request, { params }) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
+  const authError = verifyAdminHash(request);
+  if (authError) return authError;
 
-  const { id } = params;
-  const body = await request.json();
+  try {
+    const { id } = await params;
+    const body = await request.json();
+    
+    // Allowed fields to update
+    const allowedFields = ['title', 'price', 'stock', 'category', 'is_active'];
+    const updates = [];
+    const values = [];
+    let paramIdx = 1;
 
-  // Build dynamic update
-  const allowedFields = ['title', 'slug', 'description', 'price', 'compare_at_price', 'stock', 'category', 'tags', 'attributes', 'is_18_plus', 'is_active'];
-  const updates = [];
-  const values = [];
-  let idx = 1;
-  for (const field of allowedFields) {
-    if (body[field] !== undefined) {
-      updates.push(`${field} = $${idx}`);
-      values.push(field === 'attributes' || field === 'tags' ? JSON.stringify(body[field]) : body[field]);
-      idx++;
+    for (const field of allowedFields) {
+      if (body[field] !== undefined) {
+        updates.push(`${field} = $${paramIdx}`);
+        values.push(body[field]);
+        paramIdx++;
+      }
     }
-  }
-  if (updates.length === 0) return Response.json({ error: 'No fields to update' }, { status: 400 });
 
-  values.push(id);
-  const queryText = `UPDATE products SET ${updates.join(', ')}, updated_at = NOW() WHERE id = $${idx} RETURNING *`;
-  const res = await query(queryText, values);
-  if (res.rows.length === 0) return Response.json({ error: 'Not found' }, { status: 404 });
-  return Response.json({ message: 'Product updated', product: res.rows[0] });
+    if (updates.length === 0) {
+      return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
+    }
+
+    updates.push('updated_at = NOW()');
+    values.push(id);
+
+    const { rows } = await pool.query(
+      `UPDATE products SET ${updates.join(', ')} WHERE id = $${paramIdx}::uuid RETURNING *`,
+      values
+    );
+
+    if (!rows.length) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(rows[0]);
+  } catch (error) {
+    console.error('❌ Product PUT Error:', error.message);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
-// DELETE a product
 export async function DELETE(request, { params }) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
+  const authError = verifyAdminHash(request);
+  if (authError) return authError;
 
-  const { id } = params;
-  await query('DELETE FROM products WHERE id = $1', [id]);
-  return Response.json({ message: 'Product deleted' });
+  try {
+    const { id } = await params;
+    const { rowCount } = await pool.query('DELETE FROM products WHERE id = $1::uuid', [id]);
+    
+    if (rowCount === 0) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('❌ Product DELETE Error:', error.message);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

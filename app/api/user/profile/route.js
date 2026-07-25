@@ -1,57 +1,40 @@
+import { NextResponse } from 'next/server';
+import { authenticate } from '@/lib/socialAuth';
 import { query } from '@/lib/db';
-import { verifyToken, hashPassword } from '@/lib/auth';
+import { hashPassword, verifyPassword } from '@/lib/auth';
 
-export async function GET(request) {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  const token = authHeader.split(' ')[1];
-  const user = verifyToken(token);
-  if (!user) return Response.json({ error: 'Invalid token' }, { status: 401 });
+export async function PUT(req) {
+  const user = await authenticate(req);
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const result = await query(
-    'SELECT id, uid, email, full_name, phone, role, avatar_url, avatar_url, created_at FROM users WHERE id = $1',
-    [user.id]
-  );
-  if (result.rows.length === 0) {
-    return Response.json({ error: 'User not found' }, { status: 404 });
-  }
-  return Response.json({ user: result.rows[0] });
-}
+  const { name, email, phone, currentPassword, newPassword } = await req.json();
+  try {
+    const updates = [];
+    const values = [];
+    let idx = 1;
+    if (name) { updates.push(`full_name = $${idx++}`); values.push(name); }
+    if (email) { updates.push(`email = $${idx++}`); values.push(email); }
+    if (phone) { updates.push(`phone = $${idx++}`); values.push(phone); }
 
-export async function PUT(request) {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  const token = authHeader.split(' ')[1];
-  const user = verifyToken(token);
-  if (!user) return Response.json({ error: 'Invalid token' }, { status: 401 });
-
-  const { name, email, phone, currentPassword, newPassword } = await request.json();
-
-  // If changing password, verify current password
-  if (newPassword) {
-    if (!currentPassword) {
-      return Response.json({ error: 'Current password is required to set new password' }, { status: 400 });
+    if (newPassword && currentPassword) {
+      const userRow = await query('SELECT password_hash FROM users WHERE id = $1', [user.id]);
+      if (!userRow.rows.length) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      const valid = await verifyPassword(currentPassword, userRow.rows[0].password_hash);
+      if (!valid) return NextResponse.json({ error: 'Current password is incorrect' }, { status: 400 });
+      const hashed = await hashPassword(newPassword);
+      updates.push(`password_hash = $${idx++}`);
+      values.push(hashed);
     }
-    const currentUser = await query('SELECT password_hash FROM users WHERE id = $1', [user.id]);
-    const { verifyPassword } = await import('@/lib/auth');
-    const valid = await verifyPassword(currentPassword, currentUser.rows[0].password_hash);
-    if (!valid) {
-      return Response.json({ error: 'Current password is incorrect' }, { status: 400 });
+
+    if (updates.length > 0) {
+      values.push(user.id);
+      await query(`UPDATE users SET ${updates.join(', ')} WHERE id = $${idx}`, values);
     }
-    const newHash = await hashPassword(newPassword);
-    await query('UPDATE users SET password_hash = $1 WHERE id = $2', [newHash, user.id]);
+
+    const updated = await query('SELECT id, full_name, email, phone, uid, avatar_url FROM users WHERE id = $1', [user.id]);
+    return NextResponse.json({ user: updated.rows[0] });
+  } catch (error) {
+    console.error('Profile update error:', error);
+    return NextResponse.json({ error: 'Update failed' }, { status: 500 });
   }
-
-  // Update other fields
-  await query(
-    'UPDATE users SET full_name = COALESCE($1, full_name), email = COALESCE($2, email), phone = COALESCE($3, phone) WHERE id = $4',
-    [name || null, email || null, phone || null, user.id]
-  );
-
-  const updated = await query('SELECT id, uid, email, full_name, phone, role, avatar_url, avatar_url FROM users WHERE id = $1', [user.id]);
-  return Response.json({ user: updated.rows[0] });
 }

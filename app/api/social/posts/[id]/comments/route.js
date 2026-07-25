@@ -13,13 +13,13 @@ export async function GET(req, { params }) {
 
 export async function POST(req, { params }) {
   const { id: postId } = await params;
-  const user = authenticate(req);
+  const user = await authenticate(req);
   if (!user) return NextResponse.json({ error: 'Login required' }, { status: 401 });
   const { content } = await req.json();
   if (!content) return NextResponse.json({ error: 'Content required' }, { status: 400 });
   try {
     const result = await query(
-      `INSERT INTO comments (user_id, post_id, content) VALUES ($1, $2, $3) RETURNING *`,
+      'INSERT INTO comments (user_id, post_id, content) VALUES ($1, $2, $3) RETURNING *',
       [user.id, postId, content]
     );
     const comment = result.rows[0];
