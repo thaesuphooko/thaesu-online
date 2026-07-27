@@ -1,4 +1,5 @@
 "use client";
+import AuctionBid from '@/components/organisms/AuctionBid';
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
@@ -143,6 +144,7 @@ export default function ProductDetailPage() {
             <div><span className="text-4xl font-extrabold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">${parseFloat(product.price).toFixed(2)}</span>{product.compare_at_price && product.compare_at_price > product.price && <span className="text-xl text-gray-500 line-through ml-3">${parseFloat(product.compare_at_price).toFixed(2)}</span>}</div>
             <p className="text-gray-300">{product.description || "No description available."}</p>
             <div className="flex items-center gap-4"><div className="flex items-center border border-white/20 rounded-xl overflow-hidden"><button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10">-</button><input type="number" min="1" max={maxStock} value={quantity} onChange={e=>{const v=parseInt(e.target.value); if(v>=1&&v<=maxStock) setQuantity(v);}} className="w-16 h-10 text-center bg-transparent border-0 outline-none" /><button onClick={() => setQuantity(Math.min(maxStock, quantity + 1))} className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10">+</button></div>
+            {product.is_auction && <AuctionBid product={product} />}
             <motion.button whileHover={{scale:1.03}} whileTap={{scale:0.97}} onClick={addToCart} className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-lg"><ShoppingCart className="w-5 h-5 inline mr-2"/>Add to Cart</motion.button></div>
             <div className="grid grid-cols-3 gap-3 p-4 bg-white/5 rounded-2xl"><div className="flex items-center gap-2 text-xs text-gray-300"><ShieldCheck className="w-4 h-4 text-green-400"/> Secure</div><div className="flex items-center gap-2 text-xs text-gray-300"><Truck className="w-4 h-4 text-blue-400"/> Fast Delivery</div><div className="flex items-center gap-2 text-xs text-gray-300"><RotateCcw className="w-4 h-4 text-orange-400"/> Easy Returns</div></div>
           </motion.div>

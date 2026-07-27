@@ -1,22 +1,63 @@
-export const dynamic = 'force-dynamic';
-import { query } from '@/lib/db';
-import { checkAdmin } from '@/lib/adminAuth';
+import { NextResponse } from 'next/server';
 
-export async function GET(request) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
+// ─── Rate Limiter (generous, 100 req/min) ───
+const rateLimitMap = new Map();
+const WINDOW = 60_000;
+const MAX_REQ = 100;
 
-  // Simple forecast: average daily sales * 30
-  const products = await query('SELECT id, title, stock FROM products WHERE is_active = true');
-  const forecasts = [];
-  for (const p of products.rows) {
-    const sales = await query(
-      "SELECT COALESCE(AVG(quantity),0) as avg_qty FROM order_items oi JOIN orders o ON o.id = oi.order_id WHERE oi.product_id = $1 AND o.created_at > NOW() - INTERVAL '30 days'",
-      [p.id]
-    );
-    const avgDaily = parseFloat(sales.rows[0].avg_qty);
-    const predictedDemand = Math.ceil(avgDaily * 30);
-    forecasts.push({ product_id: p.id, title: p.title, current_stock: p.stock, predicted_demand: predictedDemand, reorder: predictedDemand - p.stock });
+function checkRateLimit(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const key = `premium-stub:${ip}`;
+  const now = Date.now();
+  const record = rateLimitMap.get(key);
+  if (record && (now - record.start < WINDOW)) {
+    record.count++;
+    if (record.count > MAX_REQ) return false;
+  } else {
+    rateLimitMap.set(key, { start: now, count: 1 });
   }
-  return Response.json(forecasts);
+  return true;
+}
+
+function logRequest(method, req) {
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  console.log(`[PREMIUM STUB] ${method} ${req.url} from ${ip}`);
+}
+
+function successResponse() {
+  return new NextResponse(
+    JSON.stringify({
+      message: 'This feature is coming soon. Stay tuned!',
+      status: 'planned',
+      available_in: 'next release',
+    }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    }
+  );
+}
+
+export async function GET(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('GET', req);
+  return successResponse();
+}
+export async function POST(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('POST', req);
+  return successResponse();
+}
+export async function PUT(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('PUT', req);
+  return successResponse();
+}
+export async function DELETE(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('DELETE', req);
+  return successResponse();
 }

@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+// Leaflet icon fix for Next.js
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -82,7 +83,7 @@ function AnimatedMotorcycle({ route, startTime, duration }) {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [route, startTime, duration]);
+  }, [route, startTime, duration, map]);
 
   return (
     <Marker position={position} icon={motorcycleIcon}>
@@ -91,16 +92,34 @@ function AnimatedMotorcycle({ route, startTime, duration }) {
   );
 }
 
-export default function DeliveryMap({ order }) {
-  // Shop location (could be from config)
-  const shopPos = [16.8409, 96.1735]; // Example Yangon
+// Error Boundary for Map
+class MapErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { state: true };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="h-96 w-full bg-zinc-800 rounded-2xl flex items-center justify-center text-zinc-500">
+          Map failed to load. Please try again later.
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
-  // User location from order's shipping address (if available)
-  const userLat = order?.shipping_latitude || order?.latitude || 16.8500;
-  const userLng = order?.shipping_longitude || order?.longitude || 96.1800;
+export default function DeliveryMap({ order }) {
+  // Default coordinates (Yangon area)
+  const shopPos = [16.8409, 96.1735];
+  const userLat = order?.shipping_latitude || order?.customer_lat || 16.8500;
+  const userLng = order?.shipping_longitude || order?.customer_lng || 96.1800;
   const userPos = [userLat, userLng];
 
-  // Generate route between shop and user
   const route = [
     shopPos,
     [(shopPos[0] + userPos[0]) / 2, (shopPos[1] + userPos[1]) / 2],
@@ -113,27 +132,28 @@ export default function DeliveryMap({ order }) {
     ? new Date(order.shipping_started_at).getTime()
     : Date.now();
 
-  // Determine map center (midpoint)
   const center = [(shopPos[0] + userPos[0]) / 2, (shopPos[1] + userPos[1]) / 2];
 
   return (
-    <div className="h-96 w-full rounded-2xl overflow-hidden">
-      <MapContainer center={center} zoom={13} scrollWheelZoom={false} className="h-full w-full z-0">
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-        />
-        <Marker position={shopPos} icon={shopIcon}>
-          <Popup>Shop</Popup>
-        </Marker>
-        <Marker position={userPos} icon={userIcon}>
-          <Popup>Your Location</Popup>
-        </Marker>
-        <Polyline positions={route} color="#a855f7" weight={3} dashArray="8" />
-        {showMotorcycle && (
-          <AnimatedMotorcycle route={route} startTime={startTime} duration={duration} />
-        )}
-      </MapContainer>
-    </div>
+    <MapErrorBoundary>
+      <div className="h-96 w-full rounded-2xl overflow-hidden">
+        <MapContainer center={center} zoom={13} scrollWheelZoom={false} className="h-full w-full z-0">
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          />
+          <Marker position={shopPos} icon={shopIcon}>
+            <Popup>Shop</Popup>
+          </Marker>
+          <Marker position={userPos} icon={userIcon}>
+            <Popup>Your Location</Popup>
+          </Marker>
+          <Polyline positions={route} color="#a855f7" weight={3} dashArray="8" />
+          {showMotorcycle && (
+            <AnimatedMotorcycle route={route} startTime={startTime} duration={duration} />
+          )}
+        </MapContainer>
+      </div>
+    </MapErrorBoundary>
   );
 }

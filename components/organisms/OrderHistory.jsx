@@ -3,8 +3,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Package, ChevronRight, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
-function getToken() { return localStorage.getItem('token'); }
+function getToken() { 
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('token');
+  }
+  return null;
+}
 
 const statusColor = (status) => {
   switch(status) {
@@ -21,10 +27,21 @@ export default function OrderHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = getToken(); if (!token) return;
+    const token = getToken();
+    if (!token) {
+      setLoading(false);
+      return;
+    }
     fetch('/api/user/orders', { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Unauthorized');
+        return res.json();
+      })
       .then(data => setOrders(data.orders || []))
+      .catch(() => {
+        toast.error('Failed to load orders');
+        setOrders([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 

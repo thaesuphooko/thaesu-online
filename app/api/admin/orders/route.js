@@ -15,7 +15,7 @@ export async function GET(request) {
   try {
     let query = `
       SELECT o.id, o.created_at, o.total_amount, o.status, o.shipping_address,
-             u.name as user_name, u.phone as user_phone
+             u.full_name AS user_name, u.phone AS user_phone
       FROM orders o
       LEFT JOIN users u ON o.user_id = u.id
       WHERE 1=1
@@ -25,7 +25,7 @@ export async function GET(request) {
 
     if (search) {
       params.push(`%${search}%`);
-      query += ` AND (o.id::text ILIKE $${paramIdx} OR u.name ILIKE $${paramIdx})`;
+      query += ` AND (o.id::text ILIKE $${paramIdx} OR u.full_name ILIKE $${paramIdx})`;
       paramIdx++;
     }
     if (status) {
@@ -53,7 +53,7 @@ export async function GET(request) {
   }
 }
 
-// Bulk status update (for multi-select)
+// Bulk status update
 export async function POST(request) {
   const authError = verifyAdminHash(request);
   if (authError) return authError;
@@ -62,8 +62,7 @@ export async function POST(request) {
     const { ids, status } = await request.json();
     if (!ids || !status) return NextResponse.json({ error: 'Missing ids or status' }, { status: 400 });
 
-    // Update multiple orders
-    await pool.query(`UPDATE orders SET status = $1 WHERE id = ANY($2::uuid[])`, [status, ids]);
+    await pool.query('UPDATE orders SET status = $1 WHERE id = ANY($2::uuid[])', [status, ids]);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Bulk status update error:', error);

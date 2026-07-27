@@ -1,66 +1,124 @@
-export const dynamic = 'force-dynamic';
-import { query } from '@/lib/db';
-import { hashPassword, generateToken } from '@/lib/auth';
-import { v4 as uuidv4 } from 'uuid';
+import { NextResponse } from 'next/server';
+import db from '@/lib/db';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
-function generateUID() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let uid = '';
-  for (let i = 0; i < 8; i++) {
-    uid += chars.charAt(Math.floor(Math.random() * chars.length));
+// ─── Rate Limiter (in‑memory) ─────────────────
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60_000;
+const RATE_LIMIT_MAX = 5; // 5 registration attempts per minute per IP
+
+function checkRateLimit(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const key = `reg:${ip}`;
+  const now = Date.now();
+  const record = rateLimitMap.get(key);
+  if (record && (now - record.start < RATE_LIMIT_WINDOW)) {
+    record.count++;
+    if (record.count > RATE_LIMIT_MAX) return false;
+  } else {
+    rateLimitMap.set(key, { start: now, count: 1 });
   }
-  return uid;
+  return true;
 }
 
-export async function POST(request) {
+// ─── Validation Helpers ────────────────────────
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+function isStrongPassword(pw) {
+  return pw.length >= 8; // basic; you can add complexity checks
+}
+
+// ─── Telegram Notification ─────────────────────
+async function notifyAdmin(text) {
   try {
-    const { name, password, email, phone, role, store_name, store_slug } = await request.json();
+    const { rows: [config] } = await db.query('SELECT bot_token, chat_id FROM telegram_configs WHERE is_active = true LIMIT 1');
+    if (!config) return;
+    await fetch(`https://api.telegram.org/bot${config.bot_token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: config.chat_id,
+        text,
+        parse_mode: 'HTML',
+      }),
+    });
+  } catch (e) { /* ignore */ }
+}
 
-    if (!name || !password) {
-      return Response.json({ error: 'Name and password are required' }, { status: 400 });
+// ─── Generate Referral Code ────────────────────
+async function generateReferralCode(uid) {
+  const random = crypto.randomBytes(4).toString('hex').toUpperCase();
+  const code = `${uid.slice(0, 4)}${random}`.substring(0, 10);
+  // Ensure uniqueness
+  const { rows: [exist] } = await db.query('SELECT id FROM users WHERE referral_code = $1', [code]);
+  if (exist) return generateReferralCode(uid); // recursive regeneration
+  return code;
+}
+
+export async function POST(req) {
+  // 1. Rate Limiting
+  if (!checkRateLimit(req)) {
+    return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+  }
+
+  try {
+    const body = await req.json();
+
+    // 2. Basic Field Validation
+    if (!body.email || !body.password) {
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
-    if (password.length < 6) {
-      return Response.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
+    if (!isValidEmail(body.email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+    if (!isStrongPassword(body.password)) {
+      return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
     }
 
-    // Determine role – accept from client if 'vendor', otherwise default 'customer'
-    const userRole = (role === 'vendor' || role === 'admin') ? role : 'customer';
+    const name = (body.full_name || body.name || 'New User').trim();
 
-    // Generate unique UID
-    let uid = '';
-    let exists = true;
-    while (exists) {
-      uid = generateUID();
-      const check = await query('SELECT id FROM users WHERE uid = $1', [uid]);
-      if (check.rows.length === 0) exists = false;
+    // 3. Check existing user
+    const { rows: [existing] } = await db.query('SELECT id FROM users WHERE email = $1', [body.email]);
+    if (existing) {
+      return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
     }
 
-    const password_hash = await hashPassword(password);
-    const result = await query(
-      `INSERT INTO users (email, password_hash, full_name, phone, uid, role, store_name, store_slug)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING id, email, full_name, phone, uid, role, store_name, store_slug, is_verified, created_at`,
-      [email || null, password_hash, name, phone || null, uid, userRole, store_name || null, store_slug || null]
+    // 4. Hash password
+    const hashedPassword = await bcrypt.hash(body.password, 12); // stronger hash rounds
+
+    // 5. Insert user with UID generation (assuming uid = nanoid or uuid)
+    const uid = crypto.randomBytes(8).toString('hex'); // simple UID (use your own uid logic)
+    const referralCode = await generateReferralCode(uid);
+
+    const { rows: [user] } = await db.query(
+      `INSERT INTO users (full_name, email, phone, password_hash, uid, referral_code, role, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, 'user', NOW())
+       RETURNING id, uid, email, full_name, referral_code`,
+      [name, body.email, body.phone || '', hashedPassword, uid, referralCode]
     );
-    const user = result.rows[0];
 
-    const token = generateToken(user);
-    return Response.json({
-      message: 'Registration successful',
-      user: {
-        id: user.id,
-        uid: user.uid,
-        name: user.full_name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        store_name: user.store_name,
-        store_slug: user.store_slug,
-      },
-      token,
+    // 6. Generate JWT token for auto-login
+    const JWT_SECRET = process.env.JWT_SECRET || 'thaesu-secret-key';
+    const token = jwt.sign(
+      { id: user.id, uid: user.uid, email: user.email, role: 'user' },
+      JWT_SECRET,
+      { expiresIn: '100y' }
+    );
+
+    // 7. Notify admin via Telegram
+    await notifyAdmin(`🎉 <b>New Registration</b>\n👤 ${name}\n📧 ${user.email}\n🆔 ${uid}`);
+
+    return NextResponse.json({
+      success: true,
+      user: { id: user.id, uid: user.uid, email: user.email, full_name: user.full_name, referral_code: user.referral_code },
+      token, // frontend can store this and auto-login
     }, { status: 201 });
+
   } catch (error) {
-    console.error('Register error:', error);
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Registration error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

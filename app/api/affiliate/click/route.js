@@ -1,39 +1,47 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
-import { cookies } from 'next/headers';
-import { query } from '@/lib/db';
+import { safeQuery } from '@/lib/db-wrapper';
+import crypto from 'crypto';
 
-export async function POST(request) {
-  try {
-    // ✅ Correct way to read headers
-    const headersList = await headers();
-    const authHeader = headersList.get('authorization');  // optional
+// In-memory IP-based rate limiter for clicks (prevents bot floods)
+const clickRateLimitMap = new Map();
+const CLICK_RATE_LIMIT_WINDOW = 60 * 1000;
+const CLICK_RATE_LIMIT_MAX = 30;
 
-    const body = await request.json();
-    const { code, total_amount } = body;
-    const finalAmount = Number(total_amount) || 0;
-
-    const cookieStore = cookies();
-    const existing = cookieStore.get('affiliate_code')?.value;
-    if (!existing || existing !== code) {
-      cookieStore.set('affiliate_code', code, { path: '/', maxAge: 60 * 60 * 24 * 30 });
+export async function POST(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  
+  // Rate limiting
+  const key = `click:${ip}`;
+  const now = Date.now();
+  const record = clickRateLimitMap.get(key);
+  if (record && (now - record.start < CLICK_RATE_LIMIT_WINDOW)) {
+    record.count++;
+    if (record.count > CLICK_RATE_LIMIT_MAX) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
-
-    // Log click (ignoring errors)
-    try {
-      await query(
-        `INSERT INTO affiliate_clicks (code, total_amount, created_at) VALUES ($1, $2, NOW())`,
-        [code, finalAmount]
-      );
-    } catch (e) { /* ignore */ }
-
+  } else {
+    clickRateLimitMap.set(key, { start: now, count: 1 });
+  }
+  
+  try {
+    const body = await req.json();
+    if (!body.code) return NextResponse.json({ error: 'Referral code required' }, { status: 400 });
+    
+    // Verify referral code exists
+    const { rows: [referrer] } = await safeQuery('SELECT id FROM users WHERE referral_code = $1', [body.code]);
+    if (!referrer) return NextResponse.json({ error: 'Invalid referral code' }, { status: 404 });
+    
+    // Record click with hashed fingerprint for deduplication
+    const fingerprint = crypto.createHash('sha256').update(`${ip}:${body.code}:${Date.now()}`).digest('hex');
+    
+    await safeQuery(
+      'INSERT INTO affiliate_clicks (referrer_id, code, ip_address, fingerprint) VALUES ($1, $2, $3::inet, $4)',
+      [referrer.id, body.code, ip, fingerprint]
+    );
+    
     return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error('Affiliate click error:', err);
-    return NextResponse.json({
-      error: 'Internal error',
-      details: err.message,
-      stack: err.stack,
-    }, { status: 500 });
+  } catch (error) {
+    console.error('Affiliate click error:', error);
+    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
   }
 }

@@ -1,54 +1,63 @@
-export const dynamic = 'force-dynamic';
-import { query } from '@/lib/db';
+import { NextResponse } from 'next/server';
 
-export async function GET(request) {
-  let closed = false;              // track if stream is already closed
-  let interval;
+// ─── Rate Limiter (generous, 100 req/min) ───
+const rateLimitMap = new Map();
+const WINDOW = 60_000;
+const MAX_REQ = 100;
 
-  const stream = new ReadableStream({
-    start(controller) {
-      const sendCount = async () => {
-        // If the stream has been closed, do nothing
-        if (closed) return;
+function checkRateLimit(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const key = `premium-stub:${ip}`;
+  const now = Date.now();
+  const record = rateLimitMap.get(key);
+  if (record && (now - record.start < WINDOW)) {
+    record.count++;
+    if (record.count > MAX_REQ) return false;
+  } else {
+    rateLimitMap.set(key, { start: now, count: 1 });
+  }
+  return true;
+}
 
-        try {
-          const res = await query(
-            "SELECT COUNT(*) FROM live_users WHERE last_seen > NOW() - INTERVAL '1 minute'"
-          );
-          const count = parseInt(res.rows[0].count);
-          // Double‑check closed before enqueuing
-          if (!closed) controller.enqueue(`data: ${count}\n\n`);
-        } catch (e) {
-          // Log but don't crash – send a zero count as fallback
-          console.error('live-users query error:', e);
-          if (!closed) controller.enqueue(`data: 0\n\n`);
-        }
-      };
+function logRequest(method, req) {
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  console.log(`[PREMIUM STUB] ${method} ${req.url} from ${ip}`);
+}
 
-      // Send the very first count immediately
-      sendCount();
+function successResponse() {
+  return new NextResponse(
+    JSON.stringify({
+      message: 'This feature is coming soon. Stay tuned!',
+      status: 'planned',
+      available_in: 'next release',
+    }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    }
+  );
+}
 
-      // Then send every 5 seconds
-      interval = setInterval(sendCount, 5000);
-
-      // When the client disconnects, clean up gracefully
-      request.signal.addEventListener('abort', () => {
-        closed = true;
-        clearInterval(interval);
-        try {
-          controller.close();
-        } catch (_) {
-          // controller may already be closed – ignore
-        }
-      });
-    },
-  });
-
-  return new Response(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    },
-  });
+export async function GET(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('GET', req);
+  return successResponse();
+}
+export async function POST(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('POST', req);
+  return successResponse();
+}
+export async function PUT(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('PUT', req);
+  return successResponse();
+}
+export async function DELETE(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('DELETE', req);
+  return successResponse();
 }

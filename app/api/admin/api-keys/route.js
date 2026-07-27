@@ -1,4 +1,40 @@
-export const dynamic = 'force-dynamic'; import { checkAdmin } from '@/lib/adminAuth'; import { query } from '@/lib/db'; import { randomBytes } from 'crypto';
-export async function GET(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const res = await query('SELECT * FROM api_keys ORDER BY created_at DESC'); return Response.json(res.rows); }
-export async function POST(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { name } = await request.json(); const key = 'tha_' + randomBytes(16).toString('hex'); await query('INSERT INTO api_keys (api_key, name) VALUES ($1,$2)', [key, name]); return Response.json({ message: 'Key created' }, { status: 201 }); }
-export async function DELETE(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { id } = await request.json(); await query('DELETE FROM api_keys WHERE id = $1', [id]); return Response.json({ message: 'Revoked' }); }
+import { createApiRoute, requireAdmin } from '@/lib/api-wrapper';
+import { safeQuery } from '@/lib/db-wrapper';
+import crypto from 'crypto';
+
+function generateSecureApiKey() {
+  return 'sk-' + crypto.randomBytes(32).toString('hex');
+}
+
+function hashApiKey(key) {
+  return crypto.createHash('sha256').update(key).digest('hex');
+}
+
+const handlers = {
+  GET: requireAdmin(async () => {
+    const { rows } = await safeQuery('SELECT id, name, created_at, last_used_at FROM api_keys ORDER BY created_at DESC');
+    return Response.json(rows);
+  }),
+  
+  POST: requireAdmin(async (req) => {
+    const body = await req.json();
+    if (!body.name) return Response.json({ error: 'Name required' }, { status: 400 });
+    
+    const apiKey = generateSecureApiKey();
+    const hashedKey = hashApiKey(apiKey);
+    
+    await safeQuery('INSERT INTO api_keys (name, key_hash) VALUES ($1, $2)', [body.name, hashedKey]);
+    
+    // Return the raw key only once
+    return Response.json({ key: apiKey, name: body.name }, { status: 201 });
+  }),
+  
+  DELETE: requireAdmin(async (req) => {
+    const { id } = await req.json();
+    if (!id) return Response.json({ error: 'ID required' }, { status: 400 });
+    await safeQuery('DELETE FROM api_keys WHERE id = $1', [id]);
+    return Response.json({ success: true });
+  })
+};
+
+export const { GET, POST, PUT, DELETE } = createApiRoute(handlers);

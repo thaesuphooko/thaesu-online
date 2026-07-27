@@ -1,2 +1,41 @@
-export const dynamic = 'force-dynamic'; import { checkAdmin } from '@/lib/adminAuth'; import { query } from '@/lib/db';
-export async function POST(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { productId } = await request.json(); const product = await query('SELECT title, description FROM products WHERE id = $1', [productId]); if (product.rows.length === 0) return Response.json({ error: 'Not found' }, { status: 404 }); const metaTitle = `${product.rows[0].title} | Buy Online at Best Price in Myanmar`; const metaDesc = `Shop ${product.rows[0].title} at Thaesu Online. ✓ Best Price ✓ Fast Delivery ✓ Quality Guaranteed. ${product.rows[0].description?.slice(0,100) || ''}`; await query('INSERT INTO seo_meta (product_id, meta_title, meta_description) VALUES ($1,$2,$3) ON CONFLICT (product_id) DO UPDATE SET meta_title=$2, meta_description=$3', [productId, metaTitle, metaDesc]); return Response.json({ metaTitle, metaDesc }); }
+import { createApiRoute, validateBody, requireAdmin } from '@/lib/api-wrapper';
+import { safeQuery } from '@/lib/db-wrapper';
+
+const handlers = {
+  // GET – List all SEO records or filter by page
+  GET: requireAdmin(async (req) => {
+    const url = new URL(req.url);
+    const page = url.searchParams.get('page');
+    let query = 'SELECT * FROM seo_meta';
+    const params = [];
+    if (page) {
+      query += ' WHERE page = $1';
+      params.push(page);
+    }
+    query += ' ORDER BY created_at DESC';
+    const { rows } = await safeQuery(query, params);
+    return Response.json(rows);
+  }),
+
+  // POST – Create or update SEO meta for a page
+  POST: requireAdmin(async (req) => {
+    const body = await req.json();
+    validateBody(body, ['page', 'title']);
+    
+    const { rows: [meta] } = await safeQuery(
+      `INSERT INTO seo_meta (page, title, description, keywords, og_image)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (page) DO UPDATE SET
+         title = EXCLUDED.title,
+         description = EXCLUDED.description,
+         keywords = EXCLUDED.keywords,
+         og_image = EXCLUDED.og_image,
+         updated_at = NOW()
+       RETURNING *`,
+      [body.page, body.title, body.description || '', body.keywords || '', body.og_image || '']
+    );
+    return Response.json(meta, { status: 201 });
+  }),
+};
+
+export const { GET, POST, PUT, DELETE } = createApiRoute(handlers);

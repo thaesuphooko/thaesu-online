@@ -1,0 +1,8 @@
+OK | GET / | Page: / | 
+OK | GET /affiliate | Page: /affiliate | 
+OK | GET /auth/login | Page: /auth/login | 
+OK | GET /auth/register | Page: /auth/register | 
+OK | GET /cart | Page: /cart | 
+OK | GET /chat | Page: /chat | 
+OK | GET /chatbot | Page: /chatbot | 
+OK | GET /checkout | Page: /checkout | 

@@ -1,4 +1,39 @@
-export const dynamic = 'force-dynamic'; import { checkAdmin } from '@/lib/adminAuth'; import { query } from '@/lib/db';
-export async function GET(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const res = await query('SELECT * FROM cart_rules ORDER BY min_amount ASC'); return Response.json(res.rows); }
-export async function POST(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { name, min_amount, discount_percent } = await request.json(); const res = await query('INSERT INTO cart_rules (name, min_amount, discount_percent) VALUES ($1,$2,$3) RETURNING *', [name, min_amount, discount_percent]); return Response.json(res.rows[0], { status: 201 }); }
-export async function DELETE(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { id } = await request.json(); await query('DELETE FROM cart_rules WHERE id = $1', [id]); return Response.json({ message: 'Deleted' }); }
+import { createApiRoute, validateBody, requireAdmin } from '@/lib/api-wrapper';
+import { safeQuery } from '@/lib/db-wrapper';
+
+const handlers = {
+  GET: requireAdmin(async () => {
+    const { rows } = await safeQuery('SELECT * FROM cart_rules ORDER BY created_at DESC');
+    return Response.json(rows);
+  }),
+  
+  POST: requireAdmin(async (req) => {
+    const body = await req.json();
+    validateBody(body, ['name']);
+    const { rows: [rule] } = await safeQuery(
+      'INSERT INTO cart_rules (name, rule_json, is_active) VALUES ($1, $2, $3) RETURNING *',
+      [body.name, body.rule_json || '{}', body.is_active ?? true]
+    );
+    return Response.json(rule, { status: 201 });
+  }),
+  
+  PUT: requireAdmin(async (req) => {
+    const body = await req.json();
+    validateBody(body, ['id']);
+    const { rows: [rule] } = await safeQuery(
+      `UPDATE cart_rules SET name = $1, rule_json = $2, is_active = $3
+       WHERE id = $4 RETURNING *`,
+      [body.name, body.rule_json, body.is_active, body.id]
+    );
+    return Response.json(rule);
+  }),
+  
+  DELETE: requireAdmin(async (req) => {
+    const { id } = await req.json();
+    if (!id) return Response.json({ error: 'ID required' }, { status: 400 });
+    await safeQuery('DELETE FROM cart_rules WHERE id = $1', [id]);
+    return Response.json({ success: true });
+  })
+};
+
+export const { GET, POST, PUT, DELETE } = createApiRoute(handlers);

@@ -1,3 +1,4 @@
+import NotificationBell from '@/components/organisms/NotificationBell';
 import './globals.css';
 import { ThemeProvider } from '@/hooks/useTheme';
 import { AudioProvider } from '@/store/AudioContext';

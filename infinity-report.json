@@ -1,0 +1,7506 @@
+[
+  {
+    "method": "GET",
+    "url": "/admin/subscriptions",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 990,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/auth/register",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 872,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/admin/telegram-config",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 964,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/affiliate",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 939,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/auth/login",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 1011,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/cart",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 969,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/chatbot",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 958,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/checkout",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 944,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/chat",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 983,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 1473,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 893,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/ai-chat",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 929,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/ai-usage",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 951,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/analytics",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 903,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/browser",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 881,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/api-keys",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 932,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/bundles",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 928,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/catalog-sanitizer",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 840,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/cart-rules",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 928,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/chat",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 876,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/coupons",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 906,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/crawl",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 920,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/error-bot",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 867,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/email-templates",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 928,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/export-products",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 882,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/feed-management",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 918,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/giftcards",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 917,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/health",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 917,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/health-monitor",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 882,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/key-tester",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 974,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/music",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 917,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/music-controller",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 949,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/orders",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 886,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/payouts",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 879,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/pricing",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 897,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/products",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 1012,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/promotions",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 970,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/refunds",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 921,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/reports",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 917,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/review-moderation",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 872,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/sales",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 863,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/scrape",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 900,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/segments",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 882,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/seo-generator",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 875,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/settings",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 907,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/shipping",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 872,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/system-logs",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 926,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/telegram-config",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 885,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/think-tank",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 944,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/tickets",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 934,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/users",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 869,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/feed",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 869,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/dashboard/vendor-management",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 964,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/games",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 932,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/games/memory",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 894,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/games/snake",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 902,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/games/tictactoe",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 843,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/news",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 877,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/orders",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 893,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/order-tracking",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 956,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/products",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 883,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/products/",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 950,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/products/compare",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 907,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/profile",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 884,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/profile/2fa",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 864,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/profile/settings",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 888,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/social",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 869,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/store-locator",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 863,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/subscriptions",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 871,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/vendor/dashboard",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 885,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/vendor/dashboard/orders",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 929,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/vendor/dashboard/products",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 847,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/vendor/dashboard/payouts",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 934,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/vendor/login",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 867,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/vendor/dashboard/settings",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 923,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/vendor/register",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 911,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/wattpad",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 855,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/wishlist",
+    "desc": "Page",
+    "code": "302",
+    "duration_ms": 871,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/ab-tests",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 897,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/abandoned-carts",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 887,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/abtest/report",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 905,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/abtests",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 896,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/activity",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 906,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/ai-chat",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 871,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/ai-cost",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 939,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/ai-coupon-predict",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 928,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/ai-price",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 907,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/ai-usage",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 878,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/ab-tests",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/abandoned-carts",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 908,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/abtests",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 878,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/abtest/report",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 973,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/activity",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/ai-chat",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/ai-cost",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 885,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/ai-coupon-predict",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 879,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/ai-price",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/ai-usage",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 888,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/ab-tests",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 973,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/abandoned-carts",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 910,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/abtests",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 851,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/abtest/report",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 863,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/activity",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 895,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/ai-chat",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1015,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/ai-cost",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 969,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/ai-coupon-predict",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/ai-price",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 888,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/ai-usage",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 937,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/ab-tests",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 970,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/abandoned-carts",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 935,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/abtests",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 889,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/abtest/report",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/activity",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 929,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/ai-chat",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 863,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/ai-cost",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 879,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/ai-coupon-predict",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 939,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/ai-price",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/ai-usage",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 919,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/analytics",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 870,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/analytics/advanced",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 901,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/api-keys",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 902,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/auto-heal",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 943,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/auto-improve",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1003,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/browse-proxy",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 918,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/bots",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1054,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/campaigns",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 874,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/cart-rules",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 869,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/catalog-sanitizer",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 891,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/analytics",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/analytics/advanced",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 893,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/api-keys",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/auto-heal",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 928,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/auto-improve",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/browse-proxy",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 861,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/campaigns",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 886,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/bots",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 985,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/cart-rules",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1050,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/analytics",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 946,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/analytics/advanced",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/catalog-sanitizer",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1056,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/api-keys",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 937,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/auto-heal",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 906,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/browse-proxy",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/auto-improve",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 919,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/campaigns",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/bots",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 897,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/cart-rules",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/analytics/advanced",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 890,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/analytics",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 963,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/catalog-sanitizer",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 894,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/api-keys",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/auto-heal",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 885,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/browse-proxy",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 918,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/auto-improve",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 861,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/campaigns",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 876,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/bots",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 919,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/cart-rules",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 880,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/catalog-sanitizer/report",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 903,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/catalog-sanitizer",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 871,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/chat/conversations",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 862,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/cleanup",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 856,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/chat/messages/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 977,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/config",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 882,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/content",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 858,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/coupons",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 864,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/coupons/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 850,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/coupons/bulk",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 917,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/catalog-sanitizer/report",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 855,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/chat/conversations",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 869,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/coupons/export",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 886,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/cleanup",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 893,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/chat/messages/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/config",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 906,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/content",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 846,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/coupons",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 904,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/coupons/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 886,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/coupons/bulk",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/catalog-sanitizer/report",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/chat/conversations",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/coupons/export",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/cleanup",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 922,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/chat/messages/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 916,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/config",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 889,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/content",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 903,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/coupons",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 870,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/coupons/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/coupons/bulk",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/catalog-sanitizer/report",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 919,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/coupons/export",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 873,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/chat/conversations",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 933,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/cleanup",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 919,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/chat/messages/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 921,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/config",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 918,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/content",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 897,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/coupons/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 959,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/coupons",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1069,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/coupons/bulk",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 874,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/crawler",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 876,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/crawler/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 853,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/coupons/export",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1029,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/daily-report",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 860,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/db-backup",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 883,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/email-campaigns",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 854,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/email-templates",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 916,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/env",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 906,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/error-logs",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 912,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/feed-management",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 941,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/crawler",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/crawler/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/daily-report",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 916,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/forecast",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 923,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/db-backup",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/email-campaigns",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 922,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/email-templates",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1012,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/env",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 867,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/error-logs",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 895,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/feed-management",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 927,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/crawler",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 890,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/crawler/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 980,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/daily-report",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/forecast",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 864,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/db-backup",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 879,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/email-campaigns",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/env",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 855,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/email-templates",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1007,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/error-logs",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/feed-management",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 857,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/crawler",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 881,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/crawler/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 908,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/daily-report",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/forecast",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/db-backup",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/email-campaigns",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 940,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/env",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 935,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/email-templates",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 876,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/error-logs",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 905,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/feed-management",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/funnel",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 903,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/generate-description",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 961,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/giftcards",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 888,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/forecast",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/health-metrics",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 999,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/health-monitor",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 949,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/key-tester",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 880,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/inventory-predict",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 936,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/live",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 871,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/funnel",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 853,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/giftcards",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/live-users",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 895,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/health-metrics",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 900,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/health-monitor",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1047,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/key-tester",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 895,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/inventory-predict",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/live",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 986,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/funnel",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 942,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/giftcards",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/live-users",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 910,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/health-metrics",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 846,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/inventory-forecast",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 2894,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/health-monitor",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 873,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/generate-description",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 2634,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/inventory-predict",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 828,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/key-tester",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 980,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/live",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 855,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/funnel",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 953,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/giftcards",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 904,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/health-metrics",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 871,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/live-users",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 946,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/inventory-forecast",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 855,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/health-monitor",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/generate-description",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 912,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/inventory-predict",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 848,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/key-tester",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 872,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/live",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 933,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/magic-link",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 963,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/magic-link/verify",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 860,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/live-users",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/inventory-forecast",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 870,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/music",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 944,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/orders",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 890,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/generate-description",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 956,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/orders/test/invoice",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1009,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/orders/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1148,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/orders/export",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 950,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/magic-link",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1029,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/magic-link/verify",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1004,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/payouts",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 934,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/inventory-forecast",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 961,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/music",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 982,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/orders",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 924,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/pricing",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 935,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/orders/test/invoice",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 897,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/orders/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 921,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/orders/export",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 860,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/magic-link",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 915,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/magic-link/verify",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 979,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/payouts",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 893,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/music",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 858,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/pricing/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 882,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/orders",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 969,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/pricing",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 961,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/orders/test/invoice",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 869,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/orders/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 895,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/orders/export",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 897,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/magic-link",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/magic-link/verify",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1027,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/payouts",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 970,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/pricing/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 915,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/pricing",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 946,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/orders/test/invoice",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 876,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/orders/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 886,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/orders",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1392,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/orders/export",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 980,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 926,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/payouts",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 888,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 871,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/pricing/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 950,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/music",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 2470,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/pricing",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 989,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/bulk",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 882,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/bulk/activate",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 887,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/bulk/price",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 997,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/bulk/price/by-category",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 973,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 879,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 984,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/bulk/restore",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1011,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/pricing/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 950,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/export",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 970,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/bulk",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/stock",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 915,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/bulk/activate",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 992,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/bulk/price",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 938,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/bulk/price/by-category",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 939,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1227,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1206,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/bulk/restore",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1180,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/products/upload-image",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1042,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/stock",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1004,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/bulk/activate",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/export",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1170,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/bulk",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1095,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/bulk/price",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/bulk/price/by-category",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1035,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 919,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/bulk/restore",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 862,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/products/upload-image",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/stock",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 903,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/bulk/activate",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1028,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/export",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 971,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/bulk",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 910,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/bulk/price",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/bulk/price/by-category",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1143,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/promotions",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 968,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/bulk/restore",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 979,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/refunds",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 972,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/stock",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1122,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/products/upload-image",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1288,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/export",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1143,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/reports",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1076,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/report",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1211,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/reviews-moderate",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1164,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/run-auto-heal",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 983,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/promotions",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1055,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/refunds",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 900,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/run-health-check",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 914,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/products/upload-image",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 953,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/sales",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 982,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/save-browsed-product",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1023,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/reports",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1060,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/report",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1001,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/reviews-moderate",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 933,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/run-auto-heal",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 870,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/refunds",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 923,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/promotions",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1081,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/run-health-check",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1047,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/sales",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1001,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/scrape",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1033,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/save-browsed-product",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1012,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/reports",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 953,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/report",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/reviews-moderate",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 894,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/run-auto-heal",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 969,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/refunds",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 923,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/promotions",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 927,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/run-health-check",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 939,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/sales",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 927,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/scrape",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 982,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/save-browsed-product",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 897,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/reports",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/reviews-moderate",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/report",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 951,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/run-auto-heal",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/segments",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 877,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/run-health-check",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 872,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/sentiment",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 855,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/sales",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 907,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/scrape",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/save-browsed-product",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 886,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/seo/generate",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 840,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/seo",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 979,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/shipping",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 895,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/segments",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 977,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/sentiment",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/settings",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1132,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/system-health",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 925,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/scrape",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 891,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/system-logs",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 930,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/system-stats",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 900,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/seo/generate",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 874,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/seo",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/shipping",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 854,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/segments",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 896,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/sentiment",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 869,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/settings",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 862,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/system-health",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 874,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/system-logs",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 915,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/telegram-config",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 923,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/system-stats",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 934,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/seo/generate",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 934,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/seo",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 898,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/shipping",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 933,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/segments",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/sentiment",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 938,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/settings",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 948,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/system-health",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 963,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/system-logs",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 865,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/telegram-config",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 865,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/system-stats",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 855,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/seo/generate",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 873,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/seo",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/shipping",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 973,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/telegram-test-single",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 926,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/settings",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 947,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/telegram-tokens",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 969,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/system-health",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 920,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/system-logs",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 978,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/telegram-config",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 907,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/system-stats",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 894,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/test-telegram",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 983,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/tickets",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 901,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/upload",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 877,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/telegram-test-single",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1092,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/upload-audio",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 941,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/telegram-tokens",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/vendor-management",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1043,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/vendors/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 995,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/telegram-config",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 999,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/test-telegram",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 984,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/upload",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 907,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/telegram-tokens",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 890,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/vendor-management",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1050,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/upload-audio",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1494,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/tickets",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1886,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/telegram-test-single",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1566,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/vendors/bulk-status",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 2065,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/vendors/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1019,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/test-telegram",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 864,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/vendors/export",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 946,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/upload",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1028,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/telegram-tokens",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 960,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/vendor-management",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 987,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/telegram-test-single",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 945,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/upload-audio",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1080,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/tickets",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1017,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/vendors/bulk-status",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 867,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/vendors/export",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 875,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/vendors/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1065,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/upload",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 850,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/test-telegram",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1020,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/video-sync",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 918,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/vendor-management",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 864,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/upload-audio",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 917,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/video-sync/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 952,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/tickets",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/vendors/export",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 964,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/vendors/bulk-status",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1045,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/vendors/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/video-sync/bulk-publish",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 979,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/visitor-tracking",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 933,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/video-sync",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 996,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/youtube-audio",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 934,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/video-sync/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/affiliate/click",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 932,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/vendors/export",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 968,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/affiliate/stats",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 966,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/vendors/bulk-status",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 962,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auction/bid",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 857,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/video-sync/bulk-publish",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1010,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/visitor-tracking",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1031,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/video-sync",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 984,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/youtube-audio",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 938,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/video-sync/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 915,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/affiliate/click",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/2fa",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 872,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/affiliate/stats",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 944,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/forgot-password",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 914,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/auction/bid",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 917,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/video-sync/bulk-publish",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/visitor-tracking",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 907,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/video-sync",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 920,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/youtube-audio",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 935,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/video-sync/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/affiliate/click",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 860,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/2fa",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 848,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/affiliate/stats",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 858,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/forgot-password",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 929,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auction/bid",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/visitor-tracking",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 877,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/video-sync/bulk-publish",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1020,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/youtube-audio",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 929,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/google",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 954,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/affiliate/click",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 903,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/login",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 930,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/2fa",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1027,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/affiliate/stats",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 933,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/forgot-password",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 856,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auction/bid",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 983,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/register",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 912,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/reset-password",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 914,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/verify-2fa",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1025,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/google",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1008,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/login",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 900,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/verify-wave",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 920,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/2fa",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 874,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/cart",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 951,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/forgot-password",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 955,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/register",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 929,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/cart-rules/validate",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 955,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/reset-password",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/verify-2fa",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 954,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/google",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 897,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/login",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 972,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/verify-wave",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 913,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/cart/add",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 900,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/cart",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 944,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/cart/customize",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 889,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/register",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 860,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/cart-rules/validate",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 918,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/reset-password",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 912,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/verify-2fa",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 940,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/google",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 872,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/login",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 971,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/auth/verify-wave",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 916,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/cart/add",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 858,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/cart/customize",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/cart",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 993,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/register",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 890,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/cart-rules/validate",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 840,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/reset-password",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 903,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/verify-2fa",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/chat",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 908,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/chat/contacts",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 941,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/cart/add",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 875,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/auth/verify-wave",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 932,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/cart/customize",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 932,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/cart",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 923,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/cart-rules/validate",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/chat/messages/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 894,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/chat/send",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 895,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/chat/users",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 886,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/chat",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 898,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/chat/contacts",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 869,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/cart/add",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 950,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/cart/customize",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 867,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/chatbot",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 875,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/coupons/validate",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 946,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/chat/messages/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 906,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/cron/auto-cancel",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 940,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/chat/send",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/chat/users",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 869,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/chat",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 872,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/chat/contacts",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 904,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/cron/auto-engage",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 896,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/chatbot",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 858,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/cron/update-order-status",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 841,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/coupons/validate",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 851,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/chat/messages/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 867,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/cron/auto-cancel",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/chat/send",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 893,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/chat",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/chat/users",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1215,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/chat/contacts",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 918,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/cron/auto-engage",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 938,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/chatbot",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 990,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/cron/update-order-status",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 927,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/chat/messages/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/coupons/validate",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 967,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/cron/auto-cancel",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 898,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/chat/send",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/feed",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 897,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/chat/users",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 971,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/feed/combined",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 907,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/cron/auto-engage",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 907,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/chatbot",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 844,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/cron/update-order-status",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 875,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/coupons/validate",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 889,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/games",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 891,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/cron/auto-cancel",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 957,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/giftcards/validate",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 908,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/feed",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 945,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/feed/combined",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/headless/products",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 935,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/cron/auto-engage",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/cron/update-order-status",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 908,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/locationiq/autocomplete",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1001,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/games",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 870,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/locationiq/geocode",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 942,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/giftcards/validate",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 880,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/locations",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 884,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/feed",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/feed/combined",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 949,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/headless/products",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 976,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/music-config",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 923,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/news",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 864,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/games",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 837,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/locationiq/autocomplete",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/locationiq/geocode",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 921,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/giftcards/validate",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/locations",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 886,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/feed",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 921,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/feed/combined",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 876,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/headless/products",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 959,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/music-config",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 886,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/news",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 867,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/games",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 906,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/locationiq/geocode",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 876,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/locationiq/autocomplete",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 935,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/locations",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 854,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/giftcards/validate",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 931,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/news/comment",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 941,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/news/like",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 890,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/headless/products",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 929,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/music-config",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/news",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 896,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/notifications",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 912,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/locationiq/geocode",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/locationiq/autocomplete",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 894,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/locations",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 921,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/orders",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 874,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/news/comment",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 916,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/news/like",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 872,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/orders/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 861,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/music-config",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 943,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/news",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/notifications",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 933,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/orders/invoice/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 892,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/orders/test/upload",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1032,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/orders",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/posts/test/poll",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 926,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/news/comment",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1000,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/news/like",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/orders/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/products",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 916,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/notifications",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 865,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/products//notify",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1090,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/orders/invoice/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 864,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/orders/test/upload",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 893,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/orders",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 900,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/posts/test/poll",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 917,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/news/comment",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1054,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/news/like",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 976,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/orders/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 900,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/products",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 928,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/notifications",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 868,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/products//notify",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 915,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/orders/invoice/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 954,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/orders/test/upload",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 970,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/orders",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 918,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/posts/test/poll",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/products//price",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 892,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/products//recommendations",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 843,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/orders/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 906,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 875,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/products//variants",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 904,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products//notify",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1022,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/orders/invoice/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/orders/test/upload",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/products/filters",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 858,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/posts/test/poll",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/products//price",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 861,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/products//recommendations",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/products/recent",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 862,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 885,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/products//variants",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products//notify",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 838,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/products/search",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 957,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/proxy-image",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 872,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/products/filters",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 962,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/push",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 904,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products//price",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 934,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products//recommendations",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 928,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/products/recent",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 985,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/recommendations",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 943,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products//variants",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/referrals",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 894,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/products/search",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 996,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/proxy-image",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 915,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products/filters",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1008,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/push",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1004,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products//price",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 953,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products//recommendations",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 982,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products/recent",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 934,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/recommendations",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 907,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products//variants",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/referrals",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 904,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/products/search",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1039,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/proxy-image",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1056,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products/filters",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 985,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/push",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 978,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/report-error",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 948,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products/recent",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 916,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/refunds",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1084,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/recommendations",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 979,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/reviews",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 847,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/referrals",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 897,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/products/search",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 869,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/proxy-image",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 879,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/push",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 879,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/reviews/moderate",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 934,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/report-error",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 889,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/reviews/public",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 885,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/refunds",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 891,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/recommendations",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/reviews",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/referrals",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 944,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/robots",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 902,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/search/suggest",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 992,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/report-error",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 870,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/reviews/moderate",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 955,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/search/suggestions",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1073,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/reviews/public",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 913,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/refunds",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 920,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/settings/public",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 866,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/reviews",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 934,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/sitemap",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 933,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/robots",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 895,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/search/suggest",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 913,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/report-error",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/reviews/moderate",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 926,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/search/suggestions",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 893,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/reviews/public",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/refunds",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 918,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/settings/public",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 890,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/reviews",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 894,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/sitemap",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 899,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/robots",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 844,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/search/suggest",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 867,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/reviews/moderate",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 853,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 916,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/reviews/public",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 888,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/settings/public",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 854,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/chat",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 935,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/comment",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 871,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/robots",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/search/suggest",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/search/suggestions",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1894,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 928,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/sitemap",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1500,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/friends",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 966,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/like",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 832,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/settings/public",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/chat",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/comment",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 868,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/posts",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 913,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/posts/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 892,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/search/suggestions",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 916,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/sitemap",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/like",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 900,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/friends",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1034,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/chat",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 910,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/posts/test/comments",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 935,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/comment",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 934,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/posts",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/posts/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 942,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/posts/test/like",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 930,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 898,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/posts/test/react",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 930,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/like",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 942,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/friends",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 938,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/chat",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/posts/test/comments",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 920,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/comment",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 889,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/posts",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 889,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/posts/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/posts/test/like",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/social/posts/test/share",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 860,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/posts/test/react",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 934,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/like",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 963,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/friends",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 876,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/storefront/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 936,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/stories",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 860,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/posts/test/comments",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1022,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/posts",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 964,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/posts/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 883,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/posts/test/like",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1126,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/social/posts/test/share",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 979,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/posts/test/react",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 917,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/telegram/commands",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1101,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/storefront/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 1002,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/telegram/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 1056,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/stories",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 989,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/posts/test/comments",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1084,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/telegram/webhook",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 913,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/tickets",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 993,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/posts/test/like",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 851,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/social/posts/test/share",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 893,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/posts/test/react",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/telegram/commands",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 878,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/storefront/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 881,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/telegram/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 884,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/stories",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 895,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/telegram/webhook",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 860,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/account",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 892,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/tickets",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 874,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/social/posts/test/share",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 828,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/addresses",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 925,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/addresses/test",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 921,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/storefront/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 820,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/telegram/commands",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 905,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/telegram/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 862,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/stories",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/telegram/webhook",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 890,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/account",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/tickets",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 892,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/addresses",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 905,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/avatar",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 922,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/addresses/test",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 911,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/export",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 861,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/telegram/commands",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 890,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/telegram/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 870,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/telegram/webhook",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 872,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/orders",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 885,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/account",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 860,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/tickets",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 898,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/addresses",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 866,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/avatar",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 848,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/addresses/test",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/export",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 968,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/tier",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 855,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/profile",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 978,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/uid//follow",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 850,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/account",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 871,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/orders",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 917,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/uid//posts",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 947,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/addresses",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 922,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/avatar",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 874,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/addresses/test",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 848,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/export",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 909,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/tier",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 915,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/profile",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 840,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/uid//follow",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/orders",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 929,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/uid//products",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 930,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/uid//posts",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 864,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/avatar",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 873,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/uid//profile",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 911,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/uid//visit",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 900,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/export",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 906,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/tier",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 861,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/profile",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 913,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/uid//follow",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/orders",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 905,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/uid//products",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 887,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/uid//posts",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 896,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/uid//profile",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 902,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/users/count",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 922,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/user/uid//visit",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 864,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/tier",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 852,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/create-store",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 862,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/profile",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 853,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/uid//follow",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 852,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/uid//products",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 916,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/dashboard",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 932,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/uid//posts",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 885,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/uid//profile",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 1012,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/users/count",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 922,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/user/uid//visit",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 844,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/create-store",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/me",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 889,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/notifications",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 844,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/orders",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 930,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/uid//products",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 910,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/dashboard",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 939,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/payouts",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 894,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/uid//profile",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 952,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/users/count",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 962,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/user/uid//visit",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 922,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/create-store",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 961,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/me",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 923,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/notifications",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/orders",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 949,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/products",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 960,
+    "status": ""
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/dashboard",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 966,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/payouts",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 937,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/products/upload-image",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 905,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/users/count",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 905,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/reputation",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 905,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/create-store",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 875,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/me",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/notifications",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/orders",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 907,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/products",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 939,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/dashboard",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 880,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/payouts",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 868,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/products/upload-image",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 990,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/vendor/settings",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 925,
+    "status": ""
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/reputation",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 957,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/me",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 894,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/wattpad",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 913,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/orders",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 928,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/notifications",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 1088,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/products",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 932,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/wattpad/chapters",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 902,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/payouts",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 905,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/products/upload-image",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 925,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/vendor/settings",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 886,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/reputation",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 868,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/wattpad",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 822,
+    "status": "MISSING"
+  },
+  {
+    "method": "GET",
+    "url": "/api/wattpad/feed",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 935,
+    "status": ""
+  },
+  {
+    "method": "GET",
+    "url": "/api/wishlist",
+    "desc": "GET",
+    "code": "302",
+    "duration_ms": 907,
+    "status": ""
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/products",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 861,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/wattpad/chapters",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 936,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/products/upload-image",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 876,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/vendor/settings",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 917,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/reputation",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 865,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/wattpad",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 875,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/wattpad/feed",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 978,
+    "status": "MISSING"
+  },
+  {
+    "method": "POST",
+    "url": "/api/wishlist",
+    "desc": "POST",
+    "code": "404",
+    "duration_ms": 884,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/wattpad/chapters",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 882,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/vendor/settings",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 914,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/wattpad",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 919,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/wattpad/feed",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/wishlist",
+    "desc": "PUT",
+    "code": "404",
+    "duration_ms": 937,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/wattpad/chapters",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 839,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/wattpad/feed",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 930,
+    "status": "MISSING"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/wishlist",
+    "desc": "DELETE",
+    "code": "404",
+    "duration_ms": 901,
+    "status": "MISSING"
+  }
+]

@@ -1,0 +1,24 @@
+[000] Home | / | 10078ms | TIMEOUT,SLOW
+[000] Login | /auth/login | 10062ms | TIMEOUT,SLOW
+[200] Register | /auth/register | 9200ms | SLOW
+[000] Dashboard | /dashboard | 10041ms | TIMEOUT,SLOW
+[404] Subscription Plans | /subscriptions | 8475ms | MISSING,SLOW
+[200] Products | /products | 6047ms | SLOW
+[000] Checkout | /checkout | 10061ms | TIMEOUT,SLOW
+[000] Orders | /orders | 10062ms | TIMEOUT,SLOW
+[200] Affiliate | /affiliate | 7908ms | SLOW
+[000] Chat | /chat | 10060ms | TIMEOUT,SLOW
+[000] Cart | /cart | 10110ms | TIMEOUT,SLOW
+[000] Feed | /feed | 10059ms | TIMEOUT,SLOW
+[000] Games | /games | 10058ms | TIMEOUT,SLOW
+[000] Profile | /profile?uid= | 10049ms | TIMEOUT,SLOW
+[000] Settings | /profile/settings | 10057ms | TIMEOUT,SLOW
+[000] Music Config | /api/music-config | 10047ms | TIMEOUT,SLOW
+[404] Subscription Plans API | /api/subscription/plans | 7953ms | MISSING,SLOW
+[200] Products API | /api/products | 5712ms | SLOW
+[308] User Profile API | /api/user/uid//profile | 67ms | 
+[308] User Posts API | /api/user/uid//posts | 61ms | 
+[401] Wishlist API | /api/wishlist | 7341ms | ERROR,SLOW
+[405] Orders API | /api/orders | 2397ms | ERROR
+[200] Admin Reports | /api/admin/reports | 4729ms | SLOW
+[403] Admin Coupons | /api/admin/coupons | 2351ms | ERROR

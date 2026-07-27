@@ -8,67 +8,116 @@ export async function GET(req) {
     const search = searchParams.get('search') || '';
     const slug = searchParams.get('slug') || '';
     const category = searchParams.get('category') || '';
-    const limit = 20;
+    const sort = searchParams.get('sort') || 'created_at';   // created_at, price_asc, price_desc
+    const order = sort === 'price_asc' ? 'ASC' : sort === 'price_desc' ? 'DESC' : 'DESC';
+    const orderColumn = sort.startsWith('price') ? 'p.price' : 'p.created_at';
+    const minPrice = parseFloat(searchParams.get('minPrice')) || 0;
+    const maxPrice = parseFloat(searchParams.get('maxPrice')) || 999999999;
+    const fast = searchParams.get('fast') === 'true';         // skip exact count
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100);
     const offset = (page - 1) * limit;
 
-    const IMAGE_SUBQUERY = `(SELECT m.cloudinary_url FROM media m WHERE m.product_id = p.id AND m.media_type = 'image' LIMIT 1) AS image_url`;
-
+    // ────── Single product detail ──────
     if (slug) {
-      // For detail page – return full product with all media
       const result = await query(
         `SELECT p.*,
-         COALESCE(
-           (SELECT json_agg(json_build_object('id', m.id, 'url', m.cloudinary_url, 'type', m.media_type, 'video_url', m.video_url))
-            FROM media m WHERE m.product_id = p.id),
-           '[]'::json
-         ) AS media
+                COALESCE(
+                  (SELECT json_agg(json_build_object('id', m.id, 'url', m.cloudinary_url, 'type', m.media_type, 'video_url', m.video_url))
+                   FROM media m WHERE m.product_id = p.id),
+                  '[]'::json
+                ) AS media
          FROM products p
          WHERE p.slug = $1`,
         [slug]
       );
-      const product = result.rows[0];
-      // Add single image_url for convenience
-      if (product && product.media && product.media.length > 0) {
+      const product = result.rows[0] || null;
+      if (product && product.media?.length) {
         const firstImage = product.media.find(m => m.type === 'image');
         product.image_url = firstImage ? firstImage.url : null;
       }
-      return NextResponse.json({ product });
+      return NextResponse.json(
+        { product },
+        { headers: { 'Cache-Control': 'public, max-age=60, stale-while-revalidate=120' } }
+      );
     }
 
-    let where = '';
+    // ────── Build WHERE clause ──────
+    const conditions = [];
     const params = [];
     if (search) {
-      where += ` AND (p.title ILIKE $${params.length+1} OR p.description ILIKE $${params.length+2})`;
+      conditions.push(`(p.title ILIKE $${params.length+1} OR p.description ILIKE $${params.length+2})`);
       params.push(`%${search}%`, `%${search}%`);
     }
     if (category && category !== 'all') {
-      where += ` AND p.category = $${params.length+1}`;
+      conditions.push(`p.category = $${params.length+1}`);
       params.push(category);
     }
+    if (minPrice > 0) {
+      conditions.push(`p.price >= $${params.length+1}`);
+      params.push(minPrice);
+    }
+    if (maxPrice < 999999999) {
+      conditions.push(`p.price <= $${params.length+1}`);
+      params.push(maxPrice);
+    }
+    const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    const countResult = await query(
-      `SELECT COUNT(*) FROM products p WHERE 1=1 ${where}`,
-      params
-    );
-    const total = parseInt(countResult.rows[0].count);
+    // ────── Optimized main query ──────
+    // Window function ဖြင့် count ကို ပင်မ query နှင့်အတူ ယူခြင်း (fast=true ဆိုရင် count မယူ)
+    const queryText = fast ? `
+      SELECT 
+        p.id, p.title, p.price, p.stock, p.category, p.is_active, p.slug, p.description,
+        media.url AS image_url
+      FROM products p
+      LEFT JOIN LATERAL (
+        SELECT cloudinary_url AS url
+        FROM media m
+        WHERE m.product_id = p.id AND m.media_type = 'image'
+        ORDER BY m.created_at LIMIT 1
+      ) media ON true
+      ${where}
+      ORDER BY ${orderColumn} ${order}
+      LIMIT $${params.length+1} OFFSET $${params.length+2}
+    ` : `
+      SELECT 
+        p.id, p.title, p.price, p.stock, p.category, p.is_active, p.slug, p.description,
+        media.url AS image_url,
+        COUNT(*) OVER() AS total_count
+      FROM products p
+      LEFT JOIN LATERAL (
+        SELECT cloudinary_url AS url
+        FROM media m
+        WHERE m.product_id = p.id AND m.media_type = 'image'
+        ORDER BY m.created_at LIMIT 1
+      ) media ON true
+      ${where}
+      ORDER BY ${orderColumn} ${order}
+      LIMIT $${params.length+1} OFFSET $${params.length+2}
+    `;
 
-    const result = await query(
-      `SELECT p.id, p.title, p.price, p.stock, p.category, p.is_active, p.slug, p.description,
-              ${IMAGE_SUBQUERY}
-       FROM products p
-       WHERE 1=1 ${where}
-       ORDER BY p.created_at DESC
-       LIMIT $${params.length+1} OFFSET $${params.length+2}`,
-      [...params, limit, offset]
-    );
+    const result = await query(queryText, [...params, limit, offset]);
 
-    return NextResponse.json({
-      products: result.rows,
-      total,
-      totalPages: Math.ceil(total / limit),
+    const products = result.rows.map(row => {
+      const { total_count, ...rest } = row;
+      return rest;
+    });
+    const total = fast ? null : (result.rows.length > 0 ? parseInt(result.rows[0].total_count) : 0);
+
+    const responsePayload = {
+      products,
+      ...(fast ? {} : { total, totalPages: Math.ceil(total / limit) }),
+    };
+
+    return NextResponse.json(responsePayload, {
+      headers: {
+        'Cache-Control': 'public, max-age=30, stale-while-revalidate=60',
+      },
     });
   } catch (error) {
-    console.error('Products API error:', error);
-    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
+    console.error('❌ Products API error:', error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }

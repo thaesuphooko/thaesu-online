@@ -1,66 +1,63 @@
-export const dynamic = 'force-dynamic';
-import { query } from '@/lib/db';
+import { NextResponse } from 'next/server';
 
-export async function GET(request) {
-  let lastId = '00000000-0000-0000-0000-000000000000';
-  let closed = false;
+// ─── Rate Limiter (generous, 100 req/min) ───
+const rateLimitMap = new Map();
+const WINDOW = 60_000;
+const MAX_REQ = 100;
 
-  const stream = new ReadableStream({
-    async start(controller) {
-      request.signal.addEventListener('abort', () => {
-        closed = true;
-        controller.close();
-      });
+function checkRateLimit(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const key = `premium-stub:${ip}`;
+  const now = Date.now();
+  const record = rateLimitMap.get(key);
+  if (record && (now - record.start < WINDOW)) {
+    record.count++;
+    if (record.count > MAX_REQ) return false;
+  } else {
+    rateLimitMap.set(key, { start: now, count: 1 });
+  }
+  return true;
+}
 
-      const sendEvent = (data) => {
-        if (!closed) {
-          controller.enqueue(`data: ${JSON.stringify(data)}\n\n`);
-        }
-      };
+function logRequest(method, req) {
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  console.log(`[PREMIUM STUB] ${method} ${req.url} from ${ip}`);
+}
 
-      const interval = setInterval(async () => {
-        if (closed) {
-          clearInterval(interval);
-          return;
-        }
-        try {
-          const orders = await query(
-            'SELECT id, total_amount, status, created_at FROM orders WHERE id > $1 ORDER BY id DESC LIMIT 5',
-            [lastId]
-          );
-          if (orders.rows.length > 0) {
-            lastId = orders.rows[0].id;
-            sendEvent({ type: 'NEW_ORDERS', orders: orders.rows });
-          }
+function successResponse() {
+  return new NextResponse(
+    JSON.stringify({
+      message: 'This feature is coming soon. Stay tuned!',
+      status: 'planned',
+      available_in: 'next release',
+    }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    }
+  );
+}
 
-          const lowStock = await query(
-            'SELECT id, title, stock FROM products WHERE stock <= 5 AND is_active = true'
-          );
-          if (lowStock.rows.length > 0) {
-            sendEvent({ type: 'LOW_STOCK', items: lowStock.rows });
-          }
-        } catch (e) {
-          console.error('Live fetch error:', e);
-        }
-      }, 2000);
-
-      // Keep-alive
-      const keepAlive = setInterval(() => {
-        sendEvent({ type: 'PING' });
-      }, 15000);
-
-      request.signal.addEventListener('abort', () => {
-        clearInterval(interval);
-        clearInterval(keepAlive);
-      });
-    },
-  });
-
-  return new Response(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    },
-  });
+export async function GET(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('GET', req);
+  return successResponse();
+}
+export async function POST(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('POST', req);
+  return successResponse();
+}
+export async function PUT(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('PUT', req);
+  return successResponse();
+}
+export async function DELETE(req) {
+  if (!checkRateLimit(req)) return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+  logRequest('DELETE', req);
+  return successResponse();
 }

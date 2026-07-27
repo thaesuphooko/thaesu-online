@@ -1,52 +1,70 @@
-import { NextResponse } from 'next/server';
-import { query } from '@/lib/db';
-import { authenticate } from '@/lib/socialAuth';
+import { createApiRoute } from '@/lib/api-wrapper';
+import { safeQuery } from '@/lib/db-wrapper';
+import { verifyToken } from '@/lib/auth';
 
-export async function GET(req) {
-  const user = authenticate(req);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const { searchParams } = new URL(req.url);
-  const status = searchParams.get('status') || 'accepted';
-  const result = await query(
-    `SELECT u.id, u.full_name, u.avatar_url, u.uid, f.status
-     FROM friendships f
-     JOIN users u ON (f.user_id = u.id OR f.friend_id = u.id)
-     WHERE (f.user_id = $1 OR f.friend_id = $1) AND f.status = $2 AND u.id != $1`,
-    [user.id, status]
-  );
-  return NextResponse.json({ friends: result.rows });
-}
+const handlers = {
+  // GET – List friends of the authenticated user
+  GET: async (req) => {
+    const token = req.headers.get('authorization')?.split(' ')[1];
+    if (!token) return Response.json({ error: 'Authentication required' }, { status: 401 });
+    let user;
+    try { user = verifyToken(token); } catch { return Response.json({ error: 'Invalid token' }, { status: 401 }); }
+    if (!user?.id) return Response.json({ error: 'User not found' }, { status: 404 });
 
-export async function POST(req) {
-  const user = authenticate(req);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const { friendUid } = await req.json();
-  // Find friend by uid
-  const friendRes = await query('SELECT id FROM users WHERE uid = $1', [friendUid]);
-  if (friendRes.rows.length === 0) return NextResponse.json({ error: 'User not found' }, { status: 404 });
-  const friendId = friendRes.rows[0].id;
-  // Check if already friends or pending
-  const existing = await query(
-    `SELECT * FROM friendships WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1)`,
-    [user.id, friendId]
-  );
-  if (existing.rows.length > 0) return NextResponse.json({ error: 'Already exists' }, { status: 400 });
-  await query('INSERT INTO friendships (user_id, friend_id, status) VALUES ($1, $2, $3)', [user.id, friendId, 'pending']);
-  return NextResponse.json({ success: true, status: 'pending' });
-}
+    const { rows: friends } = await safeQuery(
+      `SELECT u.id, u.uid, u.full_name, u.avatar_url
+       FROM social_friends sf
+       JOIN users u ON (sf.user_id = u.id OR sf.friend_id = u.id)
+       WHERE (sf.user_id = $1 OR sf.friend_id = $1) AND u.id != $1 AND sf.status = 'accepted'`,
+      [user.id]
+    );
+    return Response.json(friends);
+  },
 
-export async function PUT(req) {
-  const user = authenticate(req);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const { friendUid, action } = await req.json(); // action: 'accept' or 'reject'
-  const friendRes = await query('SELECT id FROM users WHERE uid = $1', [friendUid]);
-  if (friendRes.rows.length === 0) return NextResponse.json({ error: 'User not found' }, { status: 404 });
-  const friendId = friendRes.rows[0].id;
-  if (action === 'accept') {
-    await query(`UPDATE friendships SET status = 'accepted' WHERE friend_id = $1 AND user_id = $2 AND status = 'pending'`, [user.id, friendId]);
-    return NextResponse.json({ success: true });
-  } else if (action === 'reject') {
-    await query('DELETE FROM friendships WHERE friend_id = $1 AND user_id = $2 AND status = $3', [user.id, friendId, 'pending']);
-    return NextResponse.json({ success: true });
-  }
-}
+  // POST – Send friend request
+  POST: async (req) => {
+    const token = req.headers.get('authorization')?.split(' ')[1];
+    if (!token) return Response.json({ error: 'Authentication required' }, { status: 401 });
+    let user;
+    try { user = verifyToken(token); } catch { return Response.json({ error: 'Invalid token' }, { status: 401 }); }
+    if (!user?.id) return Response.json({ error: 'User not found' }, { status: 404 });
+
+    const body = await req.json();
+    if (!body.friend_id) return Response.json({ error: 'friend_id required' }, { status: 400 });
+    if (body.friend_id === user.id) return Response.json({ error: 'Cannot befriend yourself' }, { status: 400 });
+
+    const { rows: [friendship] } = await safeQuery(
+      'INSERT INTO social_friends (user_id, friend_id, status) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *',
+      [user.id, body.friend_id, 'pending']
+    );
+    return Response.json(friendship || { message: 'Request already sent' }, { status: 201 });
+  },
+
+  // PUT – Accept/reject friend request
+  PUT: async (req) => {
+    const token = req.headers.get('authorization')?.split(' ')[1];
+    if (!token) return Response.json({ error: 'Authentication required' }, { status: 401 });
+    let user;
+    try { user = verifyToken(token); } catch { return Response.json({ error: 'Invalid token' }, { status: 401 }); }
+    if (!user?.id) return Response.json({ error: 'User not found' }, { status: 404 });
+
+    const body = await req.json();
+    if (!body.friend_id || !body.action) return Response.json({ error: 'friend_id and action required' }, { status: 400 });
+    if (!['accept', 'reject'].includes(body.action)) return Response.json({ error: 'action must be accept or reject' }, { status: 400 });
+
+    if (body.action === 'accept') {
+      await safeQuery(
+        'UPDATE social_friends SET status = $1 WHERE user_id = $2 AND friend_id = $3',
+        ['accepted', body.friend_id, user.id]
+      );
+    } else {
+      await safeQuery(
+        'DELETE FROM social_friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1)',
+        [user.id, body.friend_id]
+      );
+    }
+    return Response.json({ success: true });
+  },
+};
+
+export const { GET, POST, PUT, DELETE } = createApiRoute(handlers);

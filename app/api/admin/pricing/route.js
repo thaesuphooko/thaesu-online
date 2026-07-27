@@ -1,4 +1,39 @@
-export const dynamic = 'force-dynamic'; import { checkAdmin } from '@/lib/adminAuth'; import { query } from '@/lib/db';
-export async function GET(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const res = await query('SELECT * FROM pricing_rules ORDER BY priority DESC'); return Response.json(res.rows); }
-export async function POST(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { name, description, rule_type, adjustment_type, adjustment_value, is_active, priority } = await request.json(); const res = await query('INSERT INTO pricing_rules (name, description, rule_type, adjustment_type, adjustment_value, is_active, priority) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *', [name, description, rule_type, adjustment_type, adjustment_value, is_active!==false, priority||0]); return Response.json(res.rows[0], { status: 201 }); }
-export async function DELETE(request) { const auth = checkAdmin(request); if (auth.error) return Response.json({ error: auth.error }, { status: auth.status }); const { id } = await request.json(); await query('DELETE FROM pricing_rules WHERE id = $1', [id]); return Response.json({ message: 'Deleted' }); }
+import { createApiRoute, validateBody, requireAdmin } from '@/lib/api-wrapper';
+import { safeQuery } from '@/lib/db-wrapper';
+
+const handlers = {
+  GET: requireAdmin(async () => {
+    const { rows } = await safeQuery('SELECT * FROM pricing_rules ORDER BY created_at DESC');
+    return Response.json(rows);
+  }),
+  
+  POST: requireAdmin(async (req) => {
+    const body = await req.json();
+    validateBody(body, ['name', 'discount']);
+    const { rows: [rule] } = await safeQuery(
+      'INSERT INTO pricing_rules (name, discount, min_amount, max_amount, is_active) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [body.name, body.discount, body.min_amount || 0, body.max_amount || 999999, true]
+    );
+    return Response.json(rule, { status: 201 });
+  }),
+  
+  PUT: requireAdmin(async (req) => {
+    const body = await req.json();
+    validateBody(body, ['id']);
+    const { rows: [rule] } = await safeQuery(
+      `UPDATE pricing_rules SET name = $1, discount = $2, min_amount = $3, max_amount = $4, is_active = $5
+       WHERE id = $6 RETURNING *`,
+      [body.name, body.discount, body.min_amount, body.max_amount, body.is_active, body.id]
+    );
+    return Response.json(rule);
+  }),
+  
+  DELETE: requireAdmin(async (req) => {
+    const { id } = await req.json();
+    if (!id) return Response.json({ error: 'ID required' }, { status: 400 });
+    await safeQuery('DELETE FROM pricing_rules WHERE id = $1', [id]);
+    return Response.json({ success: true });
+  })
+};
+
+export const { GET, POST, PUT, DELETE } = createApiRoute(handlers);

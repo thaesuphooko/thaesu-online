@@ -1,58 +1,32 @@
-export const dynamic = 'force-dynamic';
-import { checkAdmin } from '@/lib/adminAuth';
-import { query } from '@/lib/db';
-import { writeFile, unlink } from 'fs/promises';
-import path from 'path';
-import ytdl from 'ytdl-core';
+import { createApiRoute, requireAdmin } from '@/lib/api-wrapper';
+import { safeQuery } from '@/lib/db-wrapper';
 
-export async function GET(request) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
-  const res = await query("SELECT key, value FROM global_settings WHERE key IN ('music_url','music_volume','music_loop')");
-  const settings = {};
-  res.rows.forEach(r => { settings[r.key] = r.value; });
-  return Response.json(settings);
-}
+const handlers = {
+  GET: requireAdmin(async () => {
+    const { rows } = await safeQuery('SELECT * FROM music_config ORDER BY created_at DESC LIMIT 1');
+    return Response.json(rows[0] || {});
+  }),
+  
+  POST: requireAdmin(async (req) => {
+    const body = await req.json();
+    if (!body.url && !body.title) return Response.json({ error: 'URL or title required' }, { status: 400 });
+    const { rows: [config] } = await safeQuery(
+      'INSERT INTO music_config (url, title, volume, speed, enabled) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [body.url, body.title || 'Untitled', body.volume || 0.5, body.speed || 1.0, body.enabled ?? true]
+    );
+    return Response.json(config, { status: 201 });
+  }),
+  
+  PUT: requireAdmin(async (req) => {
+    const body = await req.json();
+    if (!body.id) return Response.json({ error: 'ID required' }, { status: 400 });
+    const { rows: [config] } = await safeQuery(
+      `UPDATE music_config SET url = $1, title = $2, volume = $3, speed = $4, enabled = $5
+       WHERE id = $6 RETURNING *`,
+      [body.url, body.title, body.volume, body.speed, body.enabled, body.id]
+    );
+    return Response.json(config);
+  })
+};
 
-export async function POST(request) {
-  const auth = checkAdmin(request);
-  if (auth.error) return Response.json({ error: auth.error }, { status: auth.status });
-
-  const formData = await request.formData();
-  const file = formData.get('file');
-  const youtubeUrl = formData.get('youtube_url');
-  const volume = formData.get('volume') || '0.3';
-  const loop = formData.get('loop') || 'true';
-
-  let audioUrl = '';
-
-  if (file && file.size > 0) {
-    // Save uploaded file to public/audio/
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = Date.now() + '-' + file.name;
-    const filepath = path.join(process.cwd(), 'public', 'audio', filename);
-    await writeFile(filepath, buffer);
-    audioUrl = '/audio/' + filename;
-  } else if (youtubeUrl) {
-    // Extract audio from YouTube (stream to file)
-    try {
-      const filename = 'yt-audio-' + Date.now() + '.mp3';
-      const filepath = path.join(process.cwd(), 'public', 'audio', filename);
-      const stream = ytdl(youtubeUrl, { filter: 'audioonly', quality: 'highestaudio' });
-      const chunks = [];
-      for await (const chunk of stream) {
-        chunks.push(chunk);
-      }
-      await writeFile(filepath, Buffer.concat(chunks));
-      audioUrl = '/audio/' + filename;
-    } catch (e) {
-      return Response.json({ error: 'YouTube download failed: ' + e.message }, { status: 400 });
-    }
-  } else {
-    return Response.json({ error: 'No file or YouTube URL provided' }, { status: 400 });
-  }
-
-  // Update settings
-  await query("INSERT INTO global_settings (key, value) VALUES ('music_url', $1), ('music_volume', $2), ('music_loop', $3) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value", [audioUrl, volume, loop]);
-  return Response.json({ message: 'Music updated', url: audioUrl });
-}
+export const { GET, POST, PUT, DELETE } = createApiRoute(handlers);

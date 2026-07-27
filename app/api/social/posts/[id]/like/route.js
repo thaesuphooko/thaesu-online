@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { authenticate } from '@/lib/socialAuth';
+import { sendNotification } from '@/lib/notify';
 
 export async function POST(req, { params }) {
   const { id: postId } = await params;
@@ -13,6 +14,11 @@ export async function POST(req, { params }) {
       return NextResponse.json({ liked: false });
     } else {
       await query('INSERT INTO likes (user_id, post_id) VALUES ($1, $2)', [user.id, postId]);
+      // Notify post owner
+      const post = await query('SELECT user_id FROM posts WHERE id = $1', [postId]);
+      if (post.rows.length > 0) {
+        sendNotification(post.rows[0].user_id, 'Someone liked your post');
+      }
       return NextResponse.json({ liked: true });
     }
   } catch (error) {
