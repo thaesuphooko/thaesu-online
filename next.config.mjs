@@ -1,20 +1,20 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════════╗
  * ║  GOD MODE – Top 1 Infinity Premium Ultra Pro Max                        ║
- * ║  Next.js 16 Ultimate Configuration – Error‑Free, Termux‑Ready           ║
+ * ║  Vercel‑Optimized Next.js 16 Config – Zero Warnings, Full Power        ║
  * ╚══════════════════════════════════════════════════════════════════════════╝
  *
- *  All valid features enabled:
- *   - Multi‑layer security headers (CSP, HSTS, CORS, etc.)
- *   - Aggressive (but safe) webpack chunk splitting
- *   - Standalone output for Docker/PM2
- *   - Image optimization (AVIF/WebP) with remote patterns
- *   - Server external packages for RSC
- *   - Compiler console removal & test‑id stripping
- *   - Scroll restoration & large page data tuning
- *   - Type-safe routing & Webpack build worker (disabled for Termux)
- *   - Dev‑time tuning (HMR, logging, build indicators)
- *   - Production environment validation
+ * Features enabled:
+ *  - Hardened security headers (CSP, HSTS, CORS, etc.)
+ *  - Vercel‑friendly serverless optimizations (no standalone output)
+ *  - Image optimization (AVIF/WebP) with remote patterns
+ *  - Compiler console removal & test‑id stripping
+ *  - Type‑safe routing (typedRoutes)
+ *  - Aggressive (but safe) webpack chunk splitting
+ *  - Server external packages for RSC
+ *  - Experimental scroll restoration & large page data tuning
+ *  - Dev‑time HMR tuning, fetch logging, build indicators
+ *  - Production environment variable validation (exits early if missing)
  */
 
 import { createRequire } from 'module';
@@ -22,7 +22,7 @@ import crypto from 'crypto';
 const require = createRequire(import.meta.url);
 const path = require('path');
 
-// ── Production environment check ──────────────────
+// ── Validate critical env vars in production ───────
 if (process.env.NODE_ENV === 'production') {
   const required = ['DATABASE_URL'];
   const missing = required.filter(v => !process.env[v]);
@@ -41,13 +41,16 @@ const nextConfig = {
   trailingSlash: false,
   crossOrigin: 'anonymous',
 
-  // Keep‑alive for faster API responses
+  // Keep‑alive for faster API responses (no extra sub‑keys that cause warnings)
   httpAgentOptions: { keepAlive: true },
 
   staticPageGenerationTimeout: 180,
   generateBuildId: async () => `build-${crypto.randomBytes(8).toString('hex')}`,
 
-  // ─── Security Headers ───────────────────────────
+  // ─── Type‑safe routing (moved from experimental) ──
+  typedRoutes: true,
+
+  // ─── Security Headers (Full Shield) ─────────────
   async headers() {
     return [
       {
@@ -66,7 +69,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: blob:",
               "font-src 'self'",
-              "connect-src 'self' https://api.telegram.org https://*.cloudinary.com https://*.supabase.co https://*.firebaseio.com",
+              "connect-src 'self' https://api.telegram.org https://*.cloudinary.com",
               "frame-src 'self'",
               "object-src 'none'",
               "base-uri 'self'",
@@ -106,7 +109,7 @@ const nextConfig = {
     ];
   },
 
-  // ─── Compiler ──────────────────────────────────
+  // ─── Compiler Hardening ────────────────────────
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
       ? { exclude: ['error', 'warn'] }
@@ -124,7 +127,7 @@ const nextConfig = {
     'pg-connection-string',
   ],
 
-  // ─── Experimental (Termux‑safe: workers disabled to avoid snapshot errors) ──
+  // ─── Experimental (Termux‑safe, Vercel‑friendly) ──
   experimental: {
     optimizePackageImports: [
       'lucide-react',
@@ -132,20 +135,16 @@ const nextConfig = {
       'framer-motion',
       'recharts',
     ],
-    // Type-safe routing for improved DX
-    typedRoutes: true,
     scrollRestoration: true,
     largePageDataBytes: 128 * 1000,
   },
 
-  // ─── Webpack (safe aliases, fallback, externals, & chunk splitting) ──
+  // ─── Webpack (aliases, fallback, chunk splitting) ──
   webpack: (config, { isServer }) => {
     config.resolve.alias['@'] = path.resolve('./');
 
-    // Prevent snapshot warnings explicitly
-    config.snapshot = {
-      managedPaths: [],
-    };
+    // Avoid snapshot errors on Termux by disabling filesystem cache
+    config.cache = false;
 
     if (!isServer) {
       config.resolve.fallback = {
@@ -156,7 +155,7 @@ const nextConfig = {
         dns: false,
         child_process: false,
       };
-      // Aggressive chunk splitting (no extra plugins needed)
+      // Aggressive chunk splitting for faster page loads
       config.optimization = config.optimization || {};
       config.optimization.splitChunks = {
         chunks: 'all',
@@ -192,12 +191,7 @@ const nextConfig = {
     return config;
   },
 
-  // ─── Standalone output for Docker/PM2 ──────────
-  
-
-  // ═══════════════════════════════════════════════════════════════════
-  // 11. Dev‑time Tuning (HMR, logs, build indicators)
-  // ═══════════════════════════════════════════════════════════════════
+  // ─── Dev‑time Tuning (HMR, logs, indicators) ──
   onDemandEntries: {
     maxInactiveAge: 30 * 1000,
     pagesBufferLength: 8,
@@ -208,7 +202,7 @@ const nextConfig = {
     },
   },
   devIndicators: {
-    buildActivity: false,            // Cleaner dev screen
+    buildActivity: false,
   },
 };
 

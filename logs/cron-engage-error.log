@@ -104,3 +104,48 @@
 2026-07-27 13:53:53 +06:30:   }
 2026-07-27 13:53:53 +06:30: }
 2026-07-27 13:54:02 +06:30: ⚠️ SLOW QUERY (2711ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:54:04 +06:30: ⚠️ SLOW QUERY (2159ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:54:28 +06:30: ⚠️ SLOW QUERY (2239ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:54:31 +06:30: ⚠️ SLOW QUERY (1978ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:54:52 +06:30: ⚠️ SLOW QUERY (2382ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:54:54 +06:30: ⚠️ SLOW QUERY (1916ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:55:16 +06:30: ⚠️ SLOW QUERY (2156ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:55:18 +06:30: ⚠️ SLOW QUERY (2144ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:55:40 +06:30: ⚠️ SLOW QUERY (2130ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:55:43 +06:30: ⚠️ SLOW QUERY (3170ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:56:05 +06:30: ⚠️ SLOW QUERY (2467ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:56:07 +06:30: ⚠️ SLOW QUERY (2068ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:56:31 +06:30: ⚠️ SLOW QUERY (2778ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:56:33 +06:30: ⚠️ SLOW QUERY (2093ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:56:54 +06:30: ⚠️ SLOW QUERY (2195ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:56:57 +06:30: ⚠️ SLOW QUERY (2469ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:57:21 +06:30: ⚠️ SLOW QUERY (3465ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:57:23 +06:30: ⚠️ SLOW QUERY (2441ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:57:44 +06:30: ⚠️ SLOW QUERY (2146ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:57:47 +06:30: ⚠️ SLOW QUERY (2106ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:58:12 +06:30: ⚠️ SLOW QUERY (4305ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:58:14 +06:30: ⚠️ SLOW QUERY (1974ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:58:37 +06:30: ⚠️ SLOW QUERY (2455ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:58:40 +06:30: ⚠️ SLOW QUERY (1824ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:59:08 +06:30: ⚠️ SLOW QUERY (2556ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:59:10 +06:30: ⚠️ SLOW QUERY (1905ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:59:31 +06:30: ⚠️ SLOW QUERY (2140ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:59:33 +06:30: ⚠️ SLOW QUERY (1832ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:59:55 +06:30: ⚠️ SLOW QUERY (2583ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:59:57 +06:30: ⚠️ SLOW QUERY (2283ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 14:00:18 +06:30: ⚠️ SLOW QUERY (2287ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:00:21 +06:30: ⚠️ SLOW QUERY (1981ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 14:00:42 +06:30: ⚠️ SLOW QUERY (2645ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:00:43 +06:30: ⚠️ SLOW QUERY (877ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:00:45 +06:30: ⚠️ SLOW QUERY (2094ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 14:01:08 +06:30: ⚠️ SLOW QUERY (4130ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:01:11 +06:30: ⚠️ SLOW QUERY (2537ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 14:01:35 +06:30: ⚠️ SLOW QUERY (3904ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:01:39 +06:30: ⚠️ SLOW QUERY (3871ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 14:02:05 +06:30: ⚠️ SLOW QUERY (4644ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:02:06 +06:30: ⚠️ SLOW QUERY (955ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:02:14 +06:30: ⚠️ SLOW QUERY (8043ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 14:02:36 +06:30: ⚠️ SLOW QUERY (2536ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:02:39 +06:30: ⚠️ SLOW QUERY (1953ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 14:03:03 +06:30: ⚠️ SLOW QUERY (3678ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 14:03:07 +06:30: ⚠️ SLOW QUERY (3464ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
