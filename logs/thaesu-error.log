@@ -3,3 +3,65 @@
 2026-07-27 13:51:54 +06:30: ⚠️ SLOW QUERY (3901ms): 
 2026-07-27 13:51:54 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
 2026-07-27 13:51:54 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-27 14:10:44 +06:30: ⚠️ SLOW QUERY (3077ms): 
+2026-07-27 14:10:44 +06:30:       SELECT 
+2026-07-27 14:10:44 +06:30:         u.id, u.uid, u.full_name, u.email, u.phone, u.bio,
+2026-07-27 14:10:44 +06:30:         u.avatar_url, u.co
+2026-07-27 14:11:36 +06:30: ⚠️ SLOW QUERY (2572ms): SELECT id FROM users WHERE email = $1
+2026-07-27 14:11:38 +06:30: ⚠️ SLOW QUERY (1670ms): SELECT id FROM users WHERE referral_code = $1
+2026-07-27 14:11:39 +06:30: Registration error: error: new row for relation "users" violates check constraint "users_role_check"
+2026-07-27 14:11:39 +06:30:     at async g.query (.next/server/app/api/admin/ai-price/route.js:1:1921)
+2026-07-27 14:11:39 +06:30:     at async m (.next/server/app/api/auth/register/route.js:1:9299)
+2026-07-27 14:11:39 +06:30:     at async j (.next/server/app/api/auth/register/route.js:1:4848)
+2026-07-27 14:11:39 +06:30:     at async h (.next/server/app/api/auth/register/route.js:1:5860)
+2026-07-27 14:11:39 +06:30:     at async Module.y (.next/server/app/api/auth/register/route.js:1:6956) {
+2026-07-27 14:11:39 +06:30:   length: 514,
+2026-07-27 14:11:39 +06:30:   severity: 'ERROR',
+2026-07-27 14:11:39 +06:30:   code: '23514',
+2026-07-27 14:11:39 +06:30:   detail: 'Failing row contains (a17f5df5-d630-4196-af07-c86df045b8f4, a2234@gmail.com, $2b$12$ZS6gHK/DFt1aZppd7SNuT.7wDnDd.g2dB8oje3qZ0aX1tGLuO9ArW, A33676, user, f, f, f, 2026-07-27 07:41:38.385465+00, 2026-07-27 07:41:38.385465+00, bronze, null, f3b75e19e6c03755, , null, null, null, null, null, pending, null, null, f3b791FB00, null, 0.00, free, {}).',
+2026-07-27 14:11:39 +06:30:   hint: undefined,
+2026-07-27 14:11:39 +06:30:   position: undefined,
+2026-07-27 14:11:39 +06:30:   internalPosition: undefined,
+2026-07-27 14:11:39 +06:30:   internalQuery: undefined,
+2026-07-27 14:11:39 +06:30:   where: undefined,
+2026-07-27 14:11:39 +06:30:   schema: 'public',
+2026-07-27 14:11:39 +06:30:   table: 'users',
+2026-07-27 14:11:39 +06:30:   column: undefined,
+2026-07-27 14:11:39 +06:30:   dataType: undefined,
+2026-07-27 14:11:39 +06:30:   constraint: 'users_role_check',
+2026-07-27 14:11:39 +06:30:   file: 'execMain.c',
+2026-07-27 14:11:39 +06:30:   line: '2086',
+2026-07-27 14:11:39 +06:30:   routine: 'ExecConstraints'
+2026-07-27 14:11:39 +06:30: }
+2026-07-27 14:36:57 +06:30: ⚠️ SLOW QUERY (3940ms): 
+2026-07-27 14:36:57 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-27 14:36:57 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-27 14:37:39 +06:30: ⚠️ SLOW QUERY (4905ms): 
+2026-07-27 14:37:39 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-27 14:37:39 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-27 14:37:41 +06:30: ⚠️ SLOW QUERY (2714ms): SELECT id FROM users WHERE referral_code = $1
+2026-07-27 14:37:42 +06:30: Registration error: error: new row for relation "users" violates check constraint "users_role_check"
+2026-07-27 14:37:42 +06:30:     at async g.query (.next/server/app/api/admin/ai-price/route.js:1:1921)
+2026-07-27 14:37:42 +06:30:     at async n (.next/server/app/api/auth/register/route.js:1:2919)
+2026-07-27 14:37:42 +06:30:     at async j (.next/server/app/api/auth/register/route.js:6:4342)
+2026-07-27 14:37:42 +06:30:     at async h (.next/server/app/api/auth/register/route.js:6:5354)
+2026-07-27 14:37:42 +06:30:     at async Module.y (.next/server/app/api/auth/register/route.js:6:6450) {
+2026-07-27 14:37:42 +06:30:   length: 505,
+2026-07-27 14:37:42 +06:30:   severity: 'ERROR',
+2026-07-27 14:37:42 +06:30:   code: '23514',
+2026-07-27 14:37:42 +06:30:   detail: 'Failing row contains (d7bf2cfc-c508-4d3f-b682-1c00afd71171, null, $2b$10$cp.3upPb3DWwuaUtWbHjqu4SqLA8xBT9g99Dihnl6P2LURJKZqrqW, Test, user, f, f, f, 2026-07-27 08:07:41.480958+00, 2026-07-27 08:07:41.480958+00, bronze, null, 9a7632661c8bfeb8, null, null, null, null, null, null, pending, null, null, 9a76F4BC74, null, 0.00, free, {}).',
+2026-07-27 14:37:42 +06:30:   hint: undefined,
+2026-07-27 14:37:42 +06:30:   position: undefined,
+2026-07-27 14:37:42 +06:30:   internalPosition: undefined,
+2026-07-27 14:37:42 +06:30:   internalQuery: undefined,
+2026-07-27 14:37:42 +06:30:   where: undefined,
+2026-07-27 14:37:42 +06:30:   schema: 'public',
+2026-07-27 14:37:42 +06:30:   table: 'users',
+2026-07-27 14:37:42 +06:30:   column: undefined,
+2026-07-27 14:37:42 +06:30:   dataType: undefined,
+2026-07-27 14:37:42 +06:30:   constraint: 'users_role_check',
+2026-07-27 14:37:42 +06:30:   file: 'execMain.c',
+2026-07-27 14:37:42 +06:30:   line: '2086',
+2026-07-27 14:37:42 +06:30:   routine: 'ExecConstraints'
+2026-07-27 14:37:42 +06:30: }
+2026-07-27 14:40:54 +06:30: ⚠️ SLOW QUERY (1973ms): SELECT id FROM users WHERE referral_code = $1
