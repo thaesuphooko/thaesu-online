@@ -7,7 +7,7 @@
  * Features enabled:
  *  - Hardened security headers (CSP, HSTS, CORS, etc.)
  *  - Vercel‑friendly serverless optimizations (no standalone output)
- *  - Image optimization (AVIF/WebP) with remote patterns
+ *  - Image optimization (AVIF/WebP) with remote patterns & extended cache
  *  - Compiler console removal & test‑id stripping
  *  - Type‑safe routing (typedRoutes)
  *  - Aggressive (but safe) webpack chunk splitting
@@ -41,7 +41,7 @@ const nextConfig = {
   trailingSlash: false,
   crossOrigin: 'anonymous',
 
-  // Keep‑alive for faster API responses (no extra sub‑keys that cause warnings)
+  // Keep‑alive for faster API responses
   httpAgentOptions: { keepAlive: true },
 
   staticPageGenerationTimeout: 180,
@@ -63,6 +63,7 @@ const nextConfig = {
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
           { key: 'Content-Security-Policy', value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
@@ -99,7 +100,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
     ],
     formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 86400,
+    minimumCacheTTL: 2678400, // 31 days
   },
 
   // ─── Rewrites ──────────────────────────────────
