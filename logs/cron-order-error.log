@@ -1,0 +1,18 @@
+2026-07-27 13:51:47 +06:30: ⚠️ SLOW QUERY (2134ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:51:56 +06:30: ⚠️ SLOW QUERY (2134ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:52:05 +06:30: ⚠️ SLOW QUERY (2253ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:52:05 +06:30: ⚠️ SLOW QUERY (564ms): UPDATE orders SET status='cancelled' WHERE status='pending' AND timer_expiry < NOW()
+2026-07-27 13:52:13 +06:30: ⚠️ SLOW QUERY (1910ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:52:22 +06:30: ⚠️ SLOW QUERY (2114ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:52:31 +06:30: ⚠️ SLOW QUERY (2412ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:52:40 +06:30: ⚠️ SLOW QUERY (3162ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:52:41 +06:30: ⚠️ SLOW QUERY (553ms): SELECT conname, pg_get_constraintdef(oid) as def FROM pg_constraint WHERE conrelid = 'orders'::regcl
+2026-07-27 13:52:49 +06:30: ⚠️ SLOW QUERY (2451ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:52:58 +06:30: ⚠️ SLOW QUERY (2158ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:53:07 +06:30: ⚠️ SLOW QUERY (2144ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:53:17 +06:30: ⚠️ SLOW QUERY (3643ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:53:26 +06:30: ⚠️ SLOW QUERY (2499ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:53:35 +06:30: ⚠️ SLOW QUERY (2208ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:53:43 +06:30: ⚠️ SLOW QUERY (2122ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:53:52 +06:30: ⚠️ SLOW QUERY (2377ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 13:54:01 +06:30: ⚠️ SLOW QUERY (3090ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1

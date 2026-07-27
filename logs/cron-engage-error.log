@@ -1,0 +1,106 @@
+2026-07-27 13:51:47 +06:30: ⚠️ SLOW QUERY (2208ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:51:51 +06:30: ⚠️ SLOW QUERY (3269ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:52:13 +06:30: ⚠️ SLOW QUERY (3223ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:52:14 +06:30: ⚠️ SLOW QUERY (541ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:52:17 +06:30: ⚠️ SLOW QUERY (3713ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:52:40 +06:30: ⚠️ SLOW QUERY (2679ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:52:45 +06:30: ⚠️ SLOW QUERY (4512ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:53:07 +06:30: ⚠️ SLOW QUERY (2155ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:53:10 +06:30: ⚠️ SLOW QUERY (2589ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:53:32 +06:30: ⚠️ SLOW QUERY (3178ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-27 13:53:41 +06:30: ⚠️ SLOW QUERY (8423ms): SELECT id, email FROM users WHERE updated_at < NOW() - INTERVAL '7 days'
+2026-07-27 13:53:53 +06:30: Error: read ECONNABORTED
+2026-07-27 13:53:53 +06:30:     at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+2026-07-27 13:53:53 +06:30:   errno: -103,
+2026-07-27 13:53:53 +06:30:   code: 'ECONNABORTED',
+2026-07-27 13:53:53 +06:30:   syscall: 'read',
+2026-07-27 13:53:53 +06:30:   client: Client {
+2026-07-27 13:53:53 +06:30:     _events: [Object: null prototype] { error: [Function (anonymous)] },
+2026-07-27 13:53:53 +06:30:     _eventsCount: 1,
+2026-07-27 13:53:53 +06:30:     _maxListeners: undefined,
+2026-07-27 13:53:53 +06:30:     connectionParameters: ConnectionParameters {
+2026-07-27 13:53:53 +06:30:       user: 'neondb_owner',
+2026-07-27 13:53:53 +06:30:       database: 'neondb',
+2026-07-27 13:53:53 +06:30:       port: 5432,
+2026-07-27 13:53:53 +06:30:       host: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech',
+2026-07-27 13:53:53 +06:30:       binary: false,
+2026-07-27 13:53:53 +06:30:       options: undefined,
+2026-07-27 13:53:53 +06:30:       ssl: {},
+2026-07-27 13:53:53 +06:30:       sslnegotiation: undefined,
+2026-07-27 13:53:53 +06:30:       client_encoding: '',
+2026-07-27 13:53:53 +06:30:       replication: undefined,
+2026-07-27 13:53:53 +06:30:       isDomainSocket: false,
+2026-07-27 13:53:53 +06:30:       application_name: undefined,
+2026-07-27 13:53:53 +06:30:       fallback_application_name: undefined,
+2026-07-27 13:53:53 +06:30:       statement_timeout: false,
+2026-07-27 13:53:53 +06:30:       lock_timeout: false,
+2026-07-27 13:53:53 +06:30:       idle_in_transaction_session_timeout: false,
+2026-07-27 13:53:53 +06:30:       query_timeout: false,
+2026-07-27 13:53:53 +06:30:       connect_timeout: 5
+2026-07-27 13:53:53 +06:30:     },
+2026-07-27 13:53:53 +06:30:     user: 'neondb_owner',
+2026-07-27 13:53:53 +06:30:     database: 'neondb',
+2026-07-27 13:53:53 +06:30:     port: 5432,
+2026-07-27 13:53:53 +06:30:     host: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech',
+2026-07-27 13:53:53 +06:30:     replication: undefined,
+2026-07-27 13:53:53 +06:30:     _Promise: [Function: Promise],
+2026-07-27 13:53:53 +06:30:     _types: TypeOverrides { _types: [Object], text: {}, binary: {} },
+2026-07-27 13:53:53 +06:30:     _ending: true,
+2026-07-27 13:53:53 +06:30:     _ended: false,
+2026-07-27 13:53:53 +06:30:     _connecting: false,
+2026-07-27 13:53:53 +06:30:     _connected: true,
+2026-07-27 13:53:53 +06:30:     _connectionError: false,
+2026-07-27 13:53:53 +06:30:     _queryable: false,
+2026-07-27 13:53:53 +06:30:     _activeQuery: null,
+2026-07-27 13:53:53 +06:30:     _txStatus: 'I',
+2026-07-27 13:53:53 +06:30:     enableChannelBinding: false,
+2026-07-27 13:53:53 +06:30:     scramMaxIterations: 100000,
+2026-07-27 13:53:53 +06:30:     connection: Connection {
+2026-07-27 13:53:53 +06:30:       _events: [Object: null prototype],
+2026-07-27 13:53:53 +06:30:       _eventsCount: 23,
+2026-07-27 13:53:53 +06:30:       _maxListeners: undefined,
+2026-07-27 13:53:53 +06:30:       stream: [TLSSocket],
+2026-07-27 13:53:53 +06:30:       _keepAlive: false,
+2026-07-27 13:53:53 +06:30:       _keepAliveInitialDelayMillis: 0,
+2026-07-27 13:53:53 +06:30:       parsedStatements: {},
+2026-07-27 13:53:53 +06:30:       ssl: {},
+2026-07-27 13:53:53 +06:30:       sslNegotiation: 'postgres',
+2026-07-27 13:53:53 +06:30:       _ending: true,
+2026-07-27 13:53:53 +06:30:       _emitMessage: false,
+2026-07-27 13:53:53 +06:30:       _connecting: true,
+2026-07-27 13:53:53 +06:30:       Symbol(shapeMode): false,
+2026-07-27 13:53:53 +06:30:       Symbol(kCapture): false
+2026-07-27 13:53:53 +06:30:     },
+2026-07-27 13:53:53 +06:30:     _queryQueue: [],
+2026-07-27 13:53:53 +06:30:     binary: false,
+2026-07-27 13:53:53 +06:30:     processID: -1603650417,
+2026-07-27 13:53:53 +06:30:     secretKey: 187080718,
+2026-07-27 13:53:53 +06:30:     ssl: {},
+2026-07-27 13:53:53 +06:30:     sslNegotiation: 'postgres',
+2026-07-27 13:53:53 +06:30:     _connectionTimeoutMillis: 5000,
+2026-07-27 13:53:53 +06:30:     _connectionCallback: null,
+2026-07-27 13:53:53 +06:30:     connectionTimeoutHandle: Timeout {
+2026-07-27 13:53:53 +06:30:       _idleTimeout: -1,
+2026-07-27 13:53:53 +06:30:       _idlePrev: null,
+2026-07-27 13:53:53 +06:30:       _idleNext: null,
+2026-07-27 13:53:53 +06:30:       _idleStart: 21849,
+2026-07-27 13:53:53 +06:30:       _onTimeout: null,
+2026-07-27 13:53:53 +06:30:       _timerArgs: undefined,
+2026-07-27 13:53:53 +06:30:       _repeat: null,
+2026-07-27 13:53:53 +06:30:       _destroyed: true,
+2026-07-27 13:53:53 +06:30:       Symbol(refed): false,
+2026-07-27 13:53:53 +06:30:       Symbol(kHasPrimitive): false,
+2026-07-27 13:53:53 +06:30:       Symbol(asyncId): 11451,
+2026-07-27 13:53:53 +06:30:       Symbol(triggerId): 0,
+2026-07-27 13:53:53 +06:30:       Symbol(kAsyncContextFrame): undefined
+2026-07-27 13:53:53 +06:30:     },
+2026-07-27 13:53:53 +06:30:     saslSession: null,
+2026-07-27 13:53:53 +06:30:     release: [Function (anonymous)],
+2026-07-27 13:53:53 +06:30:     readyForQuery: false,
+2026-07-27 13:53:53 +06:30:     hasExecuted: true,
+2026-07-27 13:53:53 +06:30:     _poolUseCount: 1,
+2026-07-27 13:53:53 +06:30:     Symbol(shapeMode): false,
+2026-07-27 13:53:53 +06:30:     Symbol(kCapture): false
+2026-07-27 13:53:53 +06:30:   }
+2026-07-27 13:53:53 +06:30: }
+2026-07-27 13:54:02 +06:30: ⚠️ SLOW QUERY (2711ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1

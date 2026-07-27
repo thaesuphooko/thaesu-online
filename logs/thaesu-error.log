@@ -1,0 +1,5 @@
+2026-07-27 13:51:46 +06:30: ⚠ `experimental.typedRoutes` has been moved to `typedRoutes`. Please update your next.config.mjs file accordingly.
+2026-07-27 13:51:46 +06:30: ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-07-27 13:51:54 +06:30: ⚠️ SLOW QUERY (3901ms): 
+2026-07-27 13:51:54 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-27 13:51:54 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u

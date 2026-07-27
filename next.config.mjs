@@ -193,7 +193,7 @@ const nextConfig = {
   },
 
   // ─── Standalone output for Docker/PM2 ──────────
-  output: 'standalone',
+  
 
   // ═══════════════════════════════════════════════════════════════════
   // 11. Dev‑time Tuning (HMR, logs, build indicators)
