@@ -377,3 +377,4 @@
 2026-07-27 14:41:55 +06:30: ⚠️ SLOW QUERY (2100ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
 2026-07-27 14:42:04 +06:30: ⚠️ SLOW QUERY (2411ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
 2026-07-27 14:42:13 +06:30: ⚠️ SLOW QUERY (3192ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
+2026-07-27 14:42:22 +06:30: ⚠️ SLOW QUERY (2096ms): SELECT column_name FROM information_schema.columns WHERE table_name='orders' AND column_name=$1
