@@ -5,14 +5,14 @@ import db from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 // ════════════════════════════════════════════════════════════
-//  GOD MODE – ADMIN OTP VERIFICATION (Ultra Max)
-//  · Rate limit, OTP brute-force lockout, DB retry,
-//  · activity logging, Telegram alerts
+//  GOD MODE – ADMIN OTP VERIFICATION (Ultra Max Pro)
+//  · Rate limit, brute-force lockout, circuit breaker,
+//  · retry, activity logging, Telegram alerts
 // ════════════════════════════════════════════════════════════
 
 // ─── Memory‑safe Rate Limiter (per IP) ──────────
 const rateLimitMap = new Map();
-const RATE_WINDOW = 60_000;
+const RATE_WINDOW = 60_000;       // 1 minute
 const MAX_ATTEMPTS_PER_IP = 10;
 setInterval(() => {
   const now = Date.now();
@@ -59,6 +59,30 @@ function resetOtpFailures(userId) {
   otpLockoutMap.delete(userId);
 }
 
+// ─── Circuit breaker (DB timeout) ───────────────
+let dbFailureCount = 0;
+let dbOpenUntil = 0;
+const MAX_DB_FAILURES = 5;
+const DB_BREAKER_TIMEOUT = 15_000; // 15 seconds
+
+function isDbCircuitOpen() {
+  if (dbFailureCount >= MAX_DB_FAILURES && Date.now() < dbOpenUntil) return true;
+  if (Date.now() >= dbOpenUntil) {
+    dbFailureCount = 0;
+    return false;
+  }
+  return false;
+}
+
+function recordDbSuccess() { dbFailureCount = 0; }
+function recordDbFailure() {
+  dbFailureCount++;
+  if (dbFailureCount >= MAX_DB_FAILURES) {
+    dbOpenUntil = Date.now() + DB_BREAKER_TIMEOUT;
+    console.warn(`🔴 Admin verify DB circuit breaker OPEN for ${DB_BREAKER_TIMEOUT/1000}s`);
+  }
+}
+
 // ─── XSS sanitizer ──────────────────────────────
 function sanitize(str) {
   if (typeof str !== 'string') return '';
@@ -69,8 +93,12 @@ function sanitize(str) {
 async function executeWithRetry(client, callback, maxRetries = 2) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      return await callback();
+      if (isDbCircuitOpen()) throw new Error('Database circuit breaker is open');
+      const result = await callback();
+      recordDbSuccess();
+      return result;
     } catch (error) {
+      recordDbFailure();
       if (attempt === maxRetries || error.code !== 'ETIMEDOUT') throw error;
       console.warn(`OTP verify retry ${attempt + 1} due to timeout...`);
       await new Promise(r => setTimeout(r, 500));
@@ -114,6 +142,11 @@ async function notifyAdmin(text) {
   }
 }
 
+// ─── Helper: get Yangon time string ─────────────
+function yangonTime() {
+  return new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
+}
+
 export async function POST(req) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
 
@@ -142,8 +175,8 @@ export async function POST(req) {
   const client = await db.connect();
   try {
     // 3. Find admin user (first admin)
-    const { rows: [admin] } = await client.query(
-      "SELECT * FROM users WHERE role = 'admin' LIMIT 1"
+    const { rows: [admin] } = await executeWithRetry(client, () =>
+      client.query("SELECT * FROM users WHERE role = 'admin' LIMIT 1")
     );
     if (!admin) {
       return NextResponse.json({ error: 'Admin account not configured' }, { status: 500 });
@@ -152,26 +185,26 @@ export async function POST(req) {
     // 4. Check OTP brute-force lockout
     if (checkOtpLockout(admin.id)) {
       await logActivity(client, admin.id, 'otp_lockout', { ip });
-      notifyAdmin(`🚨 <b>Admin OTP Lockout</b>\n👤 ${admin.full_name}\n⏰ ${new Date().toISOString()}`);
+      notifyAdmin(`🚨 <b>Admin OTP Lockout</b>\n👤 ${admin.full_name}\n⏰ ${yangonTime()}`);
       return NextResponse.json({ error: 'Account is temporarily locked due to too many failed OTP attempts. Try again later.' }, { status: 423 });
     }
 
     // 5. Verify OTP from database
-    const otpRecord = await executeWithRetry(client, async () => {
-      const { rows } = await client.query(
+    const otpRecord = await executeWithRetry(client, () =>
+      client.query(
         'SELECT otp, expires_at FROM admin_otp WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
         [admin.id]
-      );
-      return rows[0];
-    });
+      )
+    );
+    const record = otpRecord.rows[0];
 
-    if (!otpRecord || otpRecord.otp !== otp) {
+    if (!record || record.otp !== otp) {
       recordOtpFailure(admin.id);
-      await logActivity(client, admin.id, 'otp_invalid', { ip, attempt: otpRecord ? 'expired_or_wrong' : 'expired_or_wrong' });
+      await logActivity(client, admin.id, 'otp_invalid', { ip });
       return NextResponse.json({ error: 'Invalid OTP' }, { status: 401 });
     }
 
-    if (new Date(otpRecord.expires_at) < new Date()) {
+    if (new Date(record.expires_at) < new Date()) {
       recordOtpFailure(admin.id);
       // Clean up expired OTP
       await client.query('DELETE FROM admin_otp WHERE user_id = $1', [admin.id]);
@@ -194,11 +227,14 @@ export async function POST(req) {
 
     // 7. Log successful activity & notify
     await logActivity(client, admin.id, 'otp_login_success', { ip });
-    notifyAdmin(`✅ <b>Admin Login Successful</b>\n👤 ${admin.full_name}\n⏰ ${new Date().toISOString()}`).catch(() => {});
+    notifyAdmin(`✅ <b>Admin Login Successful</b>\n👤 ${admin.full_name}\n⏰ ${yangonTime()}`).catch(() => {});
 
     return NextResponse.json({ token, user: safeUser });
   } catch (error) {
     console.error('OTP verify error:', error);
+    if (error.message === 'Database circuit breaker is open') {
+      return NextResponse.json({ error: 'Service temporarily unavailable. Please try again later.' }, { status: 503 });
+    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   } finally {
     client.release();
