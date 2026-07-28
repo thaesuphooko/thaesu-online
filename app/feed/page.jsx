@@ -1,9 +1,9 @@
 'use client';
+
 import RecommendedProducts from '@/components/organisms/RecommendedProducts';
 import PollDisplay from '@/components/organisms/PostCardPoll';
 import StoriesBar from '@/components/organisms/StoriesBar';
-
-import { useState, useEffect, useRef, useCallback, useOptimistic } from 'react';
+import { useState, useEffect, useRef, useCallback, useOptimistic, startTransition } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -14,11 +14,46 @@ import {
 import { toast } from 'sonner';
 import useFeedStore from '@/store/feedStore';
 
-// ---------- Utilities ----------
-const getUser = () => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } };
-const getToken = () => localStorage.getItem('token');
+// ─── Network retry helper ──────────────────────
+const fetchWithRetry = async (url, options = {}, retries = 2) => {
+  let lastError;
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const res = await fetch(url, { ...options });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Request failed with status ${res.status}`);
+      }
+      return res;
+    } catch (err) {
+      lastError = err;
+      if (i === retries) throw err;
+      await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+    }
+  }
+  throw lastError;
+};
 
-// ---------- Skeleton Loader ----------
+// ─── Utilities ─────────────────────────────────
+const getToken = () => localStorage.getItem('token');
+const getUser = () => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } };
+
+// ─── Relative time formatter ───────────────────
+const timeAgo = (date) => {
+  const now = Date.now();
+  const diff = now - new Date(date).getTime();
+  const seconds = Math.floor(diff / 1000);
+  if (seconds < 60) return 'just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(date).toLocaleDateString();
+};
+
+// ─── Skeleton Loader ───────────────────────────
 const PostSkeleton = () => (
   <div className="bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 rounded-2xl p-5 animate-pulse space-y-4">
     <div className="flex items-center gap-3"><div className="w-10 h-10 rounded-full bg-zinc-800" /><div className="flex-1 space-y-2"><div className="h-4 bg-zinc-800 rounded w-1/3" /><div className="h-3 bg-zinc-800 rounded w-1/4" /></div></div>
@@ -27,7 +62,7 @@ const PostSkeleton = () => (
   </div>
 );
 
-// ---------- Particle Effect for Like ----------
+// ─── Particle Effect for Like ──────────────────
 const useParticles = () => {
   const [particles, setParticles] = useState([]);
   const createBurst = (x, y) => {
@@ -40,7 +75,7 @@ const useParticles = () => {
   return { particles, createBurst };
 };
 
-// ---------- Post Card (with Poll) ----------
+// ─── Post Card (Premium Ultra) ─────────────────
 function PostCard({ post, user, refresh }) {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
@@ -49,39 +84,93 @@ function PostCard({ post, user, refresh }) {
   const { particles, createBurst } = useParticles();
   const isOwner = user && (user.uid === post.user_uid);
 
+  // Like state
   const [likeState, setLikeState] = useState({ liked: post.liked_by_user || false, count: post.like_count || 0 });
   const [optimisticLike, addOptimisticLike] = useOptimistic(likeState, (state, newLiked) => ({
     liked: newLiked, count: state.count + (newLiked ? 1 : -1),
   }));
 
+  // Share count (optimistic)
+  const [shareCount, setShareCount] = useState(post.share_count || 0);
+
+  // ── Like handler ─────────────────────────────
   const handleLike = async (e) => {
+    const token = getToken();
+    if (!token) { toast.error("Please login to like"); return; }
     const rect = e.currentTarget.getBoundingClientRect();
     createBurst(rect.left + rect.width/2, rect.top + rect.height/2);
     const newLiked = !optimisticLike.liked;
-    addOptimisticLike(newLiked);
+    startTransition(() => addOptimisticLike(newLiked));
     try {
-      const token = getToken(); if (!token) { toast.error('Login required'); return; }
-      const res = await fetch(`/api/social/posts/${post.id}/like`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetchWithRetry(`/api/social/posts/${post.id}/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
-      if (res.ok) setLikeState({ liked: data.liked, count: data.liked ? likeState.count + 1 : likeState.count - 1 });
-      else throw new Error(data.error);
-    } catch { addOptimisticLike(!newLiked); toast.error('Like failed'); }
+      if (!res.ok) throw new Error(data.error || "Like failed");
+      setLikeState({ liked: data.liked, count: data.likes_count });
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        startTransition(() => addOptimisticLike(!newLiked));
+        toast.error(err.message);
+      }
+    }
   };
 
+  // ── Comment handler ─────────────────────────
   const submitComment = async () => {
     if (!commentText.trim()) return;
-    const token = getToken(); if (!token) return toast.error('Login required');
-    const res = await fetch(`/api/social/posts/${post.id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ content: commentText }) });
-    if (res.ok) { setCommentText(''); refresh(); }
+    const token = getToken();
+    if (!token) return toast.error("Login required");
+    try {
+      const res = await fetchWithRetry(`/api/social/posts/${post.id}/comment`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ content: commentText }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Comment failed");
+      }
+      setCommentText('');
+      toast.success('Comment added!');
+      refresh(); // re-fetch feed (or just re-fetch comments)
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
+  // ── Share handler ───────────────────────────
   const handleShare = async () => {
-    const token = getToken(); if (!token) return toast.error('Login required');
-    await fetch(`/api/social/posts/${post.id}/share`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
-    refresh();
+    const token = getToken();
+    if (!token) return toast.error("Login required");
+    // Optimistic update
+    setShareCount(prev => prev + 1);
+    try {
+      const shareRes = await fetchWithRetry(`/api/social/posts/${post.id}/share`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!shareRes.ok) {
+        const errData = await shareRes.json().catch(() => ({}));
+        throw new Error(errData.error || "Share failed");
+      }
+      toast.success("Shared!");
+      refresh(); // re-fetch feed to update share count properly
+    } catch (err) {
+      setShareCount(prev => prev - 1); // rollback
+      toast.error(err.message);
+    }
   };
 
-  useEffect(() => { if (showComments) fetch(`/api/social/posts/${post.id}/comments`).then(r=>r.json()).then(d=>setComments(d.comments||[])); }, [showComments, post.id]);
+  // ── Fetch comments on toggle ─────────────────
+  useEffect(() => {
+    if (showComments) {
+      fetch(`/api/social/posts/${post.id}/comments`)
+        .then(r => r.json())
+        .then(d => setComments(d.comments || []));
+    }
+  }, [showComments, post.id]);
 
   return (
     <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} className="relative bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-600/80 transition-all duration-300">
@@ -95,7 +184,7 @@ function PostCard({ post, user, refresh }) {
           </Link>
           <div className="flex-1 min-w-0">
             <Link href={`/profile?uid=${post.user_uid}`} className="font-semibold text-sm hover:underline">{post.user_name}</Link>
-            <p className="text-xs text-zinc-500">{new Date(post.created_at).toLocaleString()}</p>
+            <p className="text-xs text-zinc-400">{timeAgo(post.created_at)}</p>
           </div>
           {isOwner && (
             <div className="relative">
@@ -109,11 +198,13 @@ function PostCard({ post, user, refresh }) {
             </div>
           )}
         </div>
-        {post.content && <p className="text-sm leading-relaxed mb-3">{post.content}</p>}
+        {/* Post content – linked to detail */}
+        <Link href={`/post/${post.id}`} className="text-sm leading-relaxed mb-3 block hover:text-purple-300 transition">{post.content}</Link>
 
-        {/* Poll Display */}
+        {/* Poll */}
         {post.poll && <PollDisplay post={post} refresh={refresh} />}
 
+        {/* Media */}
         {post.media_urls?.length > 0 && !post.product && (
           <div className="mb-3 rounded-xl overflow-hidden">
             {post.media_urls.map((url,i) => (
@@ -121,6 +212,8 @@ function PostCard({ post, user, refresh }) {
             ))}
           </div>
         )}
+
+        {/* Product card */}
         {post.product && (
           <Link href={`/products/${post.product.slug || post.product_id}`} className="block p-3 bg-zinc-800/50 border border-zinc-700 rounded-xl mb-3 hover:border-purple-500 transition">
             <div className="flex items-center gap-3">
@@ -133,29 +226,39 @@ function PostCard({ post, user, refresh }) {
             </div>
           </Link>
         )}
-            {post.poll && <PollDisplay post={post} refresh={refresh} />}
+
+        {/* Actions */}
         <div className="flex items-center gap-6 border-t border-zinc-800 pt-3 text-zinc-400 text-xs">
           <button onClick={handleLike} className={`flex items-center gap-1 transition ${optimisticLike.liked ? 'text-red-500' : 'hover:text-red-500'}`}>
             <Heart className={`w-4 h-4 ${optimisticLike.liked ? 'fill-current' : ''}`} />
             <span>{optimisticLike.count}</span>
           </button>
-          <button onClick={() => setShowComments(!showComments)} className="flex items-center gap-1 hover:text-blue-400 transition"><MessageCircle className="w-4 h-4" /> <span>{post.comment_count || 0}</span></button>
-          <button onClick={handleShare} className="flex items-center gap-1 hover:text-green-400 transition"><Share2 className="w-4 h-4" /> Share</button>
+          <button onClick={() => setShowComments(!showComments)} className="flex items-center gap-1 hover:text-blue-400 transition">
+            <MessageCircle className="w-4 h-4" /> <span>{post.comment_count || 0}</span>
+          </button>
+          <button onClick={handleShare} className="flex items-center gap-1 hover:text-green-400 transition">
+            <Share2 className="w-4 h-4" /> <span>{shareCount}</span>
+          </button>
         </div>
+
+        {/* Comments section */}
         <AnimatePresence>
           {showComments && (
             <motion.div initial={{ height:0 }} animate={{ height:'auto' }} exit={{ height:0 }} className="overflow-hidden border-t border-zinc-800 mt-3 pt-3">
               <div className="space-y-2">
                 {comments.map(c => (
-                  <div key={c.id} className="flex gap-2 text-sm"><Link href={`/profile?uid=${c.uid}`} className="font-medium text-purple-400 shrink-0">{c.user_name}</Link><p className="text-zinc-300">{c.content}</p></div>
-                ))}
-                {user && (
-                  <div className="flex gap-2 mt-2">
-                    <input type="text" placeholder="Write a comment..." value={commentText} onChange={e=>setCommentText(e.target.value)} className="flex-1 px-3 py-1 bg-zinc-800 rounded-xl text-sm text-white placeholder-zinc-500" />
-                    <button onClick={submitComment} className="text-purple-400"><Send className="w-4 h-4" /></button>
+                  <div key={c.id} className="flex gap-2 text-sm">
+                    <Link href={`/profile?uid=${c.uid}`} className="font-medium text-purple-400 shrink-0">{c.user_name}</Link>
+                    <p className="text-zinc-300">{c.content}</p>
                   </div>
-                )}
+                ))}
               </div>
+              {user && (
+                <div className="flex gap-2 mt-2">
+                  <input type="text" placeholder="Write a comment..." value={commentText} onChange={e=>setCommentText(e.target.value)} className="flex-1 px-3 py-1 bg-zinc-800 rounded-xl text-sm text-white placeholder-zinc-500" />
+                  <button onClick={submitComment} className="text-purple-400"><Send className="w-4 h-4" /></button>
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -164,7 +267,7 @@ function PostCard({ post, user, refresh }) {
   );
 }
 
-// ---------- Product Card ----------
+// ─── Product Card ──────────────────────────────
 function ProductCard({ product }) {
   const addToCart = async () => {
     const token = getToken(); if (!token) return toast.error('Login required');
@@ -183,7 +286,7 @@ function ProductCard({ product }) {
   );
 }
 
-// ---------- Wattpad Card ----------
+// ─── Wattpad Card ──────────────────────────────
 function WattpadCard({ story }) {
   const [open, setOpen] = useState(false);
   return (
@@ -208,7 +311,7 @@ function WattpadCard({ story }) {
   );
 }
 
-// ---------- Composer ----------
+// ─── Composer ──────────────────────────────────
 function Composer({ onPost }) {
   const [expanded, setExpanded] = useState(false);
   const [content, setContent] = useState('');
@@ -220,13 +323,22 @@ function Composer({ onPost }) {
     setPosting(true);
     try {
       const token = getToken(); if (!token) { toast.error('Login required'); return; }
-      const res = await fetch('/api/social/posts', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ content, media_urls: mediaUrls.length>0 ? mediaUrls : undefined }) });
+      const res = await fetchWithRetry('/api/social/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ content, media_urls: mediaUrls.length>0 ? mediaUrls : undefined }),
+      });
       if (res.ok) {
         toast.success('Post created!');
         setContent(''); setMediaUrls([]); setExpanded(false);
         onPost();
-      } else { const data = await res.json(); toast.error(data.error || 'Post failed'); }
-    } catch (e) { toast.error('Network error'); }
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Post failed');
+      }
+    } catch (e) {
+      toast.error('Network error');
+    }
     setPosting(false);
   };
 
@@ -264,7 +376,7 @@ function Composer({ onPost }) {
   );
 }
 
-// ---------- Main Feed ----------
+// ─── Main Feed Page ────────────────────────────
 export default function FeedPage() {
   const { items, page, hasMore, scrollPosition, loading, initialLoading, refreshing,
     setItems, appendItems, setPage, setHasMore, setScrollPosition, setLoading, setInitialLoading, setRefreshing, reset } = useFeedStore();
@@ -324,9 +436,7 @@ export default function FeedPage() {
           <button onClick={() => { reset(); fetchFeed(1, true); }} className="flex items-center gap-2 px-4 py-2 bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-full text-sm text-zinc-400 hover:text-white transition shadow-lg"><RefreshCw className="w-4 h-4" /> Refresh</button>
         </div>
         <StoriesBar />
-            <RecommendedProducts />
-            <StoriesBar />
-            <RecommendedProducts />
+        <RecommendedProducts />
         {user && <Composer onPost={() => { reset(); fetchFeed(1, true); }} />}
         {initialLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{Array.from({ length: 6 }).map((_, i) => <PostSkeleton key={i} />)}</div>

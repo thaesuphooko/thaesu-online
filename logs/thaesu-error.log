@@ -1,67 +1,492 @@
-2026-07-27 13:51:46 +06:30: ⚠ `experimental.typedRoutes` has been moved to `typedRoutes`. Please update your next.config.mjs file accordingly.
-2026-07-27 13:51:46 +06:30: ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
-2026-07-27 13:51:54 +06:30: ⚠️ SLOW QUERY (3901ms): 
-2026-07-27 13:51:54 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
-2026-07-27 13:51:54 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
-2026-07-27 14:10:44 +06:30: ⚠️ SLOW QUERY (3077ms): 
-2026-07-27 14:10:44 +06:30:       SELECT 
-2026-07-27 14:10:44 +06:30:         u.id, u.uid, u.full_name, u.email, u.phone, u.bio,
-2026-07-27 14:10:44 +06:30:         u.avatar_url, u.co
-2026-07-27 14:11:36 +06:30: ⚠️ SLOW QUERY (2572ms): SELECT id FROM users WHERE email = $1
-2026-07-27 14:11:38 +06:30: ⚠️ SLOW QUERY (1670ms): SELECT id FROM users WHERE referral_code = $1
-2026-07-27 14:11:39 +06:30: Registration error: error: new row for relation "users" violates check constraint "users_role_check"
-2026-07-27 14:11:39 +06:30:     at async g.query (.next/server/app/api/admin/ai-price/route.js:1:1921)
-2026-07-27 14:11:39 +06:30:     at async m (.next/server/app/api/auth/register/route.js:1:9299)
-2026-07-27 14:11:39 +06:30:     at async j (.next/server/app/api/auth/register/route.js:1:4848)
-2026-07-27 14:11:39 +06:30:     at async h (.next/server/app/api/auth/register/route.js:1:5860)
-2026-07-27 14:11:39 +06:30:     at async Module.y (.next/server/app/api/auth/register/route.js:1:6956) {
-2026-07-27 14:11:39 +06:30:   length: 514,
-2026-07-27 14:11:39 +06:30:   severity: 'ERROR',
-2026-07-27 14:11:39 +06:30:   code: '23514',
-2026-07-27 14:11:39 +06:30:   detail: 'Failing row contains (a17f5df5-d630-4196-af07-c86df045b8f4, a2234@gmail.com, $2b$12$ZS6gHK/DFt1aZppd7SNuT.7wDnDd.g2dB8oje3qZ0aX1tGLuO9ArW, A33676, user, f, f, f, 2026-07-27 07:41:38.385465+00, 2026-07-27 07:41:38.385465+00, bronze, null, f3b75e19e6c03755, , null, null, null, null, null, pending, null, null, f3b791FB00, null, 0.00, free, {}).',
-2026-07-27 14:11:39 +06:30:   hint: undefined,
-2026-07-27 14:11:39 +06:30:   position: undefined,
-2026-07-27 14:11:39 +06:30:   internalPosition: undefined,
-2026-07-27 14:11:39 +06:30:   internalQuery: undefined,
-2026-07-27 14:11:39 +06:30:   where: undefined,
-2026-07-27 14:11:39 +06:30:   schema: 'public',
-2026-07-27 14:11:39 +06:30:   table: 'users',
-2026-07-27 14:11:39 +06:30:   column: undefined,
-2026-07-27 14:11:39 +06:30:   dataType: undefined,
-2026-07-27 14:11:39 +06:30:   constraint: 'users_role_check',
-2026-07-27 14:11:39 +06:30:   file: 'execMain.c',
-2026-07-27 14:11:39 +06:30:   line: '2086',
-2026-07-27 14:11:39 +06:30:   routine: 'ExecConstraints'
-2026-07-27 14:11:39 +06:30: }
-2026-07-27 14:36:57 +06:30: ⚠️ SLOW QUERY (3940ms): 
-2026-07-27 14:36:57 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
-2026-07-27 14:36:57 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
-2026-07-27 14:37:39 +06:30: ⚠️ SLOW QUERY (4905ms): 
-2026-07-27 14:37:39 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
-2026-07-27 14:37:39 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
-2026-07-27 14:37:41 +06:30: ⚠️ SLOW QUERY (2714ms): SELECT id FROM users WHERE referral_code = $1
-2026-07-27 14:37:42 +06:30: Registration error: error: new row for relation "users" violates check constraint "users_role_check"
-2026-07-27 14:37:42 +06:30:     at async g.query (.next/server/app/api/admin/ai-price/route.js:1:1921)
-2026-07-27 14:37:42 +06:30:     at async n (.next/server/app/api/auth/register/route.js:1:2919)
-2026-07-27 14:37:42 +06:30:     at async j (.next/server/app/api/auth/register/route.js:6:4342)
-2026-07-27 14:37:42 +06:30:     at async h (.next/server/app/api/auth/register/route.js:6:5354)
-2026-07-27 14:37:42 +06:30:     at async Module.y (.next/server/app/api/auth/register/route.js:6:6450) {
-2026-07-27 14:37:42 +06:30:   length: 505,
-2026-07-27 14:37:42 +06:30:   severity: 'ERROR',
-2026-07-27 14:37:42 +06:30:   code: '23514',
-2026-07-27 14:37:42 +06:30:   detail: 'Failing row contains (d7bf2cfc-c508-4d3f-b682-1c00afd71171, null, $2b$10$cp.3upPb3DWwuaUtWbHjqu4SqLA8xBT9g99Dihnl6P2LURJKZqrqW, Test, user, f, f, f, 2026-07-27 08:07:41.480958+00, 2026-07-27 08:07:41.480958+00, bronze, null, 9a7632661c8bfeb8, null, null, null, null, null, null, pending, null, null, 9a76F4BC74, null, 0.00, free, {}).',
-2026-07-27 14:37:42 +06:30:   hint: undefined,
-2026-07-27 14:37:42 +06:30:   position: undefined,
-2026-07-27 14:37:42 +06:30:   internalPosition: undefined,
-2026-07-27 14:37:42 +06:30:   internalQuery: undefined,
-2026-07-27 14:37:42 +06:30:   where: undefined,
-2026-07-27 14:37:42 +06:30:   schema: 'public',
-2026-07-27 14:37:42 +06:30:   table: 'users',
-2026-07-27 14:37:42 +06:30:   column: undefined,
-2026-07-27 14:37:42 +06:30:   dataType: undefined,
-2026-07-27 14:37:42 +06:30:   constraint: 'users_role_check',
-2026-07-27 14:37:42 +06:30:   file: 'execMain.c',
-2026-07-27 14:37:42 +06:30:   line: '2086',
-2026-07-27 14:37:42 +06:30:   routine: 'ExecConstraints'
-2026-07-27 14:37:42 +06:30: }
-2026-07-27 14:40:54 +06:30: ⚠️ SLOW QUERY (1973ms): SELECT id FROM users WHERE referral_code = $1
+2026-07-27 23:11:09 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-27 23:19:52 +06:30: ⚠️ SLOW QUERY (3266ms): 
+2026-07-27 23:19:52 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-27 23:19:52 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 05:49:44 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 05:49:44 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 05:49:44 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 05:49:45 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 05:49:47 +06:30: ⚠️ SLOW QUERY (2054ms): 
+2026-07-28 05:49:47 +06:30:         SELECT p.*,
+2026-07-28 05:49:47 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 05:49:47 +06:30: ⚠️ SLOW QUERY (2376ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 05:49:47 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 05:49:48 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 05:51:39 +06:30: ⚠️ SLOW QUERY (3095ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 06:01:14 +06:30: ⚠️ SLOW QUERY (2463ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 06:01:25 +06:30: Post creation error: error: column "image_url" of relation "posts" does not exist
+2026-07-28 06:01:25 +06:30:     at async (.next/server/app/api/social/posts/route.js:5:1053)
+2026-07-28 06:01:25 +06:30:     at async j (.next/server/app/api/social/posts/route.js:1:835)
+2026-07-28 06:01:25 +06:30:     at async m (.next/server/app/api/social/posts/route.js:5:996)
+2026-07-28 06:01:25 +06:30:     at async j (.next/server/app/api/social/posts/route.js:7:5325)
+2026-07-28 06:01:25 +06:30:     at async h (.next/server/app/api/social/posts/route.js:7:6337)
+2026-07-28 06:01:25 +06:30:     at async Module.y (.next/server/app/api/social/posts/route.js:7:7433) {
+2026-07-28 06:01:25 +06:30:   length: 127,
+2026-07-28 06:01:25 +06:30:   severity: 'ERROR',
+2026-07-28 06:01:25 +06:30:   code: '42703',
+2026-07-28 06:01:25 +06:30:   detail: undefined,
+2026-07-28 06:01:25 +06:30:   hint: undefined,
+2026-07-28 06:01:25 +06:30:   position: '38',
+2026-07-28 06:01:25 +06:30:   internalPosition: undefined,
+2026-07-28 06:01:25 +06:30:   internalQuery: undefined,
+2026-07-28 06:01:25 +06:30:   where: undefined,
+2026-07-28 06:01:25 +06:30:   schema: undefined,
+2026-07-28 06:01:25 +06:30:   table: undefined,
+2026-07-28 06:01:25 +06:30:   column: undefined,
+2026-07-28 06:01:25 +06:30:   dataType: undefined,
+2026-07-28 06:01:25 +06:30:   constraint: undefined,
+2026-07-28 06:01:25 +06:30:   file: 'parse_target.c',
+2026-07-28 06:01:25 +06:30:   line: '1068',
+2026-07-28 06:01:25 +06:30:   routine: 'checkInsertTargets'
+2026-07-28 06:01:25 +06:30: }
+2026-07-28 06:01:31 +06:30: Post creation error: error: column "image_url" of relation "posts" does not exist
+2026-07-28 06:01:31 +06:30:     at async (.next/server/app/api/social/posts/route.js:5:1053)
+2026-07-28 06:01:31 +06:30:     at async j (.next/server/app/api/social/posts/route.js:1:835)
+2026-07-28 06:01:31 +06:30:     at async m (.next/server/app/api/social/posts/route.js:5:996)
+2026-07-28 06:01:31 +06:30:     at async j (.next/server/app/api/social/posts/route.js:7:5325)
+2026-07-28 06:01:31 +06:30:     at async h (.next/server/app/api/social/posts/route.js:7:6337)
+2026-07-28 06:01:31 +06:30:     at async Module.y (.next/server/app/api/social/posts/route.js:7:7433) {
+2026-07-28 06:01:31 +06:30:   length: 127,
+2026-07-28 06:01:31 +06:30:   severity: 'ERROR',
+2026-07-28 06:01:31 +06:30:   code: '42703',
+2026-07-28 06:01:31 +06:30:   detail: undefined,
+2026-07-28 06:01:31 +06:30:   hint: undefined,
+2026-07-28 06:01:31 +06:30:   position: '38',
+2026-07-28 06:01:31 +06:30:   internalPosition: undefined,
+2026-07-28 06:01:31 +06:30:   internalQuery: undefined,
+2026-07-28 06:01:31 +06:30:   where: undefined,
+2026-07-28 06:01:31 +06:30:   schema: undefined,
+2026-07-28 06:01:31 +06:30:   table: undefined,
+2026-07-28 06:01:31 +06:30:   column: undefined,
+2026-07-28 06:01:31 +06:30:   dataType: undefined,
+2026-07-28 06:01:31 +06:30:   constraint: undefined,
+2026-07-28 06:01:31 +06:30:   file: 'parse_target.c',
+2026-07-28 06:01:31 +06:30:   line: '1068',
+2026-07-28 06:01:31 +06:30:   routine: 'checkInsertTargets'
+2026-07-28 06:01:31 +06:30: }
+2026-07-28 06:02:56 +06:30: ⚠️ SLOW QUERY (1920ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 06:03:56 +06:30: ⚠️ SLOW QUERY (2168ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 06:13:28 +06:30: ⚠️ SLOW QUERY (3412ms): 
+2026-07-28 06:13:28 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 06:13:28 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 06:17:09 +06:30: ⚠️ SLOW QUERY (2139ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 06:17:14 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:17:17 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:17:17 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:17:19 +06:30: Share error: error: current transaction is aborted, commands ignored until end of transaction block
+2026-07-28 06:17:19 +06:30:     at async (.next/server/app/api/social/posts/[id]/share/route.js:5:1361)
+2026-07-28 06:17:19 +06:30:     at async l (.next/server/app/api/social/posts/[id]/share/route.js:5:98)
+2026-07-28 06:17:19 +06:30:     at async m (.next/server/app/api/social/posts/[id]/share/route.js:5:932)
+2026-07-28 06:17:19 +06:30:     at async j (.next/server/app/api/social/posts/[id]/share/route.js:1:6471)
+2026-07-28 06:17:19 +06:30:     at async h (.next/server/app/api/social/posts/[id]/share/route.js:1:7483)
+2026-07-28 06:17:19 +06:30:     at async Module.y (.next/server/app/api/social/posts/[id]/share/route.js:1:8579) {
+2026-07-28 06:17:19 +06:30:   length: 145,
+2026-07-28 06:17:19 +06:30:   severity: 'ERROR',
+2026-07-28 06:17:19 +06:30:   code: '25P02',
+2026-07-28 06:17:19 +06:30:   detail: undefined,
+2026-07-28 06:17:19 +06:30:   hint: undefined,
+2026-07-28 06:17:19 +06:30:   position: undefined,
+2026-07-28 06:17:19 +06:30:   internalPosition: undefined,
+2026-07-28 06:17:19 +06:30:   internalQuery: undefined,
+2026-07-28 06:17:19 +06:30:   where: undefined,
+2026-07-28 06:17:19 +06:30:   schema: undefined,
+2026-07-28 06:17:19 +06:30:   table: undefined,
+2026-07-28 06:17:19 +06:30:   column: undefined,
+2026-07-28 06:17:19 +06:30:   dataType: undefined,
+2026-07-28 06:17:19 +06:30:   constraint: undefined,
+2026-07-28 06:17:19 +06:30:   file: 'postgres.c',
+2026-07-28 06:17:19 +06:30:   line: '1495',
+2026-07-28 06:17:19 +06:30:   routine: 'exec_parse_message'
+2026-07-28 06:17:19 +06:30: }
+2026-07-28 06:18:00 +06:30: ⚠️ SLOW QUERY (780ms): SELECT COUNT(*) FROM users WHERE 1=1
+2026-07-28 06:18:00 +06:30: ⚠️ SLOW QUERY (561ms): SELECT id, uid, email, full_name, phone, role, is_verified, avatar_url, referral_code, created_at, l
+2026-07-28 06:18:49 +06:30: ⚠️ SLOW QUERY (1324ms): SELECT COUNT(*) FROM users WHERE 1=1 AND role = $1
+2026-07-28 06:23:55 +06:30: ⚠️ SLOW QUERY (3863ms): 
+2026-07-28 06:23:55 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 06:23:55 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 06:24:03 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:24:03 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:25:58 +06:30: ⚠️ SLOW QUERY (2048ms): SELECT COUNT(*) FROM users WHERE 1=1
+2026-07-28 06:25:58 +06:30: ⚠️ SLOW QUERY (613ms): SELECT id, uid, email, full_name, phone, role, is_verified, avatar_url, referral_code, created_at, l
+2026-07-28 06:28:53 +06:30: ⚠️ SLOW QUERY (2668ms): SELECT COUNT(*) FROM users WHERE 1=1
+2026-07-28 06:30:22 +06:30: ⚠️ SLOW QUERY (1999ms): SELECT COUNT(*) FROM users WHERE 1=1
+2026-07-28 06:33:09 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:09 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:09 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:09 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:11 +06:30: ⚠️ SLOW QUERY (1978ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 06:33:11 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:12 +06:30: ⚠️ SLOW QUERY (2030ms): 
+2026-07-28 06:33:12 +06:30:         SELECT p.*,
+2026-07-28 06:33:12 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 06:33:17 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:33:24 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:33:32 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:32 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:32 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:32 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:32 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:36 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:36 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:36 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:36 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:37 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:44 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:33:55 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:55 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:56 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:56 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:56 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:57 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:57 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:57 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:58 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:59 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:59 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:59 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:33:59 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:34:11 +06:30: Post creation error: error: column "image_url" of relation "posts" does not exist
+2026-07-28 06:34:11 +06:30:     at async (.next/server/app/api/social/posts/route.js:5:1053)
+2026-07-28 06:34:11 +06:30:     at async j (.next/server/app/api/social/posts/route.js:1:835)
+2026-07-28 06:34:11 +06:30:     at async m (.next/server/app/api/social/posts/route.js:5:996)
+2026-07-28 06:34:11 +06:30:     at async j (.next/server/app/api/social/posts/route.js:7:5325)
+2026-07-28 06:34:11 +06:30:     at async h (.next/server/app/api/social/posts/route.js:7:6337)
+2026-07-28 06:34:11 +06:30:     at async Module.y (.next/server/app/api/social/posts/route.js:7:7433) {
+2026-07-28 06:34:11 +06:30:   length: 127,
+2026-07-28 06:34:11 +06:30:   severity: 'ERROR',
+2026-07-28 06:34:11 +06:30:   code: '42703',
+2026-07-28 06:34:11 +06:30:   detail: undefined,
+2026-07-28 06:34:11 +06:30:   hint: undefined,
+2026-07-28 06:34:11 +06:30:   position: '38',
+2026-07-28 06:34:11 +06:30:   internalPosition: undefined,
+2026-07-28 06:34:11 +06:30:   internalQuery: undefined,
+2026-07-28 06:34:11 +06:30:   where: undefined,
+2026-07-28 06:34:11 +06:30:   schema: undefined,
+2026-07-28 06:34:11 +06:30:   table: undefined,
+2026-07-28 06:34:11 +06:30:   column: undefined,
+2026-07-28 06:34:11 +06:30:   dataType: undefined,
+2026-07-28 06:34:11 +06:30:   constraint: undefined,
+2026-07-28 06:34:11 +06:30:   file: 'parse_target.c',
+2026-07-28 06:34:11 +06:30:   line: '1068',
+2026-07-28 06:34:11 +06:30:   routine: 'checkInsertTargets'
+2026-07-28 06:34:11 +06:30: }
+2026-07-28 06:35:13 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:35:13 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:35:13 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:35:13 +06:30: ⚠️ SLOW QUERY (519ms): 
+2026-07-28 06:35:13 +06:30:         SELECT p.*,
+2026-07-28 06:35:13 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 06:35:14 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:35:14 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:35:14 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:35:15 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:35:15 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:35:16 +06:30: ⚠️ SLOW QUERY (761ms): SELECT story_id, title, description, cover_url, author, url
+2026-07-28 06:35:16 +06:30:        FROM wattpad_cache
+2026-07-28 06:35:16 +06:30:        ORDER B
+2026-07-28 06:35:16 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:35:16 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:35:16 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:35:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:37:03 +06:30: ⚠️ SLOW QUERY (3783ms): 
+2026-07-28 06:37:03 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 06:37:03 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 06:37:03 +06:30: ⚠️ SLOW QUERY (2353ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 06:37:05 +06:30: Post creation error: error: column "image_url" of relation "posts" does not exist
+2026-07-28 06:37:05 +06:30:     at async (.next/server/app/api/social/posts/route.js:5:1053)
+2026-07-28 06:37:05 +06:30:     at async j (.next/server/app/api/social/posts/route.js:1:835)
+2026-07-28 06:37:05 +06:30:     at async m (.next/server/app/api/social/posts/route.js:5:996)
+2026-07-28 06:37:05 +06:30:     at async j (.next/server/app/api/social/posts/route.js:7:5325)
+2026-07-28 06:37:05 +06:30:     at async h (.next/server/app/api/social/posts/route.js:7:6337)
+2026-07-28 06:37:05 +06:30:     at async Module.y (.next/server/app/api/social/posts/route.js:7:7433) {
+2026-07-28 06:37:05 +06:30:   length: 127,
+2026-07-28 06:37:05 +06:30:   severity: 'ERROR',
+2026-07-28 06:37:05 +06:30:   code: '42703',
+2026-07-28 06:37:05 +06:30:   detail: undefined,
+2026-07-28 06:37:05 +06:30:   hint: undefined,
+2026-07-28 06:37:05 +06:30:   position: '38',
+2026-07-28 06:37:05 +06:30:   internalPosition: undefined,
+2026-07-28 06:37:05 +06:30:   internalQuery: undefined,
+2026-07-28 06:37:05 +06:30:   where: undefined,
+2026-07-28 06:37:05 +06:30:   schema: undefined,
+2026-07-28 06:37:05 +06:30:   table: undefined,
+2026-07-28 06:37:05 +06:30:   column: undefined,
+2026-07-28 06:37:05 +06:30:   dataType: undefined,
+2026-07-28 06:37:05 +06:30:   constraint: undefined,
+2026-07-28 06:37:05 +06:30:   file: 'parse_target.c',
+2026-07-28 06:37:05 +06:30:   line: '1068',
+2026-07-28 06:37:05 +06:30:   routine: 'checkInsertTargets'
+2026-07-28 06:37:05 +06:30: }
+2026-07-28 06:39:22 +06:30: ⚠️ SLOW QUERY (3996ms): 
+2026-07-28 06:39:22 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 06:39:22 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 06:40:00 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:40:02 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:40:02 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:40:06 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:40:07 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:40:46 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:40:46 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:40:46 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:40:46 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:40:48 +06:30: ⚠️ SLOW QUERY (2059ms): 
+2026-07-28 06:40:48 +06:30:         SELECT p.*,
+2026-07-28 06:40:48 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 06:40:48 +06:30: ⚠️ SLOW QUERY (2100ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 06:40:48 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:40:49 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:40:54 +06:30: ⚠️ SLOW QUERY (1136ms): 
+2026-07-28 06:40:54 +06:30:       SELECT 
+2026-07-28 06:40:54 +06:30:         p.id, p.title, p.price, p.stock, p.category, p.is_active, p.slug, p.descripti
+2026-07-28 06:41:00 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:00 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:00 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:01 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:06 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:08 +06:30: ⚠️ SLOW QUERY (510ms): SELECT story_id, title, description, cover_url, author, url
+2026-07-28 06:41:08 +06:30:        FROM wattpad_cache
+2026-07-28 06:41:08 +06:30:        ORDER B
+2026-07-28 06:41:15 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:21 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:41:27 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:41:30 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:30 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:30 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:30 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:30 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:32 +06:30: ⚠️ SLOW QUERY (2107ms): 
+2026-07-28 06:41:32 +06:30:         SELECT p.*,
+2026-07-28 06:41:32 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 06:41:37 +06:30: ⚠️ SLOW QUERY (821ms): SELECT c.*, u.full_name, u.avatar_url, u.uid FROM comments c JOIN users u ON c.user_id = u.id WHERE 
+2026-07-28 06:41:42 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:43 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:43 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:43 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:43 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:44 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:44 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:46 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:46 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:41:50 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:42:19 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:42:19 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:42:19 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:42:20 +06:30: ⚠️ SLOW QUERY (538ms): 
+2026-07-28 06:42:20 +06:30:         SELECT p.*,
+2026-07-28 06:42:20 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 06:42:22 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:42:22 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:42:22 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:42:23 +06:30: ⚠️ SLOW QUERY (514ms): 
+2026-07-28 06:42:23 +06:30:         SELECT p.*,
+2026-07-28 06:42:23 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 06:42:23 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:42:23 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:42:24 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:42:24 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:42:25 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:42:25 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:42:25 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:42:26 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:42:26 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 06:44:52 +06:30: ⚠️ SLOW QUERY (2256ms): 
+2026-07-28 06:44:52 +06:30:       SELECT 
+2026-07-28 06:44:52 +06:30:         u.id, u.uid, u.full_name, u.email, u.phone, u.bio,
+2026-07-28 06:44:52 +06:30:         u.avatar_url, u.co
+2026-07-28 06:45:53 +06:30: ⚠️ SLOW QUERY (2687ms): SELECT full_name, email, phone, avatar_url, cover_url, social_links FROM users WHERE id = $1
+2026-07-28 06:45:55 +06:30: Audit log skipped: relation "user_audit_logs" does not exist
+2026-07-28 06:45:58 +06:30: ⚠️ SLOW QUERY (2002ms): SELECT id FROM users WHERE uid = $1
+2026-07-28 06:47:06 +06:30: ⚠️ SLOW QUERY (1988ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 06:47:09 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:47:12 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 06:47:12 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:47:15 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 06:47:15 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 06:52:16 +06:30: ⚠️ SLOW QUERY (2008ms): 
+2026-07-28 06:52:16 +06:30:       SELECT 
+2026-07-28 06:52:16 +06:30:         u.id, u.uid, u.full_name, u.email, u.phone, u.bio,
+2026-07-28 06:52:16 +06:30:         u.avatar_url, u.co
+2026-07-28 06:52:28 +06:30: ⚠️ SLOW QUERY (545ms): SELECT * FROM crawl_jobs ORDER BY created_at DESC
+2026-07-28 07:12:45 +06:30: ⚠️ SLOW QUERY (3378ms): 
+2026-07-28 07:12:45 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 07:12:45 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 07:17:52 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:17:52 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:17:52 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:17:52 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:17:54 +06:30: ⚠️ SLOW QUERY (2085ms): 
+2026-07-28 07:17:54 +06:30:         SELECT p.*,
+2026-07-28 07:17:54 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 07:17:55 +06:30: ⚠️ SLOW QUERY (2775ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 07:17:55 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:01 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:18:10 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:18:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:18 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:29 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:18:29 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:18:29 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:18:29 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:29 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:18:30 +06:30: ⚠️ SLOW QUERY (514ms): 
+2026-07-28 07:18:30 +06:30:         SELECT p.*,
+2026-07-28 07:18:30 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 07:18:31 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:18:31 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:18:31 +06:30: ⚠️ SLOW QUERY (805ms): SELECT story_id, title, description, cover_url, author, url
+2026-07-28 07:18:31 +06:30:        FROM wattpad_cache
+2026-07-28 07:18:31 +06:30:        ORDER B
+2026-07-28 07:18:31 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:32 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:18:32 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:18:32 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:34 +06:30: ⚠️ SLOW QUERY (702ms): SELECT p.id, p.title, p.price, p.description, p.category, p.slug,
+2026-07-28 07:18:34 +06:30:          COALESCE(
+2026-07-28 07:18:34 +06:30:            (SEL
+2026-07-28 07:18:34 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:50 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:50 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:50 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:50 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:50 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:51 +06:30: ⚠️ SLOW QUERY (1149ms): 
+2026-07-28 07:18:51 +06:30:       SELECT 
+2026-07-28 07:18:51 +06:30:         p.id, p.title, p.price, p.stock, p.category, p.is_active, p.slug, p.descripti
+2026-07-28 07:18:51 +06:30: ⚠️ SLOW QUERY (861ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 07:18:59 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:18:59 +06:30: ⚠️ SLOW QUERY (518ms): 
+2026-07-28 07:18:59 +06:30:         SELECT p.*,
+2026-07-28 07:18:59 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 07:19:09 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:19:09 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:19:09 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:19:09 +06:30: ⚠️ SLOW QUERY (512ms): 
+2026-07-28 07:19:09 +06:30:         SELECT p.*,
+2026-07-28 07:19:09 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 07:19:17 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:20:14 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 07:20:15 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:20:15 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:20:15 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 07:20:16 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:20:16 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:20:16 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 07:20:17 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:20:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:21:50 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:21:52 +06:30: ⚠️ SLOW QUERY (2117ms): 
+2026-07-28 07:21:52 +06:30:         SELECT p.*,
+2026-07-28 07:21:52 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 07:37:33 +06:30: ⚠️ SLOW QUERY (3420ms): 
+2026-07-28 07:37:33 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 07:37:33 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 07:38:57 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:38:57 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:38:57 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:38:58 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:38:59 +06:30: ⚠️ SLOW QUERY (2102ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 07:38:59 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:01 +06:30: ⚠️ SLOW QUERY (3298ms): 
+2026-07-28 07:39:01 +06:30:         SELECT p.*,
+2026-07-28 07:39:01 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 07:39:06 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:39:10 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:12 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:39:13 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:39:13 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:13 +06:30: ⚠️ SLOW QUERY (526ms): 
+2026-07-28 07:39:13 +06:30:         SELECT p.*,
+2026-07-28 07:39:13 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 07:39:20 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 07:39:21 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 07:39:22 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 07:39:22 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:31 +06:30: ⚠️ SLOW QUERY (802ms): 
+2026-07-28 07:39:31 +06:30:       SELECT 
+2026-07-28 07:39:31 +06:30:         u.id, u.uid, u.full_name, u.email, u.phone, u.bio,
+2026-07-28 07:39:31 +06:30:         u.avatar_url, u.co
+2026-07-28 07:39:35 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:35 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:35 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:36 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 07:39:37 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:22 +06:30: ⚠️ SLOW QUERY (3500ms): 
+2026-07-28 08:44:22 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 08:44:22 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 08:44:29 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:29 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:29 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:30 +06:30: ⚠️ SLOW QUERY (1043ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 08:44:32 +06:30: ⚠️ SLOW QUERY (2471ms): 
+2026-07-28 08:44:32 +06:30:         SELECT p.*,
+2026-07-28 08:44:32 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 08:44:38 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 08:44:45 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 08:44:45 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 08:44:45 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:46 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 08:44:46 +06:30: ⚠️ SLOW QUERY (687ms): 
+2026-07-28 08:44:46 +06:30:         SELECT p.*,
+2026-07-28 08:44:46 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 08:44:46 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 08:44:47 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:55 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:55 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:44:56 +06:30: ⚠️ SLOW QUERY (801ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 08:45:00 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:45:00 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:45:13 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 08:45:14 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 08:46:02 +06:30: Notification insert error: column "related_id" of relation "notifications" does not exist
+2026-07-28 08:46:03 +06:30: Activity log error: relation "activity_log" does not exist
+2026-07-28 08:46:03 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:46:03 +06:30: ⚠️ SLOW QUERY (611ms): 
+2026-07-28 08:46:03 +06:30:         SELECT p.*,
+2026-07-28 08:46:03 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 08:46:09 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 08:46:15 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:46:15 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:46:17 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 08:47:43 +06:30: ⚠️ SLOW QUERY (2523ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 08:47:56 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 09:03:38 +06:30: ⚠️ SLOW QUERY (2145ms): 
+2026-07-28 09:03:38 +06:30:       SELECT 
+2026-07-28 09:03:38 +06:30:         u.id, u.uid, u.full_name, u.email, u.phone, u.bio,
+2026-07-28 09:03:38 +06:30:         u.avatar_url, u.co
+2026-07-28 09:03:41 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 09:03:41 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 09:47:14 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 09:47:14 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 09:47:14 +06:30: ⚠️  SocialAuth: Invalid token payload
+2026-07-28 09:47:16 +06:30: ⚠️ SLOW QUERY (2076ms): 
+2026-07-28 09:47:16 +06:30:         SELECT p.*,
+2026-07-28 09:47:16 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 09:47:18 +06:30: ⚠️ SLOW QUERY (4657ms): SELECT id, title, price, media, slug FROM products ORDER BY RANDOM() LIMIT 8
+2026-07-28 09:47:22 +06:30: Notification insert error: column "related_id" does not exist
+2026-07-28 10:00:47 +06:30: ⚠️ SLOW QUERY (3872ms): 
+2026-07-28 10:00:47 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 10:00:47 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 10:33:13 +06:30: ⚠️ SLOW QUERY (3878ms): 
+2026-07-28 10:33:13 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 10:33:13 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 10:52:22 +06:30: ⚠️ SLOW QUERY (2460ms): SELECT id, uid, email, full_name, phone, role, is_verified, password_hash, avatar_url, cover_url, bi
+2026-07-28 11:20:49 +06:30: ⚠️ SLOW QUERY (5846ms): 
+2026-07-28 11:20:49 +06:30:       CREATE TABLE IF NOT EXISTS webhook_configs (
+2026-07-28 11:20:49 +06:30:         id UUID PRIMARY KEY DEFAULT gen_random_u
+2026-07-28 11:20:54 +06:30: ⚠️ SLOW QUERY (2562ms): SELECT DISTINCT p.category FROM orders o
+2026-07-28 11:20:54 +06:30:        JOIN order_items oi ON o.id = oi.order_id
+2026-07-28 11:20:54 +06:30:        JOI
+2026-07-28 11:20:57 +06:30: ⚠️ SLOW QUERY (5286ms): 
+2026-07-28 11:20:57 +06:30:         SELECT p.*,
+2026-07-28 11:20:57 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 11:21:08 +06:30: ⚠️ SLOW QUERY (1272ms): SELECT DISTINCT p.category FROM orders o
+2026-07-28 11:21:08 +06:30:        JOIN order_items oi ON o.id = oi.order_id
+2026-07-28 11:21:08 +06:30:        JOI
+2026-07-28 11:21:12 +06:30: ⚠️ SLOW QUERY (1023ms): 
+2026-07-28 11:21:12 +06:30:         SELECT p.*,
+2026-07-28 11:21:12 +06:30:           COALESCE((SELECT COUNT(*) FROM likes WHERE post_id = p.id), 0) AS lik
+2026-07-28 11:21:43 +06:30: Audit log skipped: relation "user_audit_logs" does not exist

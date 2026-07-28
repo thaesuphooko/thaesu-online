@@ -2,10 +2,19 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import db from '@/lib/db';
 
+// ════════════════════════════════════════════════════════════
+//  GOD MODE – COMMENT API (Premium Ultra Max)
+//  · UUID v4 validation, JWT auth, rate limiting
+//  · XSS sanitization, transaction + row lock
+//  · Notification to post owner (5 min dedup)
+//  · Activity logging, Telegram alert, real‑time emit
+//  · Retry on DB timeout, length validation
+// ════════════════════════════════════════════════════════════
+
 // ─── Memory‑safe rate limiter (per user) ────────
 const rateLimitMap = new Map();
 const RATE_WINDOW = 60_000;
-const MAX_POSTS = 10;
+const MAX_COMMENTS = 20;
 setInterval(() => {
   const now = Date.now();
   for (const [key, record] of rateLimitMap.entries()) {
@@ -18,11 +27,14 @@ function checkRateLimit(userId) {
   const entry = rateLimitMap.get(userId);
   if (entry && now - entry.start < RATE_WINDOW) {
     entry.count++;
-    return entry.count <= MAX_POSTS;
+    return entry.count <= MAX_COMMENTS;
   }
   rateLimitMap.set(userId, { start: now, count: 1 });
   return true;
 }
+
+// ─── UUID v4 regex ─────────────────────────────
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 // ─── XSS sanitizer ──────────────────────────────
 function sanitize(str) {
@@ -47,6 +59,28 @@ async function executeWithRetry(client, callback, maxRetries = 2) {
   }
 }
 
+// ─── Notification helper (prevents duplicate in 5 min) ───
+async function notifyPostOwner(client, postOwnerId, commenterName, postId) {
+  if (!postOwnerId || postOwnerId === commenterName) return;
+  try {
+    const { rows: [existing] } = await client.query(
+      `SELECT id FROM notifications
+       WHERE user_id = $1 AND type = 'comment' AND related_id = $2
+       AND created_at > NOW() - INTERVAL '5 minutes'`,
+      [postOwnerId, postId]
+    );
+    if (existing) return;
+
+    await client.query(
+      `INSERT INTO notifications (user_id, type, message, related_id)
+       VALUES ($1, 'comment', $2, $3)`,
+      [postOwnerId, `${commenterName} commented on your post`, postId]
+    );
+  } catch (err) {
+    console.error('Notification insert error:', err.message);
+  }
+}
+
 // ─── Activity logger ───────────────────────────
 async function logActivity(client, userId, action, targetId) {
   try {
@@ -56,7 +90,7 @@ async function logActivity(client, userId, action, targetId) {
       [userId, action, targetId]
     );
   } catch (err) {
-    // table may not exist – ignore
+    console.error('Activity log error:', err.message);
   }
 }
 
@@ -67,13 +101,13 @@ async function notifyAdminTelegram(client, userName, contentPreview, postId) {
       'SELECT bot_token, chat_id FROM telegram_configs WHERE is_active = true LIMIT 1'
     );
     if (!tg) return;
-    const preview = contentPreview.length > 80 ? contentPreview.slice(0, 77) + '...' : contentPreview;
+    const preview = contentPreview.length > 50 ? contentPreview.slice(0, 47) + '...' : contentPreview;
     await fetch(`https://api.telegram.org/bot${tg.bot_token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: tg.chat_id,
-        text: `📢 <b>New Post</b>\n👤 ${userName}\n📝 ${preview}\n🔗 ${postId}`,
+        text: `💬 <b>New Comment</b>\n👤 ${userName}\n📝 ${preview}\n📌 ${postId}`,
         parse_mode: 'HTML',
       }),
     });
@@ -81,12 +115,19 @@ async function notifyAdminTelegram(client, userName, contentPreview, postId) {
 }
 
 // ─── Main POST handler ─────────────────────────
-export async function POST(req) {
-  // 1. Authentication
+export async function POST(req, { params }) {
+  const { id: postId } = await params;
+
+  // 1. UUID validation
+  if (!postId || !UUID_REGEX.test(postId)) {
+    return NextResponse.json({ error: 'Invalid post ID' }, { status: 400 });
+  }
+
+  // 2. Authentication
   const authHeader = req.headers.get('authorization') || '';
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
   if (!token) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Login required' }, { status: 401 });
   }
 
   let userId, userName;
@@ -99,15 +140,15 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
 
-  // 2. Rate limit
+  // 3. Rate limit
   if (!checkRateLimit(userId)) {
     return NextResponse.json(
-      { error: 'Too many posts. Please slow down.' },
+      { error: 'Too many comments. Please slow down.' },
       { status: 429 }
     );
   }
 
-  // 3. Parse body
+  // 4. Parse body
   let body;
   try {
     body = await req.json();
@@ -115,29 +156,45 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  // 4. Extract & sanitize fields
   const rawContent = body.content;
-  if (!rawContent || typeof rawContent !== 'string' || !rawContent.trim()) {
-    return NextResponse.json({ error: 'Post content is required' }, { status: 400 });
+  if (!rawContent || typeof rawContent !== 'string') {
+    return NextResponse.json({ error: 'Comment content is required' }, { status: 400 });
   }
-  const content = sanitize(rawContent.trim()).slice(0, 5000);
-  const image_url = body.image_url ? sanitize(body.image_url).trim() : null;
-  const privacy = ['public', 'friends', 'private'].includes(body.privacy) ? body.privacy : 'public';
+
+  // Sanitize and trim
+  const content = sanitize(rawContent.trim());
+  if (content.length < 1 || content.length > 1000) {
+    return NextResponse.json(
+      { error: 'Comment must be between 1 and 1000 characters' },
+      { status: 400 }
+    );
+  }
 
   const client = await db.connect();
   try {
     const result = await executeWithRetry(client, async () => {
       await client.query('BEGIN');
 
-      // Insert post
-      const { rows: [post] } = await client.query(
-        `INSERT INTO posts (user_id, content, image_url, privacy)
-         VALUES ($1, $2, $3, $4)
-         RETURNING id, user_id, content, image_url, privacy, created_at`,
-        [userId, content, image_url, privacy]
+      // Lock post row to confirm existence & get owner
+      const postRes = await client.query(
+        'SELECT user_id FROM posts WHERE id = $1 FOR UPDATE',
+        [postId]
+      );
+      if (postRes.rowCount === 0) {
+        await client.query('ROLLBACK');
+        return { status: 404, body: { error: 'Post not found' } };
+      }
+      const postOwnerId = postRes.rows[0].user_id;
+
+      // Insert comment
+      const { rows: [comment] } = await client.query(
+        `INSERT INTO comments (user_id, post_id, content)
+         VALUES ($1, $2, $3)
+         RETURNING id, user_id, post_id, content, created_at`,
+        [userId, postId, content]
       );
 
-      // Fetch author info
+      // Fetch comment author info
       const { rows: [author] } = await client.query(
         'SELECT full_name, avatar_url, uid FROM users WHERE id = $1',
         [userId]
@@ -146,29 +203,31 @@ export async function POST(req) {
       await client.query('COMMIT');
 
       // Build response
-      const postData = {
-        ...post,
+      const commentData = {
+        ...comment,
         author: {
           id: userId,
           full_name: author?.full_name || 'Unknown',
           avatar_url: author?.avatar_url || null,
           uid: author?.uid || null,
         },
-        like_count: 0,
-        comment_count: 0,
-        share_count: 0,
       };
 
       // Post‑commit actions (non‑critical)
-      await logActivity(client, userId, 'create_post', post.id);
-      notifyAdminTelegram(client, userName, content, post.id).catch(() => {});
+      await notifyPostOwner(client, postOwnerId, userName, postId);
+      await logActivity(client, userId, 'comment', postId);
+      notifyAdminTelegram(client, userName, content, postId).catch(() => {});
 
       // Real‑time emit
-      try { if (global.io) global.io.emit('post:new', postData); } catch {}
+      try {
+        if (global.io) {
+          global.io.to(`post-${postId}`).emit('comment:new', commentData);
+        }
+      } catch {}
 
       return {
         status: 201,
-        body: { success: true, post: postData },
+        body: { success: true, comment: commentData },
       };
     });
 
@@ -177,11 +236,8 @@ export async function POST(req) {
     }
     return NextResponse.json(result.body, { status: result.status });
   } catch (error) {
-    // Double rollback protection
-    try { await client.query('ROLLBACK'); } catch (rollbackErr) {
-      console.error('Rollback failed, connection might be dirty:', rollbackErr);
-    }
-    console.error('Post creation error:', error);
+    try { await client.query('ROLLBACK'); } catch {}
+    console.error('Comment error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   } finally {
     client.release();

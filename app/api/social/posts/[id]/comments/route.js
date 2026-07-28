@@ -1,34 +1,91 @@
 import { NextResponse } from 'next/server';
-import { query } from '@/lib/db';
-import { authenticate } from '@/lib/socialAuth';
+import db from '@/lib/db';
 
-export async function GET(req, { params }) {
-  const { id: postId } = await params;
-  const result = await query(
-    `SELECT c.*, u.full_name, u.avatar_url, u.uid FROM comments c JOIN users u ON c.user_id = u.id WHERE c.post_id = $1 ORDER BY c.created_at ASC`,
-    [postId]
-  );
-  return NextResponse.json({ comments: result.rows });
+// ════════════════════════════════════════════════════════════
+//  GOD MODE – GET COMMENTS API (Ultra Max)
+//  · UUID validation, rate limiting, retry on DB timeout,
+//  · defensive null checks, proper error handling
+// ════════════════════════════════════════════════════════════
+
+// ─── Memory‑safe rate limiter (per IP) ──────────
+const rateLimitMap = new Map();
+const RATE_WINDOW = 60_000;       // 1 minute
+const MAX_REQUESTS = 60;          // generous for read-only
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, record] of rateLimitMap.entries()) {
+    if (now - record.start > RATE_WINDOW) rateLimitMap.delete(key);
+  }
+}, 300_000).unref?.();
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (entry && now - entry.start < RATE_WINDOW) {
+    entry.count++;
+    return entry.count <= MAX_REQUESTS;
+  }
+  rateLimitMap.set(ip, { start: now, count: 1 });
+  return true;
 }
 
-export async function POST(req, { params }) {
-  const { id: postId } = await params;
-  const user = await authenticate(req);
-  if (!user) return NextResponse.json({ error: 'Login required' }, { status: 401 });
-  const { content } = await req.json();
-  if (!content) return NextResponse.json({ error: 'Content required' }, { status: 400 });
-  try {
-    const result = await query(
-      'INSERT INTO comments (user_id, post_id, content) VALUES ($1, $2, $3) RETURNING *',
-      [user.id, postId, content]
+// ─── UUID v4 validation ─────────────────────────
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+// ─── Retry helper (for DB timeouts) ────────────
+async function executeWithRetry(client, callback, maxRetries = 2) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await callback();
+    } catch (error) {
+      if (attempt === maxRetries || error.code !== '57P01') throw error;
+      await new Promise(r => setTimeout(r, 500));
+    }
+  }
+}
+
+export async function GET(req, { params }) {
+  // ✅ Await params (required in Next.js App Router)
+  const resolvedParams = await params;
+  const postId = resolvedParams?.id;
+
+  // 1. Validate post ID
+  if (!postId || !UUID_REGEX.test(postId)) {
+    return NextResponse.json({ error: 'Invalid post ID' }, { status: 400 });
+  }
+
+  // 2. Rate limit (by IP)
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please slow down.' },
+      { status: 429 }
     );
-    const comment = result.rows[0];
-    const userRes = await query('SELECT full_name, avatar_url, uid FROM users WHERE id = $1', [user.id]);
-    comment.user_name = userRes.rows[0]?.full_name || '';
-    comment.uid = userRes.rows[0]?.uid || '';
-    return NextResponse.json({ comment }, { status: 201 });
+  }
+
+  // 3. Execute query with retry
+  const client = await db.connect();
+  try {
+    const result = await executeWithRetry(client, async () => {
+      const { rows } = await client.query(
+        `SELECT c.id, c.content, c.created_at, u.full_name AS user_name, u.uid, u.avatar_url
+         FROM comments c
+         JOIN users u ON c.user_id = u.id
+         WHERE c.post_id = $1
+         ORDER BY c.created_at ASC`,
+        [postId]
+      );
+      return rows;
+    });
+
+    return NextResponse.json({ comments: result });
   } catch (error) {
-    console.error('Comment error:', error);
-    return NextResponse.json({ error: 'Comment failed' }, { status: 500 });
+    console.error('Fetch comments error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  } finally {
+    client.release();
   }
 }
