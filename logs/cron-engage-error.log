@@ -8827,3 +8827,95 @@
 2026-07-28 11:22:59 +06:30: ⚠️ SLOW QUERY (2706ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
 2026-07-28 11:23:09 +06:30: ⚠️ SLOW QUERY (2713ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
 2026-07-28 11:23:18 +06:30: ⚠️ SLOW QUERY (2607ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-28 11:23:32 +06:30: ⚠️ SLOW QUERY (6839ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-28 11:23:42 +06:30: ⚠️ SLOW QUERY (2694ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
+2026-07-28 11:23:54 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:23:54 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:23:54 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:23:54 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:23:54 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:23:54 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:23:54 +06:30:   errno: -3007,
+2026-07-28 11:23:54 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:23:54 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:23:54 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:23:54 +06:30: }
+2026-07-28 11:24:03 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:24:03 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:24:03 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:24:03 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:24:03 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:24:03 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:24:03 +06:30:   errno: -3007,
+2026-07-28 11:24:03 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:24:03 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:24:03 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:24:03 +06:30: }
+2026-07-28 11:24:13 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:24:13 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:24:13 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:24:13 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:24:13 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:24:13 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:24:13 +06:30:   errno: -3007,
+2026-07-28 11:24:13 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:24:13 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:24:13 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:24:13 +06:30: }
+2026-07-28 11:24:22 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:24:22 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:24:22 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:24:22 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:24:22 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:24:22 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:24:22 +06:30:   errno: -3007,
+2026-07-28 11:24:22 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:24:22 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:24:22 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:24:22 +06:30: }
+2026-07-28 11:24:32 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:24:32 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:24:32 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:24:32 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:24:32 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:24:32 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:24:32 +06:30:   errno: -3007,
+2026-07-28 11:24:32 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:24:32 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:24:32 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:24:32 +06:30: }
+2026-07-28 11:24:42 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:24:42 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:24:42 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:24:42 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:24:42 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:24:42 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:24:42 +06:30:   errno: -3007,
+2026-07-28 11:24:42 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:24:42 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:24:42 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:24:42 +06:30: }
+2026-07-28 11:24:54 +06:30: Database query attempt 1 failed (ETIMEDOUT), retrying in 1000ms...
+2026-07-28 11:24:55 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:24:55 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:24:55 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:24:55 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:24:55 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:24:55 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:24:55 +06:30:   errno: -3007,
+2026-07-28 11:24:55 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:24:55 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:24:55 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:24:55 +06:30: }
+2026-07-28 11:25:04 +06:30: ❌ Fail: Error: getaddrinfo ENOTFOUND ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech
+2026-07-28 11:25:04 +06:30:     at /data/data/com.termux/files/home/thaesu-online/node_modules/pg-pool/index.js:45:11
+2026-07-28 11:25:04 +06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+2026-07-28 11:25:04 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/lib/db.js:66:22)
+2026-07-28 11:25:04 +06:30:     at async queryWithRetry (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:32:18)
+2026-07-28 11:25:04 +06:30:     at async main (file:///data/data/com.termux/files/home/thaesu-online/cron-engage.js:50:24) {
+2026-07-28 11:25:04 +06:30:   errno: -3007,
+2026-07-28 11:25:04 +06:30:   code: 'ENOTFOUND',
+2026-07-28 11:25:04 +06:30:   syscall: 'getaddrinfo',
+2026-07-28 11:25:04 +06:30:   hostname: 'ep-damp-block-ahynqyj4-pooler.c-3.us-east-1.aws.neon.tech'
+2026-07-28 11:25:04 +06:30: }
+2026-07-28 11:25:16 +06:30: ⚠️ SLOW QUERY (6032ms): SELECT column_name FROM information_schema.columns WHERE table_name='users' AND column_name=$1
