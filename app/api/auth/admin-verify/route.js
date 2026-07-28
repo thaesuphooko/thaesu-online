@@ -4,10 +4,16 @@ import db from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-// ─── Rate Limiter (per IP) ────────────────────
+// ════════════════════════════════════════════════════════════
+//  GOD MODE – ADMIN OTP VERIFICATION (Ultra Max)
+//  · Rate limit, OTP brute-force lockout, DB retry,
+//  · activity logging, Telegram alerts
+// ════════════════════════════════════════════════════════════
+
+// ─── Memory‑safe Rate Limiter (per IP) ──────────
 const rateLimitMap = new Map();
-const RATE_WINDOW = 60_000;       // 1 minute
-const MAX_ATTEMPTS = 10;
+const RATE_WINDOW = 60_000;
+const MAX_ATTEMPTS_PER_IP = 10;
 setInterval(() => {
   const now = Date.now();
   for (const [key, record] of rateLimitMap.entries()) {
@@ -20,10 +26,37 @@ function checkRateLimit(key) {
   const entry = rateLimitMap.get(key);
   if (entry && now - entry.start < RATE_WINDOW) {
     entry.count++;
-    return entry.count <= MAX_ATTEMPTS;
+    return entry.count <= MAX_ATTEMPTS_PER_IP;
   }
   rateLimitMap.set(key, { start: now, count: 1 });
   return true;
+}
+
+// ─── Brute-force OTP lockout (per admin) ────────
+const otpLockoutMap = new Map(); // userId -> { failures, lockUntil }
+const MAX_OTP_FAILURES = 5;
+const OTP_LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+
+function checkOtpLockout(userId) {
+  const lock = otpLockoutMap.get(userId);
+  if (!lock) return false;
+  if (Date.now() < lock.lockUntil) return true;
+  otpLockoutMap.delete(userId);
+  return false;
+}
+
+function recordOtpFailure(userId) {
+  const now = Date.now();
+  const lock = otpLockoutMap.get(userId) || { failures: 0, lockUntil: 0 };
+  lock.failures++;
+  if (lock.failures >= MAX_OTP_FAILURES) {
+    lock.lockUntil = now + OTP_LOCKOUT_DURATION;
+  }
+  otpLockoutMap.set(userId, lock);
+}
+
+function resetOtpFailures(userId) {
+  otpLockoutMap.delete(userId);
 }
 
 // ─── XSS sanitizer ──────────────────────────────
@@ -42,6 +75,19 @@ async function executeWithRetry(client, callback, maxRetries = 2) {
       console.warn(`OTP verify retry ${attempt + 1} due to timeout...`);
       await new Promise(r => setTimeout(r, 500));
     }
+  }
+}
+
+// ─── Activity Logger ────────────────────────────
+async function logActivity(client, userId, action, metadata = {}) {
+  try {
+    await client.query(
+      `INSERT INTO activity_log (user_id, action, target_type, target_id, metadata)
+       VALUES ($1, $2, 'admin_auth', $1, $3)`,
+      [userId, action, JSON.stringify(metadata)]
+    );
+  } catch (err) {
+    // table may not exist – ignore
   }
 }
 
@@ -69,8 +115,9 @@ async function notifyAdmin(text) {
 }
 
 export async function POST(req) {
-  // 1. Rate limit by IP
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+
+  // 1. Rate limit by IP
   if (!checkRateLimit(`ip:${ip}`)) {
     return NextResponse.json({ error: 'Too many attempts. Try later.' }, { status: 429 });
   }
@@ -102,7 +149,14 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Admin account not configured' }, { status: 500 });
     }
 
-    // 4. Verify OTP from database
+    // 4. Check OTP brute-force lockout
+    if (checkOtpLockout(admin.id)) {
+      await logActivity(client, admin.id, 'otp_lockout', { ip });
+      notifyAdmin(`🚨 <b>Admin OTP Lockout</b>\n👤 ${admin.full_name}\n⏰ ${new Date().toISOString()}`);
+      return NextResponse.json({ error: 'Account is temporarily locked due to too many failed OTP attempts. Try again later.' }, { status: 423 });
+    }
+
+    // 5. Verify OTP from database
     const otpRecord = await executeWithRetry(client, async () => {
       const { rows } = await client.query(
         'SELECT otp, expires_at FROM admin_otp WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
@@ -112,19 +166,23 @@ export async function POST(req) {
     });
 
     if (!otpRecord || otpRecord.otp !== otp) {
+      recordOtpFailure(admin.id);
+      await logActivity(client, admin.id, 'otp_invalid', { ip, attempt: otpRecord ? 'expired_or_wrong' : 'expired_or_wrong' });
       return NextResponse.json({ error: 'Invalid OTP' }, { status: 401 });
     }
 
     if (new Date(otpRecord.expires_at) < new Date()) {
+      recordOtpFailure(admin.id);
       // Clean up expired OTP
       await client.query('DELETE FROM admin_otp WHERE user_id = $1', [admin.id]);
+      await logActivity(client, admin.id, 'otp_expired', { ip });
       return NextResponse.json({ error: 'OTP has expired' }, { status: 401 });
     }
 
-    // 5. OTP is valid – delete it (one-time use)
+    // 6. OTP is valid – reset failures, delete OTP, generate token
+    resetOtpFailures(admin.id);
     await client.query('DELETE FROM admin_otp WHERE user_id = $1', [admin.id]);
 
-    // 6. Generate JWT token
     const token = generateToken(admin, { scope: 'admin' });
     const safeUser = {
       id: admin.id,
@@ -134,7 +192,8 @@ export async function POST(req) {
       role: admin.role,
     };
 
-    // 7. Notify admin about successful login
+    // 7. Log successful activity & notify
+    await logActivity(client, admin.id, 'otp_login_success', { ip });
     notifyAdmin(`✅ <b>Admin Login Successful</b>\n👤 ${admin.full_name}\n⏰ ${new Date().toISOString()}`).catch(() => {});
 
     return NextResponse.json({ token, user: safeUser });
